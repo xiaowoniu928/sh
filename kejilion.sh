@@ -25,7 +25,7 @@ elif [ "$canshu" = "V6" ]; then
 	zhushi=1
 	gh_proxy="https://gh.kejilion.pro/"
 else
-	zhushi=1  # 0 表示执行�? 表示不执�?
+	zhushi=1  # 0 琛ㄧず鎵ц锛? 琛ㄧず涓嶆墽琛?
 	gh_proxy="https://"
 fi
 
@@ -36,7 +36,7 @@ quanju_canshu
 
 
 
-# 定义一个函数来执行命令
+# 瀹氫箟涓€涓嚱鏁版潵鎵ц鍛戒护
 run_command() {
 	if [ "$zhushi" -eq 0 ]; then
 		"$@"
@@ -59,9 +59,9 @@ CheckFirstRun_true() {
 
 
 
-# 收集功能埋点信息的函数，记录当前脚本版本号，使用时间，系统版本，CPU架构，机器所在国家和用户使用的功能名称，绝对不涉及任何敏感信息，请放心！请相信我�?
-# 为什么要设计这个功能，目的更好的了解用户喜欢使用的功能，进一步优化功能推出更多符合用户需求的功能�?
-# 全文可搜�?send_stats 函数调用位置，透明开源，如有顾虑可拒绝使用�?
+# 鏀堕泦鍔熻兘鍩嬬偣淇℃伅鐨勫嚱鏁帮紝璁板綍褰撳墠鑴氭湰鐗堟湰鍙凤紝浣跨敤鏃堕棿锛岀郴缁熺増鏈紝CPU鏋舵瀯锛屾満鍣ㄦ墍鍦ㄥ浗瀹跺拰鐢ㄦ埛浣跨敤鐨勫姛鑳藉悕绉帮紝缁濆涓嶆秹鍙婁换浣曟晱鎰熶俊鎭紝璇锋斁蹇冿紒璇风浉淇℃垜锛?
+# 涓轰粈涔堣璁捐杩欎釜鍔熻兘锛岀洰鐨勬洿濂界殑浜嗚В鐢ㄦ埛鍠滄浣跨敤鐨勫姛鑳斤紝杩涗竴姝ヤ紭鍖栧姛鑳芥帹鍑烘洿澶氱鍚堢敤鎴烽渶姹傜殑鍔熻兘銆?
+# 鍏ㄦ枃鍙悳鎼?send_stats 鍑芥暟璋冪敤浣嶇疆锛岄€忔槑寮€婧愶紝濡傛湁椤捐檻鍙嫆缁濅娇鐢ㄣ€?
 
 
 
@@ -114,22 +114,22 @@ CheckFirstRun_false() {
 	fi
 }
 
-# 提示用户同意条款
+# 鎻愮ず鐢ㄦ埛鍚屾剰鏉℃
 UserLicenseAgreement() {
 	clear
-	echo -e "${gl_kjlan}欢迎使用科技lion脚本工具�?{gl_bai}"
-	echo "首次使用脚本，请先阅读并同意用户许可协议�?
-	echo "用户许可协议: https://blog.kejilion.pro/user-license-agreement/"
+	echo -e "${gl_kjlan}娆㈣繋浣跨敤绉戞妧lion鑴氭湰宸ュ叿绠?{gl_bai}"
+	echo "棣栨浣跨敤鑴氭湰锛岃鍏堥槄璇诲苟鍚屾剰鐢ㄦ埛璁稿彲鍗忚銆?
+	echo "鐢ㄦ埛璁稿彲鍗忚: https://blog.kejilion.pro/user-license-agreement/"
 	echo -e "----------------------"
-	read -e -p "是否同意以上条款�?y/n): " user_input
+	read -e -p "鏄惁鍚屾剰浠ヤ笂鏉℃锛?y/n): " user_input
 
 
 	if [ "$user_input" = "y" ] || [ "$user_input" = "Y" ]; then
-		send_stats "许可同意"
+		send_stats "璁稿彲鍚屾剰"
 		sed -i 's/^permission_granted="false"/permission_granted="true"/' ~/kejilion.sh
 		sed -i 's/^permission_granted="false"/permission_granted="true"/' /usr/local/bin/k
 	else
-		send_stats "许可拒绝"
+		send_stats "璁稿彲鎷掔粷"
 		clear
 		exit
 	fi
@@ -173,13 +173,13 @@ ipv6_address=$(curl -s --max-time 1 https://v6.ipinfo.io/ip && echo)
 
 install() {
 	if [ $# -eq 0 ]; then
-		echo "未提供软件包参数!"
+		echo "鏈彁渚涜蒋浠跺寘鍙傛暟!"
 		return 1
 	fi
 
 	for package in "$@"; do
 		if ! command -v "$package" &>/dev/null; then
-			echo -e "${gl_kjlan}正在安装 $package...${gl_bai}"
+			echo -e "${gl_kjlan}姝ｅ湪瀹夎 $package...${gl_bai}"
 			if command -v dnf &>/dev/null; then
 				dnf -y update
 				dnf install -y epel-release
@@ -207,7 +207,7 @@ install() {
 				pkg update
 				pkg install -y "$package"
 			else
-				echo "未知的包管理�?"
+				echo "鏈煡鐨勫寘绠＄悊鍣?"
 				return 1
 			fi
 		fi
@@ -225,11 +225,11 @@ check_disk_space() {
 	local available_space_mb=$(df -m "$path" | awk 'NR==2 {print $4}')
 
 	if [ "$available_space_mb" -lt "$required_space_mb" ]; then
-		echo -e "${gl_huang}提示: ${gl_bai}磁盘空间不足�?
-		echo "当前可用空间: $((available_space_mb/1024))G"
-		echo "最小需求空�? ${required_gb}G"
-		echo "无法继续安装，请清理磁盘空间后重试�?
-		send_stats "磁盘空间不足"
+		echo -e "${gl_huang}鎻愮ず: ${gl_bai}纾佺洏绌洪棿涓嶈冻锛?
+		echo "褰撳墠鍙敤绌洪棿: $((available_space_mb/1024))G"
+		echo "鏈€灏忛渶姹傜┖闂? ${required_gb}G"
+		echo "鏃犳硶缁х画瀹夎锛岃娓呯悊纾佺洏绌洪棿鍚庨噸璇曘€?
+		send_stats "纾佺洏绌洪棿涓嶈冻"
 		break_end
 		kejilion
 	fi
@@ -249,12 +249,12 @@ install_dependency() {
 
 remove() {
 	if [ $# -eq 0 ]; then
-		echo "未提供软件包参数!"
+		echo "鏈彁渚涜蒋浠跺寘鍙傛暟!"
 		return 1
 	fi
 
 	for package in "$@"; do
-		echo -e "${gl_kjlan}正在卸载 $package...${gl_bai}"
+		echo -e "${gl_kjlan}姝ｅ湪鍗歌浇 $package...${gl_bai}"
 		if command -v dnf &>/dev/null; then
 			dnf remove -y "$package"
 		elif command -v yum &>/dev/null; then
@@ -272,14 +272,14 @@ remove() {
 		elif command -v pkg &>/dev/null; then
 			pkg delete -y "$package"
 		else
-			echo "未知的包管理�?"
+			echo "鏈煡鐨勫寘绠＄悊鍣?"
 			return 1
 		fi
 	done
 }
 
 
-# 通用 systemctl 函数，适用于各种发行版
+# 閫氱敤 systemctl 鍑芥暟锛岄€傜敤浜庡悇绉嶅彂琛岀増
 systemctl() {
 	local COMMAND="$1"
 	local SERVICE_NAME="$2"
@@ -292,43 +292,43 @@ systemctl() {
 }
 
 
-# 重启服务
+# 閲嶅惎鏈嶅姟
 restart() {
 	systemctl restart "$1"
 	if [ $? -eq 0 ]; then
-		echo "$1 服务已重启�?
+		echo "$1 鏈嶅姟宸查噸鍚€?
 	else
-		echo "错误：重�?$1 服务失败�?
+		echo "閿欒锛氶噸鍚?$1 鏈嶅姟澶辫触銆?
 	fi
 }
 
-# 启动服务
+# 鍚姩鏈嶅姟
 start() {
 	systemctl start "$1"
 	if [ $? -eq 0 ]; then
-		echo "$1 服务已启动�?
+		echo "$1 鏈嶅姟宸插惎鍔ㄣ€?
 	else
-		echo "错误：启�?$1 服务失败�?
+		echo "閿欒锛氬惎鍔?$1 鏈嶅姟澶辫触銆?
 	fi
 }
 
-# 停止服务
+# 鍋滄鏈嶅姟
 stop() {
 	systemctl stop "$1"
 	if [ $? -eq 0 ]; then
-		echo "$1 服务已停止�?
+		echo "$1 鏈嶅姟宸插仠姝€?
 	else
-		echo "错误：停�?$1 服务失败�?
+		echo "閿欒锛氬仠姝?$1 鏈嶅姟澶辫触銆?
 	fi
 }
 
-# 查看服务状�?
+# 鏌ョ湅鏈嶅姟鐘舵€?
 status() {
 	systemctl status "$1"
 	if [ $? -eq 0 ]; then
-		echo "$1 服务状态已显示�?
+		echo "$1 鏈嶅姟鐘舵€佸凡鏄剧ず銆?
 	else
-		echo "错误：无法显�?$1 服务状态�?
+		echo "閿欒锛氭棤娉曟樉绀?$1 鏈嶅姟鐘舵€併€?
 	fi
 }
 
@@ -341,14 +341,14 @@ enable() {
 	   /bin/systemctl enable "$SERVICE_NAME"
 	fi
 
-	echo "$SERVICE_NAME 已设置为开机自启�?
+	echo "$SERVICE_NAME 宸茶缃负寮€鏈鸿嚜鍚€?
 }
 
 
 
 break_end() {
-	  echo -e "${gl_lv}操作完成${gl_bai}"
-	  echo "按任意键继续..."
+	  echo -e "${gl_lv}鎿嶄綔瀹屾垚${gl_bai}"
+	  echo "鎸変换鎰忛敭缁х画..."
 	  read -n 1 -s -r -p ""
 	  echo ""
 	  clear
@@ -451,7 +451,7 @@ install_add_docker_cn
 
 
 install_add_docker() {
-	echo -e "${gl_kjlan}正在安装docker环境...${gl_bai}"
+	echo -e "${gl_kjlan}姝ｅ湪瀹夎docker鐜...${gl_bai}"
 	if command -v apt &>/dev/null || command -v yum &>/dev/null || command -v dnf &>/dev/null; then
 		linuxmirrors_install_docker
 	else
@@ -473,64 +473,64 @@ install_docker() {
 docker_ps() {
 while true; do
 	clear
-	send_stats "Docker容器管理"
-	echo "Docker容器列表"
+	send_stats "Docker瀹瑰櫒绠＄悊"
+	echo "Docker瀹瑰櫒鍒楄〃"
 	docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
 	echo ""
-	echo "容器操作"
+	echo "瀹瑰櫒鎿嶄綔"
 	echo "------------------------"
-	echo "1. 创建新的容器"
+	echo "1. 鍒涘缓鏂扮殑瀹瑰櫒"
 	echo "------------------------"
-	echo "2. 启动指定容器             6. 启动所有容�?
-	echo "3. 停止指定容器             7. 停止所有容�?
-	echo "4. 删除指定容器             8. 删除所有容�?
-	echo "5. 重启指定容器             9. 重启所有容�?
+	echo "2. 鍚姩鎸囧畾瀹瑰櫒             6. 鍚姩鎵€鏈夊鍣?
+	echo "3. 鍋滄鎸囧畾瀹瑰櫒             7. 鍋滄鎵€鏈夊鍣?
+	echo "4. 鍒犻櫎鎸囧畾瀹瑰櫒             8. 鍒犻櫎鎵€鏈夊鍣?
+	echo "5. 閲嶅惎鎸囧畾瀹瑰櫒             9. 閲嶅惎鎵€鏈夊鍣?
 	echo "------------------------"
-	echo "11. 进入指定容器           12. 查看容器日志"
-	echo "13. 查看容器网络           14. 查看容器占用"
+	echo "11. 杩涘叆鎸囧畾瀹瑰櫒           12. 鏌ョ湅瀹瑰櫒鏃ュ織"
+	echo "13. 鏌ョ湅瀹瑰櫒缃戠粶           14. 鏌ョ湅瀹瑰櫒鍗犵敤"
 	echo "------------------------"
-	echo "15. 开启容器端口访�?      16. 关闭容器端口访问"
+	echo "15. 寮€鍚鍣ㄧ鍙ｈ闂?      16. 鍏抽棴瀹瑰櫒绔彛璁块棶"
 	echo "------------------------"
-	echo "0. 返回上一级选单"
+	echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 	echo "------------------------"
-	read -e -p "请输入你的选择: " sub_choice
+	read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 	case $sub_choice in
 		1)
-			send_stats "新建容器"
-			read -e -p "请输入创建命�? " dockername
+			send_stats "鏂板缓瀹瑰櫒"
+			read -e -p "璇疯緭鍏ュ垱寤哄懡浠? " dockername
 			$dockername
 			;;
 		2)
-			send_stats "启动指定容器"
-			read -e -p "请输入容器名（多个容器名请用空格分隔�? " dockername
+			send_stats "鍚姩鎸囧畾瀹瑰櫒"
+			read -e -p "璇疯緭鍏ュ鍣ㄥ悕锛堝涓鍣ㄥ悕璇风敤绌烘牸鍒嗛殧锛? " dockername
 			docker start $dockername
 			;;
 		3)
-			send_stats "停止指定容器"
-			read -e -p "请输入容器名（多个容器名请用空格分隔�? " dockername
+			send_stats "鍋滄鎸囧畾瀹瑰櫒"
+			read -e -p "璇疯緭鍏ュ鍣ㄥ悕锛堝涓鍣ㄥ悕璇风敤绌烘牸鍒嗛殧锛? " dockername
 			docker stop $dockername
 			;;
 		4)
-			send_stats "删除指定容器"
-			read -e -p "请输入容器名（多个容器名请用空格分隔�? " dockername
+			send_stats "鍒犻櫎鎸囧畾瀹瑰櫒"
+			read -e -p "璇疯緭鍏ュ鍣ㄥ悕锛堝涓鍣ㄥ悕璇风敤绌烘牸鍒嗛殧锛? " dockername
 			docker rm -f $dockername
 			;;
 		5)
-			send_stats "重启指定容器"
-			read -e -p "请输入容器名（多个容器名请用空格分隔�? " dockername
+			send_stats "閲嶅惎鎸囧畾瀹瑰櫒"
+			read -e -p "璇疯緭鍏ュ鍣ㄥ悕锛堝涓鍣ㄥ悕璇风敤绌烘牸鍒嗛殧锛? " dockername
 			docker restart $dockername
 			;;
 		6)
-			send_stats "启动所有容�?
+			send_stats "鍚姩鎵€鏈夊鍣?
 			docker start $(docker ps -a -q)
 			;;
 		7)
-			send_stats "停止所有容�?
+			send_stats "鍋滄鎵€鏈夊鍣?
 			docker stop $(docker ps -q)
 			;;
 		8)
-			send_stats "删除所有容�?
-			read -e -p "$(echo -e "${gl_hong}注意: ${gl_bai}确定删除所有容器吗�?Y/N): ")" choice
+			send_stats "鍒犻櫎鎵€鏈夊鍣?
+			read -e -p "$(echo -e "${gl_hong}娉ㄦ剰: ${gl_bai}纭畾鍒犻櫎鎵€鏈夊鍣ㄥ悧锛?Y/N): ")" choice
 			case "$choice" in
 			  [Yy])
 				docker rm -f $(docker ps -a -q)
@@ -538,32 +538,32 @@ while true; do
 			  [Nn])
 				;;
 			  *)
-				echo "无效的选择，请输入 Y �?N�?
+				echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 				;;
 			esac
 			;;
 		9)
-			send_stats "重启所有容�?
+			send_stats "閲嶅惎鎵€鏈夊鍣?
 			docker restart $(docker ps -q)
 			;;
 		11)
-			send_stats "进入容器"
-			read -e -p "请输入容器名: " dockername
+			send_stats "杩涘叆瀹瑰櫒"
+			read -e -p "璇疯緭鍏ュ鍣ㄥ悕: " dockername
 			docker exec -it $dockername /bin/sh
 			break_end
 			;;
 		12)
-			send_stats "查看容器日志"
-			read -e -p "请输入容器名: " dockername
+			send_stats "鏌ョ湅瀹瑰櫒鏃ュ織"
+			read -e -p "璇疯緭鍏ュ鍣ㄥ悕: " dockername
 			docker logs $dockername
 			break_end
 			;;
 		13)
-			send_stats "查看容器网络"
+			send_stats "鏌ョ湅瀹瑰櫒缃戠粶"
 			echo ""
 			container_ids=$(docker ps -q)
 			echo "------------------------------------------------------------"
-			printf "%-25s %-25s %-25s\n" "容器名称" "网络名称" "IP地址"
+			printf "%-25s %-25s %-25s\n" "瀹瑰櫒鍚嶇О" "缃戠粶鍚嶇О" "IP鍦板潃"
 			for container_id in $container_ids; do
 				local container_info=$(docker inspect --format '{{ .Name }}{{ range $network, $config := .NetworkSettings.Networks }} {{ $network }} {{ $config.IPAddress }}{{ end }}' "$container_id")
 				local container_name=$(echo "$container_info" | awk '{print $1}')
@@ -577,14 +577,14 @@ while true; do
 			break_end
 			;;
 		14)
-			send_stats "查看容器占用"
+			send_stats "鏌ョ湅瀹瑰櫒鍗犵敤"
 			docker stats --no-stream
 			break_end
 			;;
 
 		15)
-			send_stats "允许容器端口访问"
-			read -e -p "请输入容器名: " docker_name
+			send_stats "鍏佽瀹瑰櫒绔彛璁块棶"
+			read -e -p "璇疯緭鍏ュ鍣ㄥ悕: " docker_name
 			ip_address
 			clear_container_rules "$docker_name" "$ipv4_address"
 			local docker_port=$(docker port $docker_name | awk -F'[:]' '/->/ {print $NF}' | uniq)
@@ -593,8 +593,8 @@ while true; do
 			;;
 
 		16)
-			send_stats "阻止容器端口访问"
-			read -e -p "请输入容器名: " docker_name
+			send_stats "闃绘瀹瑰櫒绔彛璁块棶"
+			read -e -p "璇疯緭鍏ュ鍣ㄥ悕: " docker_name
 			ip_address
 			block_container_port "$docker_name" "$ipv4_address"
 			local docker_port=$(docker port $docker_name | awk -F'[:]' '/->/ {print $NF}' | uniq)
@@ -603,7 +603,7 @@ while true; do
 			;;
 
 		*)
-			break  # 跳出循环，退出菜�?
+			break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 			;;
 	esac
 done
@@ -613,45 +613,45 @@ done
 docker_image() {
 while true; do
 	clear
-	send_stats "Docker镜像管理"
-	echo "Docker镜像列表"
+	send_stats "Docker闀滃儚绠＄悊"
+	echo "Docker闀滃儚鍒楄〃"
 	docker image ls
 	echo ""
-	echo "镜像操作"
+	echo "闀滃儚鎿嶄綔"
 	echo "------------------------"
-	echo "1. 获取指定镜像             3. 删除指定镜像"
-	echo "2. 更新指定镜像             4. 删除所有镜�?
+	echo "1. 鑾峰彇鎸囧畾闀滃儚             3. 鍒犻櫎鎸囧畾闀滃儚"
+	echo "2. 鏇存柊鎸囧畾闀滃儚             4. 鍒犻櫎鎵€鏈夐暅鍍?
 	echo "------------------------"
-	echo "0. 返回上一级选单"
+	echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 	echo "------------------------"
-	read -e -p "请输入你的选择: " sub_choice
+	read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 	case $sub_choice in
 		1)
-			send_stats "拉取镜像"
-			read -e -p "请输入镜像名（多个镜像名请用空格分隔�? " imagenames
+			send_stats "鎷夊彇闀滃儚"
+			read -e -p "璇疯緭鍏ラ暅鍍忓悕锛堝涓暅鍍忓悕璇风敤绌烘牸鍒嗛殧锛? " imagenames
 			for name in $imagenames; do
-				echo -e "${gl_kjlan}正在获取镜像: $name${gl_bai}"
+				echo -e "${gl_kjlan}姝ｅ湪鑾峰彇闀滃儚: $name${gl_bai}"
 				docker pull $name
 			done
 			;;
 		2)
-			send_stats "更新镜像"
-			read -e -p "请输入镜像名（多个镜像名请用空格分隔�? " imagenames
+			send_stats "鏇存柊闀滃儚"
+			read -e -p "璇疯緭鍏ラ暅鍍忓悕锛堝涓暅鍍忓悕璇风敤绌烘牸鍒嗛殧锛? " imagenames
 			for name in $imagenames; do
-				echo -e "${gl_kjlan}正在更新镜像: $name${gl_bai}"
+				echo -e "${gl_kjlan}姝ｅ湪鏇存柊闀滃儚: $name${gl_bai}"
 				docker pull $name
 			done
 			;;
 		3)
-			send_stats "删除镜像"
-			read -e -p "请输入镜像名（多个镜像名请用空格分隔�? " imagenames
+			send_stats "鍒犻櫎闀滃儚"
+			read -e -p "璇疯緭鍏ラ暅鍍忓悕锛堝涓暅鍍忓悕璇风敤绌烘牸鍒嗛殧锛? " imagenames
 			for name in $imagenames; do
 				docker rmi -f $name
 			done
 			;;
 		4)
-			send_stats "删除所有镜�?
-			read -e -p "$(echo -e "${gl_hong}注意: ${gl_bai}确定删除所有镜像吗�?Y/N): ")" choice
+			send_stats "鍒犻櫎鎵€鏈夐暅鍍?
+			read -e -p "$(echo -e "${gl_hong}娉ㄦ剰: ${gl_bai}纭畾鍒犻櫎鎵€鏈夐暅鍍忓悧锛?Y/N): ")" choice
 			case "$choice" in
 			  [Yy])
 				docker rmi -f $(docker images -q)
@@ -659,12 +659,12 @@ while true; do
 			  [Nn])
 				;;
 			  *)
-				echo "无效的选择，请输入 Y �?N�?
+				echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 				;;
 			esac
 			;;
 		*)
-			break  # 跳出循环，退出菜�?
+			break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 			;;
 	esac
 done
@@ -727,16 +727,16 @@ install_crontab() {
 				service cron start
 				;;
 			*)
-				echo "不支持的发行�? $ID"
+				echo "涓嶆敮鎸佺殑鍙戣鐗? $ID"
 				return
 				;;
 		esac
 	else
-		echo "无法确定操作系统�?
+		echo "鏃犳硶纭畾鎿嶄綔绯荤粺銆?
 		return
 	fi
 
-	echo -e "${gl_lv}crontab 已安装且 cron 服务正在运行�?{gl_bai}"
+	echo -e "${gl_lv}crontab 宸插畨瑁呬笖 cron 鏈嶅姟姝ｅ湪杩愯銆?{gl_bai}"
 }
 
 
@@ -748,27 +748,27 @@ docker_ipv6_on() {
 	local CONFIG_FILE="/etc/docker/daemon.json"
 	local REQUIRED_IPV6_CONFIG='{"ipv6": true, "fixed-cidr-v6": "2001:db8:1::/64"}'
 
-	# 检查配置文件是否存在，如果不存在则创建文件并写入默认设�?
+	# 妫€鏌ラ厤缃枃浠舵槸鍚﹀瓨鍦紝濡傛灉涓嶅瓨鍦ㄥ垯鍒涘缓鏂囦欢骞跺啓鍏ラ粯璁よ缃?
 	if [ ! -f "$CONFIG_FILE" ]; then
 		echo "$REQUIRED_IPV6_CONFIG" | jq . > "$CONFIG_FILE"
 		restart docker
 	else
-		# 使用jq处理配置文件的更�?
+		# 浣跨敤jq澶勭悊閰嶇疆鏂囦欢鐨勬洿鏂?
 		local ORIGINAL_CONFIG=$(<"$CONFIG_FILE")
 
-		# 检查当前配置是否已经有 ipv6 设置
+		# 妫€鏌ュ綋鍓嶉厤缃槸鍚﹀凡缁忔湁 ipv6 璁剧疆
 		local CURRENT_IPV6=$(echo "$ORIGINAL_CONFIG" | jq '.ipv6 // false')
 
-		# 更新配置，开�?IPv6
+		# 鏇存柊閰嶇疆锛屽紑鍚?IPv6
 		if [[ "$CURRENT_IPV6" == "false" ]]; then
 			UPDATED_CONFIG=$(echo "$ORIGINAL_CONFIG" | jq '. + {ipv6: true, "fixed-cidr-v6": "2001:db8:1::/64"}')
 		else
 			UPDATED_CONFIG=$(echo "$ORIGINAL_CONFIG" | jq '. + {"fixed-cidr-v6": "2001:db8:1::/64"}')
 		fi
 
-		# 对比原始配置与新配置
+		# 瀵规瘮鍘熷閰嶇疆涓庢柊閰嶇疆
 		if [[ "$ORIGINAL_CONFIG" == "$UPDATED_CONFIG" ]]; then
-			echo -e "${gl_huang}当前已开启ipv6访问${gl_bai}"
+			echo -e "${gl_huang}褰撳墠宸插紑鍚痠pv6璁块棶${gl_bai}"
 		else
 			echo "$UPDATED_CONFIG" | jq . > "$CONFIG_FILE"
 			restart docker
@@ -783,28 +783,28 @@ docker_ipv6_off() {
 
 	local CONFIG_FILE="/etc/docker/daemon.json"
 
-	# 检查配置文件是否存�?
+	# 妫€鏌ラ厤缃枃浠舵槸鍚﹀瓨鍦?
 	if [ ! -f "$CONFIG_FILE" ]; then
-		echo -e "${gl_hong}配置文件不存�?{gl_bai}"
+		echo -e "${gl_hong}閰嶇疆鏂囦欢涓嶅瓨鍦?{gl_bai}"
 		return
 	fi
 
-	# 读取当前配置
+	# 璇诲彇褰撳墠閰嶇疆
 	local ORIGINAL_CONFIG=$(<"$CONFIG_FILE")
 
-	# 使用jq处理配置文件的更�?
+	# 浣跨敤jq澶勭悊閰嶇疆鏂囦欢鐨勬洿鏂?
 	local UPDATED_CONFIG=$(echo "$ORIGINAL_CONFIG" | jq 'del(.["fixed-cidr-v6"]) | .ipv6 = false')
 
-	# 检查当前的 ipv6 状�?
+	# 妫€鏌ュ綋鍓嶇殑 ipv6 鐘舵€?
 	local CURRENT_IPV6=$(echo "$ORIGINAL_CONFIG" | jq -r '.ipv6 // false')
 
-	# 对比原始配置与新配置
+	# 瀵规瘮鍘熷閰嶇疆涓庢柊閰嶇疆
 	if [[ "$CURRENT_IPV6" == "false" ]]; then
-		echo -e "${gl_huang}当前已关闭ipv6访问${gl_bai}"
+		echo -e "${gl_huang}褰撳墠宸插叧闂璱pv6璁块棶${gl_bai}"
 	else
 		echo "$UPDATED_CONFIG" | jq . > "$CONFIG_FILE"
 		restart docker
-		echo -e "${gl_huang}已成功关闭ipv6访问${gl_bai}"
+		echo -e "${gl_huang}宸叉垚鍔熷叧闂璱pv6璁块棶${gl_bai}"
 	fi
 }
 
@@ -841,119 +841,119 @@ iptables_open() {
 
 
 open_port() {
-	local ports=($@)  # 将传入的参数转换为数�?
+	local ports=($@)  # 灏嗕紶鍏ョ殑鍙傛暟杞崲涓烘暟缁?
 	if [ ${#ports[@]} -eq 0 ]; then
-		echo "请提供至少一个端口号"
+		echo "璇锋彁渚涜嚦灏戜竴涓鍙ｅ彿"
 		return 1
 	fi
 
 	install iptables
 
 	for port in "${ports[@]}"; do
-		# 删除已存在的关闭规则
+		# 鍒犻櫎宸插瓨鍦ㄧ殑鍏抽棴瑙勫垯
 		iptables -D INPUT -p tcp --dport $port -j DROP 2>/dev/null
 		iptables -D INPUT -p udp --dport $port -j DROP 2>/dev/null
 
-		# 添加打开规则
+		# 娣诲姞鎵撳紑瑙勫垯
 		if ! iptables -C INPUT -p tcp --dport $port -j ACCEPT 2>/dev/null; then
 			iptables -I INPUT 1 -p tcp --dport $port -j ACCEPT
 		fi
 
 		if ! iptables -C INPUT -p udp --dport $port -j ACCEPT 2>/dev/null; then
 			iptables -I INPUT 1 -p udp --dport $port -j ACCEPT
-			echo "已打开端口 $port"
+			echo "宸叉墦寮€绔彛 $port"
 		fi
 	done
 
 	save_iptables_rules
-	send_stats "已打开端口"
+	send_stats "宸叉墦寮€绔彛"
 }
 
 
 close_port() {
-	local ports=($@)  # 将传入的参数转换为数�?
+	local ports=($@)  # 灏嗕紶鍏ョ殑鍙傛暟杞崲涓烘暟缁?
 	if [ ${#ports[@]} -eq 0 ]; then
-		echo "请提供至少一个端口号"
+		echo "璇锋彁渚涜嚦灏戜竴涓鍙ｅ彿"
 		return 1
 	fi
 
 	install iptables
 
 	for port in "${ports[@]}"; do
-		# 删除已存在的打开规则
+		# 鍒犻櫎宸插瓨鍦ㄧ殑鎵撳紑瑙勫垯
 		iptables -D INPUT -p tcp --dport $port -j ACCEPT 2>/dev/null
 		iptables -D INPUT -p udp --dport $port -j ACCEPT 2>/dev/null
 
-		# 添加关闭规则
+		# 娣诲姞鍏抽棴瑙勫垯
 		if ! iptables -C INPUT -p tcp --dport $port -j DROP 2>/dev/null; then
 			iptables -I INPUT 1 -p tcp --dport $port -j DROP
 		fi
 
 		if ! iptables -C INPUT -p udp --dport $port -j DROP 2>/dev/null; then
 			iptables -I INPUT 1 -p udp --dport $port -j DROP
-			echo "已关闭端�?$port"
+			echo "宸插叧闂鍙?$port"
 		fi
 	done
 
-	# 删除已存在的规则（如果有�?
+	# 鍒犻櫎宸插瓨鍦ㄧ殑瑙勫垯锛堝鏋滄湁锛?
 	iptables -D INPUT -i lo -j ACCEPT 2>/dev/null
 	iptables -D FORWARD -i lo -j ACCEPT 2>/dev/null
 
-	# 插入新规则到第一�?
+	# 鎻掑叆鏂拌鍒欏埌绗竴鏉?
 	iptables -I INPUT 1 -i lo -j ACCEPT
 	iptables -I FORWARD 1 -i lo -j ACCEPT
 
 	save_iptables_rules
-	send_stats "已关闭端�?
+	send_stats "宸插叧闂鍙?
 }
 
 
 allow_ip() {
-	local ips=($@)  # 将传入的参数转换为数�?
+	local ips=($@)  # 灏嗕紶鍏ョ殑鍙傛暟杞崲涓烘暟缁?
 	if [ ${#ips[@]} -eq 0 ]; then
-		echo "请提供至少一个IP地址或IP�?
+		echo "璇锋彁渚涜嚦灏戜竴涓狪P鍦板潃鎴朓P娈?
 		return 1
 	fi
 
 	install iptables
 
 	for ip in "${ips[@]}"; do
-		# 删除已存在的阻止规则
+		# 鍒犻櫎宸插瓨鍦ㄧ殑闃绘瑙勫垯
 		iptables -D INPUT -s $ip -j DROP 2>/dev/null
 
-		# 添加允许规则
+		# 娣诲姞鍏佽瑙勫垯
 		if ! iptables -C INPUT -s $ip -j ACCEPT 2>/dev/null; then
 			iptables -I INPUT 1 -s $ip -j ACCEPT
-			echo "已放行IP $ip"
+			echo "宸叉斁琛孖P $ip"
 		fi
 	done
 
 	save_iptables_rules
-	send_stats "已放行IP"
+	send_stats "宸叉斁琛孖P"
 }
 
 block_ip() {
-	local ips=($@)  # 将传入的参数转换为数�?
+	local ips=($@)  # 灏嗕紶鍏ョ殑鍙傛暟杞崲涓烘暟缁?
 	if [ ${#ips[@]} -eq 0 ]; then
-		echo "请提供至少一个IP地址或IP�?
+		echo "璇锋彁渚涜嚦灏戜竴涓狪P鍦板潃鎴朓P娈?
 		return 1
 	fi
 
 	install iptables
 
 	for ip in "${ips[@]}"; do
-		# 删除已存在的允许规则
+		# 鍒犻櫎宸插瓨鍦ㄧ殑鍏佽瑙勫垯
 		iptables -D INPUT -s $ip -j ACCEPT 2>/dev/null
 
-		# 添加阻止规则
+		# 娣诲姞闃绘瑙勫垯
 		if ! iptables -C INPUT -s $ip -j DROP 2>/dev/null; then
 			iptables -I INPUT 1 -s $ip -j DROP
-			echo "已阻止IP $ip"
+			echo "宸查樆姝P $ip"
 		fi
 	done
 
 	save_iptables_rules
-	send_stats "已阻止IP"
+	send_stats "宸查樆姝P"
 }
 
 
@@ -963,7 +963,7 @@ block_ip() {
 
 
 enable_ddos_defense() {
-	# 开启防�?DDoS
+	# 寮€鍚槻寰?DDoS
 	iptables -A DOCKER-USER -p tcp --syn -m limit --limit 500/s --limit-burst 100 -j ACCEPT
 	iptables -A DOCKER-USER -p tcp --syn -j DROP
 	iptables -A DOCKER-USER -p udp -m limit --limit 3000/s -j ACCEPT
@@ -973,12 +973,12 @@ enable_ddos_defense() {
 	iptables -A INPUT -p udp -m limit --limit 3000/s -j ACCEPT
 	iptables -A INPUT -p udp -j DROP
 
-	send_stats "开启DDoS防御"
+	send_stats "寮€鍚疍DoS闃插尽"
 }
 
-# 关闭DDoS防御
+# 鍏抽棴DDoS闃插尽
 disable_ddos_defense() {
-	# 关闭防御 DDoS
+	# 鍏抽棴闃插尽 DDoS
 	iptables -D DOCKER-USER -p tcp --syn -m limit --limit 500/s --limit-burst 100 -j ACCEPT 2>/dev/null
 	iptables -D DOCKER-USER -p tcp --syn -j DROP 2>/dev/null
 	iptables -D DOCKER-USER -p udp -m limit --limit 3000/s -j ACCEPT 2>/dev/null
@@ -988,17 +988,17 @@ disable_ddos_defense() {
 	iptables -D INPUT -p udp -m limit --limit 3000/s -j ACCEPT 2>/dev/null
 	iptables -D INPUT -p udp -j DROP 2>/dev/null
 
-	send_stats "关闭DDoS防御"
+	send_stats "鍏抽棴DDoS闃插尽"
 }
 
 
 
 
 
-# 管理国家IP规则的函�?
+# 绠＄悊鍥藉IP瑙勫垯鐨勫嚱鏁?
 manage_country_rules() {
 	local action="$1"
-	shift  # 去掉第一个参数，剩下的全是国家代�?
+	shift  # 鍘绘帀绗竴涓弬鏁帮紝鍓╀笅鐨勫叏鏄浗瀹朵唬鐮?
 
 	install ipset
 
@@ -1013,7 +1013,7 @@ manage_country_rules() {
 				fi
 
 				if ! wget -q "$download_url" -O "${country_code,,}.zone"; then
-					echo "错误：下�?$country_code �?IP 区域文件失败"
+					echo "閿欒锛氫笅杞?$country_code 鐨?IP 鍖哄煙鏂囦欢澶辫触"
 					continue
 				fi
 
@@ -1023,7 +1023,7 @@ manage_country_rules() {
 
 				iptables -I INPUT -m set --match-set "$ipset_name" src -j DROP
 
-				echo "已成功阻�?$country_code �?IP 地址"
+				echo "宸叉垚鍔熼樆姝?$country_code 鐨?IP 鍦板潃"
 				rm "${country_code,,}.zone"
 				;;
 
@@ -1033,7 +1033,7 @@ manage_country_rules() {
 				fi
 
 				if ! wget -q "$download_url" -O "${country_code,,}.zone"; then
-					echo "错误：下�?$country_code �?IP 区域文件失败"
+					echo "閿欒锛氫笅杞?$country_code 鐨?IP 鍖哄煙鏂囦欢澶辫触"
 					continue
 				fi
 
@@ -1046,7 +1046,7 @@ manage_country_rules() {
 				iptables -P INPUT DROP
 				iptables -A INPUT -m set --match-set "$ipset_name" src -j ACCEPT
 
-				echo "已成功允�?$country_code �?IP 地址"
+				echo "宸叉垚鍔熷厑璁?$country_code 鐨?IP 鍦板潃"
 				rm "${country_code,,}.zone"
 				;;
 
@@ -1057,11 +1057,11 @@ manage_country_rules() {
 					ipset destroy "$ipset_name"
 				fi
 
-				echo "已成功解�?$country_code �?IP 地址限制"
+				echo "宸叉垚鍔熻В闄?$country_code 鐨?IP 鍦板潃闄愬埗"
 				;;
 
 			*)
-				echo "用法: manage_country_rules {block|allow|unblock} <country_code...>"
+				echo "鐢ㄦ硶: manage_country_rules {block|allow|unblock} <country_code...>"
 				;;
 		esac
 	done
@@ -1082,42 +1082,42 @@ iptables_panel() {
   save_iptables_rules
   while true; do
 		  clear
-		  echo "高级防火墙管�?
-		  send_stats "高级防火墙管�?
+		  echo "楂樼骇闃茬伀澧欑鐞?
+		  send_stats "楂樼骇闃茬伀澧欑鐞?
 		  echo "------------------------"
 		  iptables -L INPUT
 		  echo ""
-		  echo "防火墙管�?
+		  echo "闃茬伀澧欑鐞?
 		  echo "------------------------"
-		  echo "1.  开放指定端�?                2.  关闭指定端口"
-		  echo "3.  开放所有端�?                4.  关闭所有端�?
+		  echo "1.  寮€鏀炬寚瀹氱鍙?                2.  鍏抽棴鎸囧畾绔彛"
+		  echo "3.  寮€鏀炬墍鏈夌鍙?                4.  鍏抽棴鎵€鏈夌鍙?
 		  echo "------------------------"
-		  echo "5.  IP白名�?                 	 6.  IP黑名�?
-		  echo "7.  清除指定IP"
+		  echo "5.  IP鐧藉悕鍗?                 	 6.  IP榛戝悕鍗?
+		  echo "7.  娓呴櫎鎸囧畾IP"
 		  echo "------------------------"
-		  echo "11. 允许PING                  	 12. 禁止PING"
+		  echo "11. 鍏佽PING                  	 12. 绂佹PING"
 		  echo "------------------------"
-		  echo "13. 启动DDOS防御                 14. 关闭DDOS防御"
+		  echo "13. 鍚姩DDOS闃插尽                 14. 鍏抽棴DDOS闃插尽"
 		  echo "------------------------"
-		  echo "15. 阻止指定国家IP               16. 仅允许指定国家IP"
-		  echo "17. 解除指定国家IP限制"
+		  echo "15. 闃绘鎸囧畾鍥藉IP               16. 浠呭厑璁告寚瀹氬浗瀹禝P"
+		  echo "17. 瑙ｉ櫎鎸囧畾鍥藉IP闄愬埗"
 		  echo "------------------------"
-		  echo "0. 返回上一级选单"
+		  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		  echo "------------------------"
-		  read -e -p "请输入你的选择: " sub_choice
+		  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 		  case $sub_choice in
 			  1)
-				  read -e -p "请输入开放的端口�? " o_port
+				  read -e -p "璇疯緭鍏ュ紑鏀剧殑绔彛鍙? " o_port
 				  open_port $o_port
-				  send_stats "开放指定端�?
+				  send_stats "寮€鏀炬寚瀹氱鍙?
 				  ;;
 			  2)
-				  read -e -p "请输入关闭的端口�? " c_port
+				  read -e -p "璇疯緭鍏ュ叧闂殑绔彛鍙? " c_port
 				  close_port $c_port
-				  send_stats "关闭指定端口"
+				  send_stats "鍏抽棴鎸囧畾绔彛"
 				  ;;
 			  3)
-				  # 开放所有端�?
+				  # 寮€鏀炬墍鏈夌鍙?
 				  current_port=$(grep -E '^ *Port [0-9]+' /etc/ssh/sshd_config | awk '{print $2}')
 				  iptables -F
 				  iptables -X
@@ -1130,10 +1130,10 @@ iptables_panel() {
 				  iptables -A FORWARD -i lo -j ACCEPT
 				  iptables -A INPUT -p tcp --dport $current_port -j ACCEPT
 				  iptables-save > /etc/iptables/rules.v4
-				  send_stats "开放所有端�?
+				  send_stats "寮€鏀炬墍鏈夌鍙?
 				  ;;
 			  4)
-				  # 关闭所有端�?
+				  # 鍏抽棴鎵€鏈夌鍙?
 				  current_port=$(grep -E '^ *Port [0-9]+' /etc/ssh/sshd_config | awk '{print $2}')
 				  iptables -F
 				  iptables -X
@@ -1146,40 +1146,40 @@ iptables_panel() {
 				  iptables -A FORWARD -i lo -j ACCEPT
 				  iptables -A INPUT -p tcp --dport $current_port -j ACCEPT
 				  iptables-save > /etc/iptables/rules.v4
-				  send_stats "关闭所有端�?
+				  send_stats "鍏抽棴鎵€鏈夌鍙?
 				  ;;
 
 			  5)
-				  # IP 白名�?
-				  read -e -p "请输入放行的IP或IP�? " o_ip
+				  # IP 鐧藉悕鍗?
+				  read -e -p "璇疯緭鍏ユ斁琛岀殑IP鎴朓P娈? " o_ip
 				  allow_ip $o_ip
 				  ;;
 			  6)
-				  # IP 黑名�?
-				  read -e -p "请输入封锁的IP或IP�? " c_ip
+				  # IP 榛戝悕鍗?
+				  read -e -p "璇疯緭鍏ュ皝閿佺殑IP鎴朓P娈? " c_ip
 				  block_ip $c_ip
 				  ;;
 			  7)
-				  # 清除指定 IP
-				  read -e -p "请输入清除的IP: " d_ip
+				  # 娓呴櫎鎸囧畾 IP
+				  read -e -p "璇疯緭鍏ユ竻闄ょ殑IP: " d_ip
 				  iptables -D INPUT -s $d_ip -j ACCEPT 2>/dev/null
 				  iptables -D INPUT -s $d_ip -j DROP 2>/dev/null
 				  iptables-save > /etc/iptables/rules.v4
-				  send_stats "清除指定IP"
+				  send_stats "娓呴櫎鎸囧畾IP"
 				  ;;
 			  11)
-				  # 允许 PING
+				  # 鍏佽 PING
 				  iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 				  iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
 				  iptables-save > /etc/iptables/rules.v4
-				  send_stats "允许PING"
+				  send_stats "鍏佽PING"
 				  ;;
 			  12)
-				  # 禁用 PING
+				  # 绂佺敤 PING
 				  iptables -D INPUT -p icmp --icmp-type echo-request -j ACCEPT 2>/dev/null
 				  iptables -D OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT 2>/dev/null
 				  iptables-save > /etc/iptables/rules.v4
-				  send_stats "禁用PING"
+				  send_stats "绂佺敤PING"
 				  ;;
 			  13)
 				  enable_ddos_defense
@@ -1189,24 +1189,24 @@ iptables_panel() {
 				  ;;
 
 			  15)
-				  read -e -p "请输入阻止的国家代码（多个国家代码可用空格隔开�?CN US JP�? " country_code
+				  read -e -p "璇疯緭鍏ラ樆姝㈢殑鍥藉浠ｇ爜锛堝涓浗瀹朵唬鐮佸彲鐢ㄧ┖鏍奸殧寮€濡?CN US JP锛? " country_code
 				  manage_country_rules block $country_code
-				  send_stats "允许国家 $country_code 的IP"
+				  send_stats "鍏佽鍥藉 $country_code 鐨処P"
 				  ;;
 			  16)
-				  read -e -p "请输入允许的国家代码（多个国家代码可用空格隔开�?CN US JP�? " country_code
+				  read -e -p "璇疯緭鍏ュ厑璁哥殑鍥藉浠ｇ爜锛堝涓浗瀹朵唬鐮佸彲鐢ㄧ┖鏍奸殧寮€濡?CN US JP锛? " country_code
 				  manage_country_rules allow $country_code
-				  send_stats "阻止国家 $country_code 的IP"
+				  send_stats "闃绘鍥藉 $country_code 鐨処P"
 				  ;;
 
 			  17)
-				  read -e -p "请输入清除的国家代码（多个国家代码可用空格隔开�?CN US JP�? " country_code
+				  read -e -p "璇疯緭鍏ユ竻闄ょ殑鍥藉浠ｇ爜锛堝涓浗瀹朵唬鐮佸彲鐢ㄧ┖鏍奸殧寮€濡?CN US JP锛? " country_code
 				  manage_country_rules unblock $country_code
-				  send_stats "清除国家 $country_code 的IP"
+				  send_stats "娓呴櫎鍥藉 $country_code 鐨処P"
 				  ;;
 
 			  *)
-				  break  # 跳出循环，退出菜�?
+				  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 				  ;;
 		  esac
   done
@@ -1219,25 +1219,25 @@ iptables_panel() {
 
 
 add_swap() {
-	local new_swap=$1  # 获取传入的参�?
+	local new_swap=$1  # 鑾峰彇浼犲叆鐨勫弬鏁?
 
-	# 获取当前系统中所有的 swap 分区
+	# 鑾峰彇褰撳墠绯荤粺涓墍鏈夌殑 swap 鍒嗗尯
 	local swap_partitions=$(grep -E '^/dev/' /proc/swaps | awk '{print $1}')
 
-	# 遍历并删除所有的 swap 分区
+	# 閬嶅巻骞跺垹闄ゆ墍鏈夌殑 swap 鍒嗗尯
 	for partition in $swap_partitions; do
 		swapoff "$partition"
 		wipefs -a "$partition"
 		mkswap -f "$partition"
 	done
 
-	# 确保 /swapfile 不再被使�?
+	# 纭繚 /swapfile 涓嶅啀琚娇鐢?
 	swapoff /swapfile
 
-	# 删除旧的 /swapfile
+	# 鍒犻櫎鏃х殑 /swapfile
 	rm -f /swapfile
 
-	# 创建新的 swap 分区
+	# 鍒涘缓鏂扮殑 swap 鍒嗗尯
 	fallocate -l ${new_swap}M /swapfile
 	chmod 600 /swapfile
 	mkswap /swapfile
@@ -1252,7 +1252,7 @@ add_swap() {
 		rc-update add local
 	fi
 
-	echo -e "虚拟内存大小已调整为${gl_huang}${new_swap}${gl_bai}M"
+	echo -e "铏氭嫙鍐呭瓨澶у皬宸茶皟鏁翠负${gl_huang}${new_swap}${gl_bai}M"
 }
 
 
@@ -1262,7 +1262,7 @@ check_swap() {
 
 local swap_total=$(free -m | awk 'NR==3{print $2}')
 
-# 判断是否需要创建虚拟内�?
+# 鍒ゆ柇鏄惁闇€瑕佸垱寤鸿櫄鎷熷唴瀛?
 [ "$swap_total" -gt 0 ] || add_swap 1024
 
 
@@ -1278,21 +1278,21 @@ local swap_total=$(free -m | awk 'NR==3{print $2}')
 
 ldnmp_v() {
 
-	  # 获取nginx版本
+	  # 鑾峰彇nginx鐗堟湰
 	  local nginx_version=$(docker exec nginx nginx -v 2>&1)
 	  local nginx_version=$(echo "$nginx_version" | grep -oP "nginx/\K[0-9]+\.[0-9]+\.[0-9]+")
 	  echo -n -e "nginx : ${gl_huang}v$nginx_version${gl_bai}"
 
-	  # 获取mysql版本
+	  # 鑾峰彇mysql鐗堟湰
 	  local dbrootpasswd=$(grep -oP 'MYSQL_ROOT_PASSWORD:\s*\K.*' /home/web/docker-compose.yml | tr -d '[:space:]')
 	  local mysql_version=$(docker exec mysql mysql -u root -p"$dbrootpasswd" -e "SELECT VERSION();" 2>/dev/null | tail -n 1)
 	  echo -n -e "            mysql : ${gl_huang}v$mysql_version${gl_bai}"
 
-	  # 获取php版本
+	  # 鑾峰彇php鐗堟湰
 	  local php_version=$(docker exec php php -v 2>/dev/null | grep -oP "PHP \K[0-9]+\.[0-9]+\.[0-9]+")
 	  echo -n -e "            php : ${gl_huang}v$php_version${gl_bai}"
 
-	  # 获取redis版本
+	  # 鑾峰彇redis鐗堟湰
 	  local redis_version=$(docker exec redis redis-server -v 2>&1 | grep -oP "v=+\K[0-9]+\.[0-9]+")
 	  echo -e "            redis : ${gl_huang}v$redis_version${gl_bai}"
 
@@ -1305,18 +1305,18 @@ ldnmp_v() {
 
 install_ldnmp_conf() {
 
-  # 创建必要的目录和文件
+  # 鍒涘缓蹇呰鐨勭洰褰曞拰鏂囦欢
   cd /home && mkdir -p web/html web/mysql web/certs web/conf.d web/stream.d web/redis web/log/nginx web/letsencrypt && touch web/docker-compose.yml
   wget -O /home/web/nginx.conf ${gh_proxy}raw.githubusercontent.com/kejilion/nginx/main/nginx10.conf
   wget -O /home/web/conf.d/default.conf ${gh_proxy}raw.githubusercontent.com/kejilion/nginx/main/default10.conf
 
   default_server_ssl
 
-  # 下载 docker-compose.yml 文件并进行替�?
+  # 涓嬭浇 docker-compose.yml 鏂囦欢骞惰繘琛屾浛鎹?
   wget -O /home/web/docker-compose.yml ${gh_proxy}raw.githubusercontent.com/kejilion/docker/main/LNMP-docker-compose-10.yml
   dbrootpasswd=$(openssl rand -base64 16) ; dbuse=$(openssl rand -hex 4) ; dbusepasswd=$(openssl rand -base64 8)
 
-  # �?docker-compose.yml 文件中进行替�?
+  # 鍦?docker-compose.yml 鏂囦欢涓繘琛屾浛鎹?
   sed -i "s#webroot#$dbrootpasswd#g" /home/web/docker-compose.yml
   sed -i "s#kejilionYYDS#$dbusepasswd#g" /home/web/docker-compose.yml
   sed -i "s#kejilion#$dbuse#g" /home/web/docker-compose.yml
@@ -1352,10 +1352,10 @@ update_docker_compose_with_db_creds() {
 
 
 auto_optimize_dns() {
-	# 获取国家代码（如 CN、US 等）
+	# 鑾峰彇鍥藉浠ｇ爜锛堝 CN銆乁S 绛夛級
 	local country=$(curl -s ipinfo.io/country)
 
-	# 根据国家设置 DNS
+	# 鏍规嵁鍥藉璁剧疆 DNS
 	if [ "$country" = "CN" ]; then
 		local dns1_ipv4="223.5.5.5"
 		local dns2_ipv4="183.60.83.19"
@@ -1377,8 +1377,8 @@ auto_optimize_dns() {
 prefer_ipv4() {
 grep -q '^precedence ::ffff:0:0/96  100' /etc/gai.conf 2>/dev/null \
 	|| echo 'precedence ::ffff:0:0/96  100' >> /etc/gai.conf
-echo "已切换为 IPv4 优先"
-send_stats "已切换为 IPv4 优先"
+echo "宸插垏鎹负 IPv4 浼樺厛"
+send_stats "宸插垏鎹负 IPv4 浼樺厛"
 }
 
 
@@ -1396,7 +1396,7 @@ install_ldnmp() {
 	  fix_phpfpm_conf php
 	  fix_phpfpm_conf php74
 
-	  # mysql调优
+	  # mysql璋冧紭
 	  wget -O /home/custom_mysql_config.cnf ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/custom_mysql_config-1.cnf
 	  docker cp /home/custom_mysql_config.cnf mysql:/etc/mysql/conf.d/
 	  rm -rf /home/custom_mysql_config.cnf
@@ -1407,7 +1407,7 @@ install_ldnmp() {
 	  sleep 2
 
 	  clear
-	  echo "LDNMP环境安装完毕"
+	  echo "LDNMP鐜瀹夎瀹屾瘯"
 	  echo "------------------------"
 	  ldnmp_v
 
@@ -1424,7 +1424,7 @@ install_certbot() {
 	local cron_job="0 0 * * * ~/auto_cert_renewal.sh"
 	crontab -l 2>/dev/null | grep -vF "$cron_job" | crontab -
 	(crontab -l 2>/dev/null; echo "$cron_job") | crontab -
-	echo "续签任务已更�?
+	echo "缁浠诲姟宸叉洿鏂?
 }
 
 
@@ -1458,15 +1458,15 @@ install_ssltls() {
 
 
 install_ssltls_text() {
-	echo -e "${gl_huang}$yuming 公钥信息${gl_bai}"
+	echo -e "${gl_huang}$yuming 鍏挜淇℃伅${gl_bai}"
 	cat /etc/letsencrypt/live/$yuming/fullchain.pem
 	echo ""
-	echo -e "${gl_huang}$yuming 私钥信息${gl_bai}"
+	echo -e "${gl_huang}$yuming 绉侀挜淇℃伅${gl_bai}"
 	cat /etc/letsencrypt/live/$yuming/privkey.pem
 	echo ""
-	echo -e "${gl_huang}证书存放路径${gl_bai}"
-	echo "公钥: /etc/letsencrypt/live/$yuming/fullchain.pem"
-	echo "私钥: /etc/letsencrypt/live/$yuming/privkey.pem"
+	echo -e "${gl_huang}璇佷功瀛樻斁璺緞${gl_bai}"
+	echo "鍏挜: /etc/letsencrypt/live/$yuming/fullchain.pem"
+	echo "绉侀挜: /etc/letsencrypt/live/$yuming/privkey.pem"
 	echo ""
 }
 
@@ -1475,7 +1475,7 @@ install_ssltls_text() {
 
 
 add_ssl() {
-echo -e "${gl_huang}快速申请SSL证书，过期前自动续签${gl_bai}"
+echo -e "${gl_huang}蹇€熺敵璇稴SL璇佷功锛岃繃鏈熷墠鑷姩缁${gl_bai}"
 yuming="${1:-}"
 if [ -z "$yuming" ]; then
 	add_yuming
@@ -1491,8 +1491,8 @@ ssl_ps
 
 
 ssl_ps() {
-	echo -e "${gl_huang}已申请的证书到期情况${gl_bai}"
-	echo "站点信息                      证书到期时间"
+	echo -e "${gl_huang}宸茬敵璇风殑璇佷功鍒版湡鎯呭喌${gl_bai}"
+	echo "绔欑偣淇℃伅                      璇佷功鍒版湡鏃堕棿"
 	echo "------------------------"
 	for cert_dir in /etc/letsencrypt/live/*; do
 	  local cert_file="$cert_dir/fullchain.pem"
@@ -1531,56 +1531,56 @@ certs_status() {
 
 	local file_path="/etc/letsencrypt/live/$yuming/fullchain.pem"
 	if [ -f "$file_path" ]; then
-		send_stats "域名证书申请成功"
+		send_stats "鍩熷悕璇佷功鐢宠鎴愬姛"
 	else
-		send_stats "域名证书申请失败"
-		echo -e "${gl_hong}注意: ${gl_bai}证书申请失败，请检查以下可能原因并重试�?
-		echo -e "1. 域名拼写错误 �?请检查域名输入是否正�?
-		echo -e "2. DNS解析问题 �?确认域名已正确解析到本服务器IP"
-		echo -e "3. 网络配置问题 �?如使用Cloudflare Warp等虚拟网络请暂时关闭"
-		echo -e "4. 防火墙限�?�?检�?0/443端口是否开放，确保验证可访�?
-		echo -e "5. 申请次数超限 �?Let's Encrypt有每周限�?5�?域名/�?"
-		echo -e "6. 国内备案限制 �?中国大陆环境请确认域名是否备�?
+		send_stats "鍩熷悕璇佷功鐢宠澶辫触"
+		echo -e "${gl_hong}娉ㄦ剰: ${gl_bai}璇佷功鐢宠澶辫触锛岃妫€鏌ヤ互涓嬪彲鑳藉師鍥犲苟閲嶈瘯锛?
+		echo -e "1. 鍩熷悕鎷煎啓閿欒 鉃?璇锋鏌ュ煙鍚嶈緭鍏ユ槸鍚︽纭?
+		echo -e "2. DNS瑙ｆ瀽闂 鉃?纭鍩熷悕宸叉纭В鏋愬埌鏈湇鍔″櫒IP"
+		echo -e "3. 缃戠粶閰嶇疆闂 鉃?濡備娇鐢–loudflare Warp绛夎櫄鎷熺綉缁滆鏆傛椂鍏抽棴"
+		echo -e "4. 闃茬伀澧欓檺鍒?鉃?妫€鏌?0/443绔彛鏄惁寮€鏀撅紝纭繚楠岃瘉鍙闂?
+		echo -e "5. 鐢宠娆℃暟瓒呴檺 鉃?Let's Encrypt鏈夋瘡鍛ㄩ檺棰?5娆?鍩熷悕/鍛?"
+		echo -e "6. 鍥藉唴澶囨闄愬埗 鉃?涓浗澶ч檰鐜璇风‘璁ゅ煙鍚嶆槸鍚﹀妗?
 		echo "------------------------"
-		echo "1. 重新申请        2. 导入已有证书        0. 退�?
+		echo "1. 閲嶆柊鐢宠        2. 瀵煎叆宸叉湁璇佷功        0. 閫€鍑?
 		echo "------------------------"
-		read -e -p "请输入你的选择: " sub_choice
+		read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 		case $sub_choice in
 	  	  1)
-	  	  	send_stats "重新申请"
-		  	echo "请再次尝试部�?$webname"
+	  	  	send_stats "閲嶆柊鐢宠"
+		  	echo "璇峰啀娆″皾璇曢儴缃?$webname"
 		  	add_yuming
 		  	install_ssltls
 		  	certs_status
 
 	  		  ;;
 	  	  2)
-	  	  	send_stats "导入已有证书"
+	  	  	send_stats "瀵煎叆宸叉湁璇佷功"
 
-			# 定义文件路径
+			# 瀹氫箟鏂囦欢璺緞
 			local cert_file="/home/web/certs/${yuming}_cert.pem"
 			local key_file="/home/web/certs/${yuming}_key.pem"
 
 			mkdir -p /home/web/certs
 
-			# 1. 输入证书 (ECC �?RSA 证书开头都�?BEGIN CERTIFICATE)
-			echo "请粘�?证书 (CRT/PEM) 内容 (按两次回车结�?�?
+			# 1. 杈撳叆璇佷功 (ECC 鍜?RSA 璇佷功寮€澶撮兘鏄?BEGIN CERTIFICATE)
+			echo "璇风矘璐?璇佷功 (CRT/PEM) 鍐呭 (鎸変袱娆″洖杞︾粨鏉?锛?
 			local cert_content=""
 			while IFS= read -r line; do
 				[[ -z "$line" && "$cert_content" == *"-----BEGIN"* ]] && break
 				cert_content+="${line}"$'\n'
 			done
 
-			# 2. 输入私钥 (兼容 RSA, ECC, PKCS#8)
-			echo "请粘�?证书私钥 (Private Key) 内容 (按两次回车结�?�?
+			# 2. 杈撳叆绉侀挜 (鍏煎 RSA, ECC, PKCS#8)
+			echo "璇风矘璐?璇佷功绉侀挜 (Private Key) 鍐呭 (鎸変袱娆″洖杞︾粨鏉?锛?
 			local key_content=""
 			while IFS= read -r line; do
 				[[ -z "$line" && "$key_content" == *"-----BEGIN"* ]] && break
 				key_content+="${line}"$'\n'
 			done
 
-			# 3. 智能校验
-			# 只要包含 "BEGIN CERTIFICATE" �?"PRIVATE KEY" 即可通过
+			# 3. 鏅鸿兘鏍￠獙
+			# 鍙鍖呭惈 "BEGIN CERTIFICATE" 鍜?"PRIVATE KEY" 鍗冲彲閫氳繃
 			if [[ "$cert_content" == *"-----BEGIN CERTIFICATE-----"* && "$key_content" == *"PRIVATE KEY-----"* ]]; then
 				echo -n "$cert_content" > "$cert_file"
 				echo -n "$key_content" > "$key_file"
@@ -1588,15 +1588,15 @@ certs_status() {
 				chmod 644 "$cert_file"
 				chmod 600 "$key_file"
 
-				# 识别当前证书类型并显�?
+				# 璇嗗埆褰撳墠璇佷功绫诲瀷骞舵樉绀?
 				if [[ "$key_content" == *"EC PRIVATE KEY"* ]]; then
-					echo "检测到 ECC 证书已成功保存�?
+					echo "妫€娴嬪埌 ECC 璇佷功宸叉垚鍔熶繚瀛樸€?
 				else
-					echo "检测到 RSA 证书已成功保存�?
+					echo "妫€娴嬪埌 RSA 璇佷功宸叉垚鍔熶繚瀛樸€?
 				fi
 				auth_method="ssl_imported"
 			else
-				echo "错误：无效的证书或私钥格式！"
+				echo "閿欒锛氭棤鏁堢殑璇佷功鎴栫閽ユ牸寮忥紒"
 				certs_status
 			fi
 	  		  ;;
@@ -1611,7 +1611,7 @@ certs_status() {
 
 repeat_add_yuming() {
 if [ -e /home/web/conf.d/$yuming.conf ]; then
-  send_stats "域名重复使用"
+  send_stats "鍩熷悕閲嶅浣跨敤"
   web_del "${yuming}" > /dev/null 2>&1
 fi
 
@@ -1620,8 +1620,8 @@ fi
 
 add_yuming() {
 	  ip_address
-	  echo -e "先将域名解析到本机IP: ${gl_huang}$ipv4_address  $ipv6_address${gl_bai}"
-	  read -e -p "请输入你的IP或者解析过的域�? " yuming
+	  echo -e "鍏堝皢鍩熷悕瑙ｆ瀽鍒版湰鏈篒P: ${gl_huang}$ipv4_address  $ipv6_address${gl_bai}"
+	  read -e -p "璇疯緭鍏ヤ綘鐨処P鎴栬€呰В鏋愯繃鐨勫煙鍚? " yuming
 }
 
 
@@ -1632,7 +1632,7 @@ check_ip_and_get_access_port() {
 	local ipv6_pattern='^(([0-9A-Fa-f]{1,4}:){1,7}:|([0-9A-Fa-f]{1,4}:){7,7}[0-9A-Fa-f]{1,4}|::1)$'
 
 	if [[ "$yuming" =~ $ipv4_pattern || "$yuming" =~ $ipv6_pattern ]]; then
-		read -e -p "请输入访�?监听端口，回车默认使�?80: " access_port
+		read -e -p "璇疯緭鍏ヨ闂?鐩戝惉绔彛锛屽洖杞﹂粯璁や娇鐢?80: " access_port
 		access_port=${access_port:-80}
 	fi
 }
@@ -1644,13 +1644,13 @@ update_nginx_listen_port() {
 	local access_port="$2"
 	local conf="/home/web/conf.d/${yuming}.conf"
 
-	# 如果 access_port 为空，则跳过
+	# 濡傛灉 access_port 涓虹┖锛屽垯璺宠繃
 	[ -z "$access_port" ] && return 0
 
-	# 删除所�?listen �?
+	# 鍒犻櫎鎵€鏈?listen 琛?
 	sed -i '/^[[:space:]]*listen[[:space:]]\+/d' "$conf"
 
-	# �?server { 后插入新�?listen
+	# 鍦?server { 鍚庢彃鍏ユ柊鐨?listen
 	sed -i "/server {/a\\
 	listen ${access_port};\\
 	listen [::]:${access_port};
@@ -1700,8 +1700,8 @@ nginx_upgrade() {
   docker exec nginx chown -R nginx:nginx /var/cache/nginx/fastcgi
   docker restart $ldnmp_pods > /dev/null 2>&1
 
-  send_stats "更新$ldnmp_pods"
-  echo "更新${ldnmp_pods}完成"
+  send_stats "鏇存柊$ldnmp_pods"
+  echo "鏇存柊${ldnmp_pods}瀹屾垚"
 
 }
 
@@ -1720,11 +1720,11 @@ phpmyadmin_upgrade() {
   ip_address
 
   check_docker_app_ip
-  echo "登录信息: "
-  echo "用户�? $dbuse"
-  echo "密码: $dbusepasswd"
+  echo "鐧诲綍淇℃伅: "
+  echo "鐢ㄦ埛鍚? $dbuse"
+  echo "瀵嗙爜: $dbusepasswd"
   echo
-  send_stats "启动$ldnmp_pods"
+  send_stats "鍚姩$ldnmp_pods"
 }
 
 
@@ -1734,29 +1734,29 @@ cf_purge_cache() {
   local EMAIL
   local ZONE_IDS
 
-  # 检查配置文件是否存�?
+  # 妫€鏌ラ厤缃枃浠舵槸鍚﹀瓨鍦?
   if [ -f "$CONFIG_FILE" ]; then
-	# 从配置文件读�?API_TOKEN �?zone_id
+	# 浠庨厤缃枃浠惰鍙?API_TOKEN 鍜?zone_id
 	read API_TOKEN EMAIL ZONE_IDS < "$CONFIG_FILE"
-	# �?ZONE_IDS 转换为数�?
+	# 灏?ZONE_IDS 杞崲涓烘暟缁?
 	ZONE_IDS=($ZONE_IDS)
   else
-	# 提示用户是否清理缓存
-	read -e -p "需要清�?Cloudflare 的缓存吗？（y/n�? " answer
+	# 鎻愮ず鐢ㄦ埛鏄惁娓呯悊缂撳瓨
+	read -e -p "闇€瑕佹竻鐞?Cloudflare 鐨勭紦瀛樺悧锛燂紙y/n锛? " answer
 	if [[ "$answer" == "y" ]]; then
-	  echo "CF信息保存�?CONFIG_FILE，可以后期修改CF信息"
-	  read -e -p "请输入你�?API_TOKEN: " API_TOKEN
-	  read -e -p "请输入你的CF用户�? " EMAIL
-	  read -e -p "请输�?zone_id（多个用空格分隔�? " -a ZONE_IDS
+	  echo "CF淇℃伅淇濆瓨鍦?CONFIG_FILE锛屽彲浠ュ悗鏈熶慨鏀笴F淇℃伅"
+	  read -e -p "璇疯緭鍏ヤ綘鐨?API_TOKEN: " API_TOKEN
+	  read -e -p "璇疯緭鍏ヤ綘鐨凜F鐢ㄦ埛鍚? " EMAIL
+	  read -e -p "璇疯緭鍏?zone_id锛堝涓敤绌烘牸鍒嗛殧锛? " -a ZONE_IDS
 
 	  mkdir -p /home/web/config/
 	  echo "$API_TOKEN $EMAIL ${ZONE_IDS[*]}" > "$CONFIG_FILE"
 	fi
   fi
 
-  # 循环遍历每个 zone_id 并执行清除缓存命�?
+  # 寰幆閬嶅巻姣忎釜 zone_id 骞舵墽琛屾竻闄ょ紦瀛樺懡浠?
   for ZONE_ID in "${ZONE_IDS[@]}"; do
-	echo "正在清除缓存 for zone_id: $ZONE_ID"
+	echo "姝ｅ湪娓呴櫎缂撳瓨 for zone_id: $ZONE_ID"
 	curl -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/purge_cache" \
 	-H "X-Auth-Email: $EMAIL" \
 	-H "X-Auth-Key: $API_TOKEN" \
@@ -1764,13 +1764,13 @@ cf_purge_cache() {
 	--data '{"purge_everything":true}'
   done
 
-  echo "缓存清除请求已发送完毕�?
+  echo "缂撳瓨娓呴櫎璇锋眰宸插彂閫佸畬姣曘€?
 }
 
 
 
 web_cache() {
-  send_stats "清理站点缓存"
+  send_stats "娓呯悊绔欑偣缂撳瓨"
   cf_purge_cache
   cd /home/web && docker compose restart
 }
@@ -1779,28 +1779,28 @@ web_cache() {
 
 web_del() {
 
-	send_stats "删除站点数据"
+	send_stats "鍒犻櫎绔欑偣鏁版嵁"
 	yuming_list="${1:-}"
 	if [ -z "$yuming_list" ]; then
-		read -e -p "删除站点数据，请输入你的域名（多个域名用空格隔开�? " yuming_list
+		read -e -p "鍒犻櫎绔欑偣鏁版嵁锛岃杈撳叆浣犵殑鍩熷悕锛堝涓煙鍚嶇敤绌烘牸闅斿紑锛? " yuming_list
 		if [[ -z "$yuming_list" ]]; then
 			return
 		fi
 	fi
 
 	for yuming in $yuming_list; do
-		echo "正在删除域名: $yuming"
+		echo "姝ｅ湪鍒犻櫎鍩熷悕: $yuming"
 		rm -r /home/web/html/$yuming > /dev/null 2>&1
 		rm /home/web/conf.d/$yuming.conf > /dev/null 2>&1
 		rm /home/web/certs/${yuming}_key.pem > /dev/null 2>&1
 		rm /home/web/certs/${yuming}_cert.pem > /dev/null 2>&1
 
-		# 将域名转换为数据库名
+		# 灏嗗煙鍚嶈浆鎹负鏁版嵁搴撳悕
 		dbname=$(echo "$yuming" | sed -e 's/[^A-Za-z0-9]/_/g')
 		dbrootpasswd=$(grep -oP 'MYSQL_ROOT_PASSWORD:\s*\K.*' /home/web/docker-compose.yml | tr -d '[:space:]')
 
-		# 删除数据库前检查是否存在，避免报错
-		echo "正在删除数据�? $dbname"
+		# 鍒犻櫎鏁版嵁搴撳墠妫€鏌ユ槸鍚﹀瓨鍦紝閬垮厤鎶ラ敊
+		echo "姝ｅ湪鍒犻櫎鏁版嵁搴? $dbname"
 		docker exec mysql mysql -u root -p"$dbrootpasswd" -e "DROP DATABASE ${dbname};" > /dev/null 2>&1
 	done
 
@@ -1816,23 +1816,23 @@ nginx_waf() {
 		wget -O /home/web/nginx.conf "${gh_proxy}raw.githubusercontent.com/kejilion/nginx/main/nginx10.conf"
 	fi
 
-	# 根据 mode 参数来决定开启或关闭 WAF
+	# 鏍规嵁 mode 鍙傛暟鏉ュ喅瀹氬紑鍚垨鍏抽棴 WAF
 	if [ "$mode" == "on" ]; then
-		# 开�?WAF：去掉注�?
+		# 寮€鍚?WAF锛氬幓鎺夋敞閲?
 		sed -i 's|# load_module /etc/nginx/modules/ngx_http_modsecurity_module.so;|load_module /etc/nginx/modules/ngx_http_modsecurity_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 		sed -i 's|^\(\s*\)# modsecurity on;|\1modsecurity on;|' /home/web/nginx.conf > /dev/null 2>&1
 		sed -i 's|^\(\s*\)# modsecurity_rules_file /etc/nginx/modsec/modsecurity.conf;|\1modsecurity_rules_file /etc/nginx/modsec/modsecurity.conf;|' /home/web/nginx.conf > /dev/null 2>&1
 	elif [ "$mode" == "off" ]; then
-		# 关闭 WAF：加上注�?
+		# 鍏抽棴 WAF锛氬姞涓婃敞閲?
 		sed -i 's|^load_module /etc/nginx/modules/ngx_http_modsecurity_module.so;|# load_module /etc/nginx/modules/ngx_http_modsecurity_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 		sed -i 's|^\(\s*\)modsecurity on;|\1# modsecurity on;|' /home/web/nginx.conf > /dev/null 2>&1
 		sed -i 's|^\(\s*\)modsecurity_rules_file /etc/nginx/modsec/modsecurity.conf;|\1# modsecurity_rules_file /etc/nginx/modsec/modsecurity.conf;|' /home/web/nginx.conf > /dev/null 2>&1
 	else
-		echo "无效的参数：使用 'on' �?'off'"
+		echo "鏃犳晥鐨勫弬鏁帮細浣跨敤 'on' 鎴?'off'"
 		return 1
 	fi
 
-	# 检�?nginx 镜像并根据情况处�?
+	# 妫€鏌?nginx 闀滃儚骞舵牴鎹儏鍐靛鐞?
 	if grep -q "kjlion/nginx:alpine" /home/web/docker-compose.yml; then
 		docker exec nginx nginx -s reload
 	else
@@ -1846,7 +1846,7 @@ check_waf_status() {
 	if grep -q "^\s*#\s*modsecurity on;" /home/web/nginx.conf; then
 		waf_status=""
 	elif grep -q "modsecurity on;" /home/web/nginx.conf; then
-		waf_status=" WAF已开�?
+		waf_status=" WAF宸插紑鍚?
 	else
 		waf_status=""
 	fi
@@ -1855,7 +1855,7 @@ check_waf_status() {
 
 check_cf_mode() {
 	if [ -f "/etc/fail2ban/action.d/cloudflare-docker.conf" ]; then
-		CFmessage=" cf模式已开�?
+		CFmessage=" cf妯″紡宸插紑鍚?
 	else
 		CFmessage=""
 	fi
@@ -1874,16 +1874,16 @@ fi
 
 
 patch_wp_memory_limit() {
-  local MEMORY_LIMIT="${1:-256M}"      # 第一个参数，默认256M
-  local MAX_MEMORY_LIMIT="${2:-256M}"  # 第二个参数，默认256M
-  local TARGET_DIR="/home/web/html"    # 路径写死
+  local MEMORY_LIMIT="${1:-256M}"      # 绗竴涓弬鏁帮紝榛樿256M
+  local MAX_MEMORY_LIMIT="${2:-256M}"  # 绗簩涓弬鏁帮紝榛樿256M
+  local TARGET_DIR="/home/web/html"    # 璺緞鍐欐
 
   find "$TARGET_DIR" -type f -name "wp-config.php" | while read -r FILE; do
-	# 删除旧定�?
+	# 鍒犻櫎鏃у畾涔?
 	sed -i "/define(['\"]WP_MEMORY_LIMIT['\"].*/d" "$FILE"
 	sed -i "/define(['\"]WP_MAX_MEMORY_LIMIT['\"].*/d" "$FILE"
 
-	# 插入新定义，放在�?"Happy publishing" 的行�?
+	# 鎻掑叆鏂板畾涔夛紝鏀惧湪鍚?"Happy publishing" 鐨勮鍓?
 	awk -v insert="define('WP_MEMORY_LIMIT', '$MEMORY_LIMIT');\ndefine('WP_MAX_MEMORY_LIMIT', '$MAX_MEMORY_LIMIT');" \
 	'
 	  /Happy publishing/ {
@@ -1900,18 +1900,18 @@ patch_wp_memory_limit() {
 
 
 patch_wp_debug() {
-  local DEBUG="${1:-false}"           # 第一个参数，默认false
-  local DEBUG_DISPLAY="${2:-false}"   # 第二个参数，默认false
-  local DEBUG_LOG="${3:-false}"       # 第三个参数，默认false
-  local TARGET_DIR="/home/web/html"   # 路径写死
+  local DEBUG="${1:-false}"           # 绗竴涓弬鏁帮紝榛樿false
+  local DEBUG_DISPLAY="${2:-false}"   # 绗簩涓弬鏁帮紝榛樿false
+  local DEBUG_LOG="${3:-false}"       # 绗笁涓弬鏁帮紝榛樿false
+  local TARGET_DIR="/home/web/html"   # 璺緞鍐欐
 
   find "$TARGET_DIR" -type f -name "wp-config.php" | while read -r FILE; do
-	# 删除旧定�?
+	# 鍒犻櫎鏃у畾涔?
 	sed -i "/define(['\"]WP_DEBUG['\"].*/d" "$FILE"
 	sed -i "/define(['\"]WP_DEBUG_DISPLAY['\"].*/d" "$FILE"
 	sed -i "/define(['\"]WP_DEBUG_LOG['\"].*/d" "$FILE"
 
-	# 插入新定义，放在�?"Happy publishing" 的行�?
+	# 鎻掑叆鏂板畾涔夛紝鏀惧湪鍚?"Happy publishing" 鐨勮鍓?
 	awk -v insert="define('WP_DEBUG_DISPLAY', $DEBUG_DISPLAY);\ndefine('WP_DEBUG_LOG', $DEBUG_LOG);" \
 	'
 	  /Happy publishing/ {
@@ -1933,17 +1933,17 @@ patch_wp_url() {
   local TARGET_DIR="/home/web/html"
 
   find "$TARGET_DIR" -type f -name "wp-config-sample.php" | while read -r FILE; do
-	# 删除旧定�?
+	# 鍒犻櫎鏃у畾涔?
 	sed -i "/define(['\"]WP_HOME['\"].*/d" "$FILE"
 	sed -i "/define(['\"]WP_SITEURL['\"].*/d" "$FILE"
 
-	# 生成插入内容
+	# 鐢熸垚鎻掑叆鍐呭
 	INSERT="
 define('WP_HOME', '$HOME_URL');
 define('WP_SITEURL', '$SITE_URL');
 "
 
-	# 插入�?“Happy publishing�?之前
+	# 鎻掑叆鍒?鈥淗appy publishing鈥?涔嬪墠
 	awk -v insert="$INSERT" '
 	  /Happy publishing/ {
 		print insert
@@ -1971,7 +1971,7 @@ nginx_br() {
 	fi
 
 	if [ "$mode" == "on" ]; then
-		# 开�?Brotli：去掉注�?
+		# 寮€鍚?Brotli锛氬幓鎺夋敞閲?
 		sed -i 's|# load_module /etc/nginx/modules/ngx_http_brotli_filter_module.so;|load_module /etc/nginx/modules/ngx_http_brotli_filter_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 		sed -i 's|# load_module /etc/nginx/modules/ngx_http_brotli_static_module.so;|load_module /etc/nginx/modules/ngx_http_brotli_static_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 
@@ -1985,7 +1985,7 @@ nginx_br() {
 		sed -i '/brotli_types/,+6 s/^\(\s*\)#\s*/\1/' /home/web/nginx.conf
 
 	elif [ "$mode" == "off" ]; then
-		# 关闭 Brotli：加上注�?
+		# 鍏抽棴 Brotli锛氬姞涓婃敞閲?
 		sed -i 's|^load_module /etc/nginx/modules/ngx_http_brotli_filter_module.so;|# load_module /etc/nginx/modules/ngx_http_brotli_filter_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 		sed -i 's|^load_module /etc/nginx/modules/ngx_http_brotli_static_module.so;|# load_module /etc/nginx/modules/ngx_http_brotli_static_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 
@@ -2001,11 +2001,11 @@ nginx_br() {
 		}' /home/web/nginx.conf
 
 	else
-		echo "无效的参数：使用 'on' �?'off'"
+		echo "鏃犳晥鐨勫弬鏁帮細浣跨敤 'on' 鎴?'off'"
 		return 1
 	fi
 
-	# 检�?nginx 镜像并根据情况处�?
+	# 妫€鏌?nginx 闀滃儚骞舵牴鎹儏鍐靛鐞?
 	if grep -q "kjlion/nginx:alpine" /home/web/docker-compose.yml; then
 		docker exec nginx nginx -s reload
 	else
@@ -2027,7 +2027,7 @@ nginx_zstd() {
 	fi
 
 	if [ "$mode" == "on" ]; then
-		# 开�?Zstd：去掉注�?
+		# 寮€鍚?Zstd锛氬幓鎺夋敞閲?
 		sed -i 's|# load_module /etc/nginx/modules/ngx_http_zstd_filter_module.so;|load_module /etc/nginx/modules/ngx_http_zstd_filter_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 		sed -i 's|# load_module /etc/nginx/modules/ngx_http_zstd_static_module.so;|load_module /etc/nginx/modules/ngx_http_zstd_static_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 
@@ -2042,7 +2042,7 @@ nginx_zstd() {
 
 
 	elif [ "$mode" == "off" ]; then
-		# 关闭 Zstd：加上注�?
+		# 鍏抽棴 Zstd锛氬姞涓婃敞閲?
 		sed -i 's|^load_module /etc/nginx/modules/ngx_http_zstd_filter_module.so;|# load_module /etc/nginx/modules/ngx_http_zstd_filter_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 		sed -i 's|^load_module /etc/nginx/modules/ngx_http_zstd_static_module.so;|# load_module /etc/nginx/modules/ngx_http_zstd_static_module.so;|' /home/web/nginx.conf > /dev/null 2>&1
 
@@ -2058,11 +2058,11 @@ nginx_zstd() {
 
 
 	else
-		echo "无效的参数：使用 'on' �?'off'"
+		echo "鏃犳晥鐨勫弬鏁帮細浣跨敤 'on' 鎴?'off'"
 		return 1
 	fi
 
-	# 检�?nginx 镜像并根据情况处�?
+	# 妫€鏌?nginx 闀滃儚骞舵牴鎹儏鍐靛鐞?
 	if grep -q "kjlion/nginx:alpine" /home/web/docker-compose.yml; then
 		docker exec nginx nginx -s reload
 	else
@@ -2089,7 +2089,7 @@ nginx_gzip() {
 	elif [ "$mode" == "off" ]; then
 		sed -i 's|^\(\s*\)gzip on;|\1# gzip on;|' /home/web/nginx.conf > /dev/null 2>&1
 	else
-		echo "无效的参数：使用 'on' �?'off'"
+		echo "鏃犳晥鐨勫弬鏁帮細浣跨敤 'on' 鎴?'off'"
 		return 1
 	fi
 
@@ -2103,31 +2103,31 @@ nginx_gzip() {
 
 
 web_security() {
-	  send_stats "LDNMP环境防御"
+	  send_stats "LDNMP鐜闃插尽"
 	  while true; do
 		check_f2b_status
 		check_waf_status
 		check_cf_mode
 			  clear
-			  echo -e "服务器网站防御程�?${check_f2b_status}${gl_lv}${CFmessage}${waf_status}${gl_bai}"
+			  echo -e "鏈嶅姟鍣ㄧ綉绔欓槻寰＄▼搴?${check_f2b_status}${gl_lv}${CFmessage}${waf_status}${gl_bai}"
 			  echo "------------------------"
-			  echo "1. 安装防御程序"
+			  echo "1. 瀹夎闃插尽绋嬪簭"
 			  echo "------------------------"
-			  echo "5. 查看SSH拦截记录                6. 查看网站拦截记录"
-			  echo "7. 查看防御规则列表               8. 查看日志实时监控"
+			  echo "5. 鏌ョ湅SSH鎷︽埅璁板綍                6. 鏌ョ湅缃戠珯鎷︽埅璁板綍"
+			  echo "7. 鏌ョ湅闃插尽瑙勫垯鍒楄〃               8. 鏌ョ湅鏃ュ織瀹炴椂鐩戞帶"
 			  echo "------------------------"
-			  echo "11. 配置拦截参数                  12. 清除所有拉黑的IP"
+			  echo "11. 閰嶇疆鎷︽埅鍙傛暟                  12. 娓呴櫎鎵€鏈夋媺榛戠殑IP"
 			  echo "------------------------"
-			  echo "21. cloudflare模式                22. 高负载开�?秒盾"
+			  echo "21. cloudflare妯″紡                22. 楂樿礋杞藉紑鍚?绉掔浘"
 			  echo "------------------------"
-			  echo "31. 开启WAF                       32. 关闭WAF"
-			  echo "33. 开启DDOS防御                  34. 关闭DDOS防御"
+			  echo "31. 寮€鍚疻AF                       32. 鍏抽棴WAF"
+			  echo "33. 寮€鍚疍DOS闃插尽                  34. 鍏抽棴DDOS闃插尽"
 			  echo "------------------------"
-			  echo "9. 卸载防御程序"
+			  echo "9. 鍗歌浇闃插尽绋嬪簭"
 			  echo "------------------------"
-			  echo "0. 返回上一级选单"
+			  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 			  echo "------------------------"
-			  read -e -p "请输入你的选择: " sub_choice
+			  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 			  case $sub_choice in
 				  1)
 					  f2b_install_sshd
@@ -2192,7 +2192,7 @@ web_security() {
 					  remove fail2ban
 					  rm -rf /etc/fail2ban
 					  crontab -l | grep -v "CF-Under-Attack.sh" | crontab - 2>/dev/null
-					  echo "Fail2Ban防御程序已卸�?
+					  echo "Fail2Ban闃插尽绋嬪簭宸插嵏杞?
 					  break
 					  ;;
 
@@ -2208,11 +2208,11 @@ web_security() {
 					  ;;
 
 				  21)
-					  send_stats "cloudflare模式"
-					  echo "到cf后台右上角我的个人资料，选择左侧API令牌，获取Global API Key"
+					  send_stats "cloudflare妯″紡"
+					  echo "鍒癱f鍚庡彴鍙充笂瑙掓垜鐨勪釜浜鸿祫鏂欙紝閫夋嫨宸︿晶API浠ょ墝锛岃幏鍙朑lobal API Key"
 					  echo "https://dash.cloudflare.com/login"
-					  read -e -p "输入CF的账�? " cfuser
-					  read -e -p "输入CF的Global API Key: " cftoken
+					  read -e -p "杈撳叆CF鐨勮处鍙? " cfuser
+					  read -e -p "杈撳叆CF鐨凣lobal API Key: " cftoken
 
 					  wget -O /home/web/conf.d/default.conf ${gh_proxy}raw.githubusercontent.com/kejilion/nginx/main/default11.conf
 					  docker exec nginx nginx -s reload
@@ -2227,21 +2227,21 @@ web_security() {
 					  sed -i "s/APIKEY00000/$cftoken/g" /etc/fail2ban/action.d/cloudflare-docker.conf
 					  f2b_status
 
-					  echo "已配置cloudflare模式，可在cf后台，站�?安全�?事件中查看拦截记�?
+					  echo "宸查厤缃甤loudflare妯″紡锛屽彲鍦╟f鍚庡彴锛岀珯鐐?瀹夊叏鎬?浜嬩欢涓煡鐪嬫嫤鎴褰?
 					  ;;
 
 				  22)
-					  send_stats "高负载开�?秒盾"
-					  echo -e "${gl_huang}网站�?分钟自动检测，当达检测到高负载会自动开盾，低负载也会自动关�?秒盾�?{gl_bai}"
+					  send_stats "楂樿礋杞藉紑鍚?绉掔浘"
+					  echo -e "${gl_huang}缃戠珯姣?鍒嗛挓鑷姩妫€娴嬶紝褰撹揪妫€娴嬪埌楂樿礋杞戒細鑷姩寮€鐩撅紝浣庤礋杞戒篃浼氳嚜鍔ㄥ叧闂?绉掔浘銆?{gl_bai}"
 					  echo "--------------"
-					  echo "获取CF参数: "
-					  echo -e "到cf后台右上角我的个人资料，选择左侧API令牌，获�?{gl_huang}Global API Key${gl_bai}"
-					  echo -e "到cf后台域名概要页面右下方获�?{gl_huang}区域ID${gl_bai}"
+					  echo "鑾峰彇CF鍙傛暟: "
+					  echo -e "鍒癱f鍚庡彴鍙充笂瑙掓垜鐨勪釜浜鸿祫鏂欙紝閫夋嫨宸︿晶API浠ょ墝锛岃幏鍙?{gl_huang}Global API Key${gl_bai}"
+					  echo -e "鍒癱f鍚庡彴鍩熷悕姒傝椤甸潰鍙充笅鏂硅幏鍙?{gl_huang}鍖哄煙ID${gl_bai}"
 					  echo "https://dash.cloudflare.com/login"
 					  echo "--------------"
-					  read -e -p "输入CF的账�? " cfuser
-					  read -e -p "输入CF的Global API Key: " cftoken
-					  read -e -p "输入CF中域名的区域ID: " cfzonID
+					  read -e -p "杈撳叆CF鐨勮处鍙? " cfuser
+					  read -e -p "杈撳叆CF鐨凣lobal API Key: " cftoken
+					  read -e -p "杈撳叆CF涓煙鍚嶇殑鍖哄煙ID: " cfzonID
 
 					  cd ~
 					  install jq bc
@@ -2258,23 +2258,23 @@ web_security() {
 
 					  if [ -z "$existing_cron" ]; then
 						  (crontab -l 2>/dev/null; echo "$cron_job") | crontab -
-						  echo "高负载自动开盾脚本已添加"
+						  echo "楂樿礋杞借嚜鍔ㄥ紑鐩捐剼鏈凡娣诲姞"
 					  else
-						  echo "自动开盾脚本已存在，无需添加"
+						  echo "鑷姩寮€鐩捐剼鏈凡瀛樺湪锛屾棤闇€娣诲姞"
 					  fi
 
 					  ;;
 
 				  31)
 					  nginx_waf on
-					  echo "站点WAF已开�?
-					  send_stats "站点WAF已开�?
+					  echo "绔欑偣WAF宸插紑鍚?
+					  send_stats "绔欑偣WAF宸插紑鍚?
 					  ;;
 
 				  32)
 				  	  nginx_waf off
-					  echo "站点WAF已关�?
-					  send_stats "站点WAF已关�?
+					  echo "绔欑偣WAF宸插叧闂?
+					  send_stats "绔欑偣WAF宸插叧闂?
 					  ;;
 
 				  33)
@@ -2300,11 +2300,11 @@ check_ldnmp_mode() {
 	local MYSQL_CONTAINER="mysql"
 	local MYSQL_CONF="/etc/mysql/conf.d/custom_mysql_config.cnf"
 
-	# 检�?MySQL 配置文件中是否包�?4096M
+	# 妫€鏌?MySQL 閰嶇疆鏂囦欢涓槸鍚﹀寘鍚?4096M
 	if docker exec "$MYSQL_CONTAINER" grep -q "4096M" "$MYSQL_CONF" 2>/dev/null; then
-		mode_info=" 高性能模式"
+		mode_info=" 楂樻€ц兘妯″紡"
 	else
-		mode_info=" 标准模式"
+		mode_info=" 鏍囧噯妯″紡"
 	fi
 
 
@@ -2316,23 +2316,23 @@ check_nginx_compression() {
 
 	local CONFIG_FILE="/home/web/nginx.conf"
 
-	# 检�?zstd 是否开启且未被注释（整行以 zstd on; 开头）
+	# 妫€鏌?zstd 鏄惁寮€鍚笖鏈娉ㄩ噴锛堟暣琛屼互 zstd on; 寮€澶达級
 	if grep -qE '^\s*zstd\s+on;' "$CONFIG_FILE"; then
-		zstd_status=" zstd压缩已开�?
+		zstd_status=" zstd鍘嬬缉宸插紑鍚?
 	else
 		zstd_status=""
 	fi
 
-	# 检�?brotli 是否开启且未被注释
+	# 妫€鏌?brotli 鏄惁寮€鍚笖鏈娉ㄩ噴
 	if grep -qE '^\s*brotli\s+on;' "$CONFIG_FILE"; then
-		br_status=" br压缩已开�?
+		br_status=" br鍘嬬缉宸插紑鍚?
 	else
 		br_status=""
 	fi
 
-	# 检�?gzip 是否开启且未被注释
+	# 妫€鏌?gzip 鏄惁寮€鍚笖鏈娉ㄩ噴
 	if grep -qE '^\s*gzip\s+on;' "$CONFIG_FILE"; then
-		gzip_status=" gzip压缩已开�?
+		gzip_status=" gzip鍘嬬缉宸插紑鍚?
 	else
 		gzip_status=""
 	fi
@@ -2346,21 +2346,21 @@ web_optimization() {
 		  	  check_ldnmp_mode
 			  check_nginx_compression
 			  clear
-			  send_stats "优化LDNMP环境"
-			  echo -e "优化LDNMP环境${gl_lv}${mode_info}${gzip_status}${br_status}${zstd_status}${gl_bai}"
+			  send_stats "浼樺寲LDNMP鐜"
+			  echo -e "浼樺寲LDNMP鐜${gl_lv}${mode_info}${gzip_status}${br_status}${zstd_status}${gl_bai}"
 			  echo "------------------------"
-			  echo "1. 标准模式              2. 高性能模式 (推荐2H4G以上)"
+			  echo "1. 鏍囧噯妯″紡              2. 楂樻€ц兘妯″紡 (鎺ㄨ崘2H4G浠ヤ笂)"
 			  echo "------------------------"
-			  echo "3. 开启gzip压缩          4. 关闭gzip压缩"
-			  echo "5. 开启br压缩            6. 关闭br压缩"
-			  echo "7. 开启zstd压缩          8. 关闭zstd压缩"
+			  echo "3. 寮€鍚痝zip鍘嬬缉          4. 鍏抽棴gzip鍘嬬缉"
+			  echo "5. 寮€鍚痓r鍘嬬缉            6. 鍏抽棴br鍘嬬缉"
+			  echo "7. 寮€鍚痾std鍘嬬缉          8. 鍏抽棴zstd鍘嬬缉"
 			  echo "------------------------"
-			  echo "0. 返回上一级选单"
+			  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 			  echo "------------------------"
-			  read -e -p "请输入你的选择: " sub_choice
+			  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 			  case $sub_choice in
 				  1)
-				  send_stats "站点标准模式"
+				  send_stats "绔欑偣鏍囧噯妯″紡"
 
 				  local cpu_cores=$(nproc)
 				  local connections=$((1024 * ${cpu_cores}))
@@ -2368,13 +2368,13 @@ web_optimization() {
 				  sed -i "s/worker_connections.*/worker_connections ${connections};/" /home/web/nginx.conf
 
 
-				  # php调优
+				  # php璋冧紭
 				  wget -O /home/optimized_php.ini ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/optimized_php.ini
 				  docker cp /home/optimized_php.ini php:/usr/local/etc/php/conf.d/optimized_php.ini
 				  docker cp /home/optimized_php.ini php74:/usr/local/etc/php/conf.d/optimized_php.ini
 				  rm -rf /home/optimized_php.ini
 
-				  # php调优
+				  # php璋冧紭
 				  wget -O /home/www.conf ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/www-1.conf
 				  docker cp /home/www.conf php:/usr/local/etc/php-fpm.d/www.conf
 				  docker cp /home/www.conf php74:/usr/local/etc/php-fpm.d/www.conf
@@ -2386,7 +2386,7 @@ web_optimization() {
 				  fix_phpfpm_conf php
 				  fix_phpfpm_conf php74
 
-				  # mysql调优
+				  # mysql璋冧紭
 				  wget -O /home/custom_mysql_config.cnf ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/custom_mysql_config-1.cnf
 				  docker cp /home/custom_mysql_config.cnf mysql:/etc/mysql/conf.d/
 				  rm -rf /home/custom_mysql_config.cnf
@@ -2397,25 +2397,25 @@ web_optimization() {
 				  optimize_balanced
 
 
-				  echo "LDNMP环境已设置成 标准模式"
+				  echo "LDNMP鐜宸茶缃垚 鏍囧噯妯″紡"
 
 					  ;;
 				  2)
-				  send_stats "站点高性能模式"
+				  send_stats "绔欑偣楂樻€ц兘妯″紡"
 
-				  # nginx调优
+				  # nginx璋冧紭
 				  local cpu_cores=$(nproc)
 				  local connections=$((2048 * ${cpu_cores}))
 				  sed -i "s/worker_processes.*/worker_processes ${cpu_cores};/" /home/web/nginx.conf
 				  sed -i "s/worker_connections.*/worker_connections ${connections};/" /home/web/nginx.conf
 
-				  # php调优
+				  # php璋冧紭
 				  wget -O /home/optimized_php.ini ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/optimized_php.ini
 				  docker cp /home/optimized_php.ini php:/usr/local/etc/php/conf.d/optimized_php.ini
 				  docker cp /home/optimized_php.ini php74:/usr/local/etc/php/conf.d/optimized_php.ini
 				  rm -rf /home/optimized_php.ini
 
-				  # php调优
+				  # php璋冧紭
 				  wget -O /home/www.conf ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/www.conf
 				  docker cp /home/www.conf php:/usr/local/etc/php-fpm.d/www.conf
 				  docker cp /home/www.conf php74:/usr/local/etc/php-fpm.d/www.conf
@@ -2427,7 +2427,7 @@ web_optimization() {
 				  fix_phpfpm_conf php
 				  fix_phpfpm_conf php74
 
-				  # mysql调优
+				  # mysql璋冧紭
 				  wget -O /home/custom_mysql_config.cnf ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/custom_mysql_config.cnf
 				  docker cp /home/custom_mysql_config.cnf mysql:/etc/mysql/conf.d/
 				  rm -rf /home/custom_mysql_config.cnf
@@ -2436,7 +2436,7 @@ web_optimization() {
 
 				  optimize_web_server
 
-				  echo "LDNMP环境已设置成 高性能模式"
+				  echo "LDNMP鐜宸茶缃垚 楂樻€ц兘妯″紡"
 
 					  ;;
 				  3)
@@ -2485,9 +2485,9 @@ web_optimization() {
 
 check_docker_app() {
 	if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -q "$docker_name" ; then
-		check_docker="${gl_lv}已安�?{gl_bai}"
+		check_docker="${gl_lv}宸插畨瑁?{gl_bai}"
 	else
-		check_docker="${gl_hui}未安�?{gl_bai}"
+		check_docker="${gl_hui}鏈畨瑁?{gl_bai}"
 	fi
 }
 
@@ -2496,9 +2496,9 @@ check_docker_app() {
 # check_docker_app() {
 
 # if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -q "$docker_name"; then
-# 	check_docker="${gl_lv}已安�?{gl_bai}"
+# 	check_docker="${gl_lv}宸插畨瑁?{gl_bai}"
 # else
-# 	check_docker="${gl_hui}未安�?{gl_bai}"
+# 	check_docker="${gl_hui}鏈畨瑁?{gl_bai}"
 # fi
 
 # }
@@ -2506,7 +2506,7 @@ check_docker_app() {
 
 check_docker_app_ip() {
 echo "------------------------"
-echo "访问地址:"
+echo "璁块棶鍦板潃:"
 ip_address
 
 
@@ -2538,11 +2538,11 @@ check_docker_image_update() {
 	local container_name=$1
 	update_status=""
 
-	# 1. 区域检�?
+	# 1. 鍖哄煙妫€鏌?
 	local country=$(curl -s --max-time 2 ipinfo.io/country)
 	[[ "$country" == "CN" ]] && return
 
-	# 2. 获取本地镜像信息
+	# 2. 鑾峰彇鏈湴闀滃儚淇℃伅
 	local container_info=$(docker inspect --format='{{.Created}},{{.Config.Image}}' "$container_name" 2>/dev/null)
 	[[ -z "$container_info" ]] && return
 
@@ -2550,22 +2550,22 @@ check_docker_image_update() {
 	local full_image_name=$(echo "$container_info" | cut -d',' -f2)
 	local container_created_ts=$(date -d "$container_created" +%s 2>/dev/null)
 
-	# 3. 智能路由判断
+	# 3. 鏅鸿兘璺敱鍒ゆ柇
 	if [[ "$full_image_name" == ghcr.io* ]]; then
-		# --- 场景 A: 镜像�?GitHub (ghcr.io) ---
-		# 提取仓库路径，例�?ghcr.io/onexru/oneimg -> onexru/oneimg
+		# --- 鍦烘櫙 A: 闀滃儚鍦?GitHub (ghcr.io) ---
+		# 鎻愬彇浠撳簱璺緞锛屼緥濡?ghcr.io/onexru/oneimg -> onexru/oneimg
 		local repo_path=$(echo "$full_image_name" | sed 's/ghcr.io\///' | cut -d':' -f1)
-		# 注意：ghcr.io �?API 比较复杂，通常最快的方法是查 GitHub Repo �?Release
+		# 娉ㄦ剰锛歡hcr.io 鐨?API 姣旇緝澶嶆潅锛岄€氬父鏈€蹇殑鏂规硶鏄煡 GitHub Repo 鐨?Release
 		local api_url="https://api.github.com/repos/$repo_path/releases/latest"
 		local remote_date=$(curl -s "$api_url" | jq -r '.published_at' 2>/dev/null)
 
 	elif [[ "$full_image_name" == *"oneimg"* ]]; then
-		# --- 场景 B: 特殊指定 (即便�?Docker Hub，也想通过 GitHub Release 判断) ---
+		# --- 鍦烘櫙 B: 鐗规畩鎸囧畾 (鍗充究鍦?Docker Hub锛屼篃鎯抽€氳繃 GitHub Release 鍒ゆ柇) ---
 		local api_url="https://api.github.com/repos/onexru/oneimg/releases/latest"
 		local remote_date=$(curl -s "$api_url" | jq -r '.published_at' 2>/dev/null)
 
 	else
-		# --- 场景 C: 标准 Docker Hub ---
+		# --- 鍦烘櫙 C: 鏍囧噯 Docker Hub ---
 		local image_repo=${full_image_name%%:*}
 		local image_tag=${full_image_name##*:}
 		[[ "$image_repo" == "$image_tag" ]] && image_tag="latest"
@@ -2575,11 +2575,11 @@ check_docker_image_update() {
 		local remote_date=$(curl -s "$api_url" | jq -r '.last_updated' 2>/dev/null)
 	fi
 
-	# 4. 时间戳对�?
+	# 4. 鏃堕棿鎴冲姣?
 	if [[ -n "$remote_date" && "$remote_date" != "null" ]]; then
 		local remote_ts=$(date -d "$remote_date" +%s 2>/dev/null)
 		if [[ $container_created_ts -lt $remote_ts ]]; then
-			update_status="${gl_huang}发现新版�?${gl_bai}"
+			update_status="${gl_huang}鍙戠幇鏂扮増鏈?${gl_bai}"
 		fi
 	fi
 }
@@ -2594,7 +2594,7 @@ block_container_port() {
 	local container_name_or_id=$1
 	local allowed_ip=$2
 
-	# 获取容器�?IP 地址
+	# 鑾峰彇瀹瑰櫒鐨?IP 鍦板潃
 	local container_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name_or_id")
 
 	if [ -z "$container_ip" ]; then
@@ -2604,34 +2604,34 @@ block_container_port() {
 	install iptables
 
 
-	# 检查并封禁其他所�?IP
+	# 妫€鏌ュ苟灏佺鍏朵粬鎵€鏈?IP
 	if ! iptables -C DOCKER-USER -p tcp -d "$container_ip" -j DROP &>/dev/null; then
 		iptables -I DOCKER-USER -p tcp -d "$container_ip" -j DROP
 	fi
 
-	# 检查并放行指定 IP
+	# 妫€鏌ュ苟鏀捐鎸囧畾 IP
 	if ! iptables -C DOCKER-USER -p tcp -s "$allowed_ip" -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -I DOCKER-USER -p tcp -s "$allowed_ip" -d "$container_ip" -j ACCEPT
 	fi
 
-	# 检查并放行本地网络 127.0.0.0/8
+	# 妫€鏌ュ苟鏀捐鏈湴缃戠粶 127.0.0.0/8
 	if ! iptables -C DOCKER-USER -p tcp -s 127.0.0.0/8 -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -I DOCKER-USER -p tcp -s 127.0.0.0/8 -d "$container_ip" -j ACCEPT
 	fi
 
 
 
-	# 检查并封禁其他所�?IP
+	# 妫€鏌ュ苟灏佺鍏朵粬鎵€鏈?IP
 	if ! iptables -C DOCKER-USER -p udp -d "$container_ip" -j DROP &>/dev/null; then
 		iptables -I DOCKER-USER -p udp -d "$container_ip" -j DROP
 	fi
 
-	# 检查并放行指定 IP
+	# 妫€鏌ュ苟鏀捐鎸囧畾 IP
 	if ! iptables -C DOCKER-USER -p udp -s "$allowed_ip" -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -I DOCKER-USER -p udp -s "$allowed_ip" -d "$container_ip" -j ACCEPT
 	fi
 
-	# 检查并放行本地网络 127.0.0.0/8
+	# 妫€鏌ュ苟鏀捐鏈湴缃戠粶 127.0.0.0/8
 	if ! iptables -C DOCKER-USER -p udp -s 127.0.0.0/8 -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -I DOCKER-USER -p udp -s 127.0.0.0/8 -d "$container_ip" -j ACCEPT
 	fi
@@ -2641,7 +2641,7 @@ block_container_port() {
 	fi
 
 
-	echo "已阻止IP+端口访问该服�?
+	echo "宸查樆姝P+绔彛璁块棶璇ユ湇鍔?
 	save_iptables_rules
 }
 
@@ -2652,7 +2652,7 @@ clear_container_rules() {
 	local container_name_or_id=$1
 	local allowed_ip=$2
 
-	# 获取容器�?IP 地址
+	# 鑾峰彇瀹瑰櫒鐨?IP 鍦板潃
 	local container_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name_or_id")
 
 	if [ -z "$container_ip" ]; then
@@ -2662,17 +2662,17 @@ clear_container_rules() {
 	install iptables
 
 
-	# 清除封禁其他所�?IP 的规�?
+	# 娓呴櫎灏佺鍏朵粬鎵€鏈?IP 鐨勮鍒?
 	if iptables -C DOCKER-USER -p tcp -d "$container_ip" -j DROP &>/dev/null; then
 		iptables -D DOCKER-USER -p tcp -d "$container_ip" -j DROP
 	fi
 
-	# 清除放行指定 IP 的规�?
+	# 娓呴櫎鏀捐鎸囧畾 IP 鐨勮鍒?
 	if iptables -C DOCKER-USER -p tcp -s "$allowed_ip" -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -D DOCKER-USER -p tcp -s "$allowed_ip" -d "$container_ip" -j ACCEPT
 	fi
 
-	# 清除放行本地网络 127.0.0.0/8 的规�?
+	# 娓呴櫎鏀捐鏈湴缃戠粶 127.0.0.0/8 鐨勮鍒?
 	if iptables -C DOCKER-USER -p tcp -s 127.0.0.0/8 -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -D DOCKER-USER -p tcp -s 127.0.0.0/8 -d "$container_ip" -j ACCEPT
 	fi
@@ -2681,17 +2681,17 @@ clear_container_rules() {
 
 
 
-	# 清除封禁其他所�?IP 的规�?
+	# 娓呴櫎灏佺鍏朵粬鎵€鏈?IP 鐨勮鍒?
 	if iptables -C DOCKER-USER -p udp -d "$container_ip" -j DROP &>/dev/null; then
 		iptables -D DOCKER-USER -p udp -d "$container_ip" -j DROP
 	fi
 
-	# 清除放行指定 IP 的规�?
+	# 娓呴櫎鏀捐鎸囧畾 IP 鐨勮鍒?
 	if iptables -C DOCKER-USER -p udp -s "$allowed_ip" -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -D DOCKER-USER -p udp -s "$allowed_ip" -d "$container_ip" -j ACCEPT
 	fi
 
-	# 清除放行本地网络 127.0.0.0/8 的规�?
+	# 娓呴櫎鏀捐鏈湴缃戠粶 127.0.0.0/8 鐨勮鍒?
 	if iptables -C DOCKER-USER -p udp -s 127.0.0.0/8 -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -D DOCKER-USER -p udp -s 127.0.0.0/8 -d "$container_ip" -j ACCEPT
 	fi
@@ -2702,7 +2702,7 @@ clear_container_rules() {
 	fi
 
 
-	echo "已允许IP+端口访问该服�?
+	echo "宸插厑璁窱P+绔彛璁块棶璇ユ湇鍔?
 	save_iptables_rules
 }
 
@@ -2716,25 +2716,25 @@ block_host_port() {
 	local allowed_ip=$2
 
 	if [[ -z "$port" || -z "$allowed_ip" ]]; then
-		echo "错误：请提供端口号和允许访问�?IP�?
-		echo "用法: block_host_port <端口�? <允许的IP>"
+		echo "閿欒锛氳鎻愪緵绔彛鍙峰拰鍏佽璁块棶鐨?IP銆?
+		echo "鐢ㄦ硶: block_host_port <绔彛鍙? <鍏佽鐨処P>"
 		return 1
 	fi
 
 	install iptables
 
 
-	# 拒绝其他所�?IP 访问
+	# 鎷掔粷鍏朵粬鎵€鏈?IP 璁块棶
 	if ! iptables -C INPUT -p tcp --dport "$port" -j DROP &>/dev/null; then
 		iptables -I INPUT -p tcp --dport "$port" -j DROP
 	fi
 
-	# 允许指定 IP 访问
+	# 鍏佽鎸囧畾 IP 璁块棶
 	if ! iptables -C INPUT -p tcp --dport "$port" -s "$allowed_ip" -j ACCEPT &>/dev/null; then
 		iptables -I INPUT -p tcp --dport "$port" -s "$allowed_ip" -j ACCEPT
 	fi
 
-	# 允许本机访问
+	# 鍏佽鏈満璁块棶
 	if ! iptables -C INPUT -p tcp --dport "$port" -s 127.0.0.0/8 -j ACCEPT &>/dev/null; then
 		iptables -I INPUT -p tcp --dport "$port" -s 127.0.0.0/8 -j ACCEPT
 	fi
@@ -2743,27 +2743,27 @@ block_host_port() {
 
 
 
-	# 拒绝其他所�?IP 访问
+	# 鎷掔粷鍏朵粬鎵€鏈?IP 璁块棶
 	if ! iptables -C INPUT -p udp --dport "$port" -j DROP &>/dev/null; then
 		iptables -I INPUT -p udp --dport "$port" -j DROP
 	fi
 
-	# 允许指定 IP 访问
+	# 鍏佽鎸囧畾 IP 璁块棶
 	if ! iptables -C INPUT -p udp --dport "$port" -s "$allowed_ip" -j ACCEPT &>/dev/null; then
 		iptables -I INPUT -p udp --dport "$port" -s "$allowed_ip" -j ACCEPT
 	fi
 
-	# 允许本机访问
+	# 鍏佽鏈満璁块棶
 	if ! iptables -C INPUT -p udp --dport "$port" -s 127.0.0.0/8 -j ACCEPT &>/dev/null; then
 		iptables -I INPUT -p udp --dport "$port" -s 127.0.0.0/8 -j ACCEPT
 	fi
 
-	# 允许已建立和相关连接的流�?
+	# 鍏佽宸插缓绔嬪拰鐩稿叧杩炴帴鐨勬祦閲?
 	if ! iptables -C INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT &>/dev/null; then
 		iptables -I INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 	fi
 
-	echo "已阻止IP+端口访问该服�?
+	echo "宸查樆姝P+绔彛璁块棶璇ユ湇鍔?
 	save_iptables_rules
 }
 
@@ -2775,47 +2775,47 @@ clear_host_port_rules() {
 	local allowed_ip=$2
 
 	if [[ -z "$port" || -z "$allowed_ip" ]]; then
-		echo "错误：请提供端口号和允许访问�?IP�?
-		echo "用法: clear_host_port_rules <端口�? <允许的IP>"
+		echo "閿欒锛氳鎻愪緵绔彛鍙峰拰鍏佽璁块棶鐨?IP銆?
+		echo "鐢ㄦ硶: clear_host_port_rules <绔彛鍙? <鍏佽鐨処P>"
 		return 1
 	fi
 
 	install iptables
 
 
-	# 清除封禁所有其�?IP 访问的规�?
+	# 娓呴櫎灏佺鎵€鏈夊叾浠?IP 璁块棶鐨勮鍒?
 	if iptables -C INPUT -p tcp --dport "$port" -j DROP &>/dev/null; then
 		iptables -D INPUT -p tcp --dport "$port" -j DROP
 	fi
 
-	# 清除允许本机访问的规�?
+	# 娓呴櫎鍏佽鏈満璁块棶鐨勮鍒?
 	if iptables -C INPUT -p tcp --dport "$port" -s 127.0.0.0/8 -j ACCEPT &>/dev/null; then
 		iptables -D INPUT -p tcp --dport "$port" -s 127.0.0.0/8 -j ACCEPT
 	fi
 
-	# 清除允许指定 IP 访问的规�?
+	# 娓呴櫎鍏佽鎸囧畾 IP 璁块棶鐨勮鍒?
 	if iptables -C INPUT -p tcp --dport "$port" -s "$allowed_ip" -j ACCEPT &>/dev/null; then
 		iptables -D INPUT -p tcp --dport "$port" -s "$allowed_ip" -j ACCEPT
 	fi
 
 
-	# 清除封禁所有其�?IP 访问的规�?
+	# 娓呴櫎灏佺鎵€鏈夊叾浠?IP 璁块棶鐨勮鍒?
 	if iptables -C INPUT -p udp --dport "$port" -j DROP &>/dev/null; then
 		iptables -D INPUT -p udp --dport "$port" -j DROP
 	fi
 
-	# 清除允许本机访问的规�?
+	# 娓呴櫎鍏佽鏈満璁块棶鐨勮鍒?
 	if iptables -C INPUT -p udp --dport "$port" -s 127.0.0.0/8 -j ACCEPT &>/dev/null; then
 		iptables -D INPUT -p udp --dport "$port" -s 127.0.0.0/8 -j ACCEPT
 	fi
 
-	# 清除允许指定 IP 访问的规�?
+	# 娓呴櫎鍏佽鎸囧畾 IP 璁块棶鐨勮鍒?
 	if iptables -C INPUT -p udp --dport "$port" -s "$allowed_ip" -j ACCEPT &>/dev/null; then
 		iptables -D INPUT -p udp --dport "$port" -s "$allowed_ip" -j ACCEPT
 	fi
 
 
-	echo "已允许IP+端口访问该服�?
+	echo "宸插厑璁窱P+绔彛璁块棶璇ユ湇鍔?
 	save_iptables_rules
 
 }
@@ -2854,7 +2854,7 @@ grep -qxF "${app_id}" /home/docker/appno.txt || echo "${app_id}" >> /home/docker
 
 
 docker_app() {
-send_stats "${docker_name}管理"
+send_stats "${docker_name}绠＄悊"
 
 while true; do
 	clear
@@ -2874,25 +2874,25 @@ while true; do
 	fi
 	echo ""
 	echo "------------------------"
-	echo "1. 安装              2. 更新            3. 卸载"
+	echo "1. 瀹夎              2. 鏇存柊            3. 鍗歌浇"
 	echo "------------------------"
-	echo "5. 添加域名访问      6. 删除域名访问"
-	echo "7. 允许IP+端口访问   8. 阻止IP+端口访问"
+	echo "5. 娣诲姞鍩熷悕璁块棶      6. 鍒犻櫎鍩熷悕璁块棶"
+	echo "7. 鍏佽IP+绔彛璁块棶   8. 闃绘IP+绔彛璁块棶"
 	echo "------------------------"
-	echo "0. 返回上一级选单"
+	echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 	echo "------------------------"
-	read -e -p "请输入你的选择: " choice
+	read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " choice
 	 case $choice in
 		1)
 			setup_docker_dir
 			check_disk_space $app_size /home/docker
 			while true; do
-				read -e -p "输入应用对外服务端口，回车默认使�?{docker_port}端口: " app_port
+				read -e -p "杈撳叆搴旂敤瀵瑰鏈嶅姟绔彛锛屽洖杞﹂粯璁や娇鐢?{docker_port}绔彛: " app_port
 				local app_port=${app_port:-${docker_port}}
 
 				if ss -tuln | grep -q ":$app_port "; then
-					echo -e "${gl_hong}错误: ${gl_bai}端口 $app_port 已被占用，请更换一个端�?
-					send_stats "应用端口已被占用"
+					echo -e "${gl_hong}閿欒: ${gl_bai}绔彛 $app_port 宸茶鍗犵敤锛岃鏇存崲涓€涓鍙?
+					send_stats "搴旂敤绔彛宸茶鍗犵敤"
 				else
 					local docker_port=$app_port
 					break
@@ -2907,12 +2907,12 @@ while true; do
 			add_app_id
 
 			clear
-			echo "$docker_name 已经安装完成"
+			echo "$docker_name 宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 			echo ""
 			$docker_use
 			$docker_passwd
-			send_stats "安装$docker_name"
+			send_stats "瀹夎$docker_name"
 			;;
 		2)
 			docker rm -f "$docker_name"
@@ -2922,12 +2922,12 @@ while true; do
 			add_app_id
 
 			clear
-			echo "$docker_name 已经安装完成"
+			echo "$docker_name 宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 			echo ""
 			$docker_use
 			$docker_passwd
-			send_stats "更新$docker_name"
+			send_stats "鏇存柊$docker_name"
 			;;
 		3)
 			docker rm -f "$docker_name"
@@ -2936,30 +2936,30 @@ while true; do
 			rm -f /home/docker/${docker_name}_port.conf
 
 			sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-			echo "应用已卸�?
-			send_stats "卸载$docker_name"
+			echo "搴旂敤宸插嵏杞?
+			send_stats "鍗歌浇$docker_name"
 			;;
 
 		5)
-			echo "${docker_name}域名访问设置"
-			send_stats "${docker_name}域名访问设置"
+			echo "${docker_name}鍩熷悕璁块棶璁剧疆"
+			send_stats "${docker_name}鍩熷悕璁块棶璁剧疆"
 			add_yuming
 			ldnmp_Proxy ${yuming} 127.0.0.1 ${docker_port}
 			block_container_port "$docker_name" "$ipv4_address"
 			;;
 
 		6)
-			echo "域名格式 example.com 不带https://"
+			echo "鍩熷悕鏍煎紡 example.com 涓嶅甫https://"
 			web_del
 			;;
 
 		7)
-			send_stats "允许IP访问 ${docker_name}"
+			send_stats "鍏佽IP璁块棶 ${docker_name}"
 			clear_container_rules "$docker_name" "$ipv4_address"
 			;;
 
 		8)
-			send_stats "阻止IP访问 ${docker_name}"
+			send_stats "闃绘IP璁块棶 ${docker_name}"
 			block_container_port "$docker_name" "$ipv4_address"
 			;;
 
@@ -2996,26 +2996,26 @@ docker_app_plus() {
 		fi
 		echo ""
 		echo "------------------------"
-		echo "1. 安装             2. 更新             3. 卸载"
+		echo "1. 瀹夎             2. 鏇存柊             3. 鍗歌浇"
 		echo "------------------------"
-		echo "5. 添加域名访问     6. 删除域名访问"
-		echo "7. 允许IP+端口访问  8. 阻止IP+端口访问"
+		echo "5. 娣诲姞鍩熷悕璁块棶     6. 鍒犻櫎鍩熷悕璁块棶"
+		echo "7. 鍏佽IP+绔彛璁块棶  8. 闃绘IP+绔彛璁块棶"
 		echo "------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "------------------------"
-		read -e -p "输入你的选择: " choice
+		read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 		case $choice in
 			1)
 				setup_docker_dir
 				check_disk_space $app_size /home/docker
 
 				while true; do
-					read -e -p "输入应用对外服务端口，回车默认使�?{docker_port}端口: " app_port
+					read -e -p "杈撳叆搴旂敤瀵瑰鏈嶅姟绔彛锛屽洖杞﹂粯璁や娇鐢?{docker_port}绔彛: " app_port
 					local app_port=${app_port:-${docker_port}}
 
 					if ss -tuln | grep -q ":$app_port "; then
-						echo -e "${gl_hong}错误: ${gl_bai}端口 $app_port 已被占用，请更换一个端�?
-						send_stats "应用端口已被占用"
+						echo -e "${gl_hong}閿欒: ${gl_bai}绔彛 $app_port 宸茶鍗犵敤锛岃鏇存崲涓€涓鍙?
+						send_stats "搴旂敤绔彛宸茶鍗犵敤"
 					else
 						local docker_port=$app_port
 						break
@@ -3028,13 +3028,13 @@ docker_app_plus() {
 				echo "$docker_port" > "/home/docker/${docker_name}_port.conf"
 
 				add_app_id
-				send_stats "$app_name 安装"
+				send_stats "$app_name 瀹夎"
 				;;
 
 			2)
 				docker_app_update
 				add_app_id
-				send_stats "$app_name 更新"
+				send_stats "$app_name 鏇存柊"
 				;;
 
 			3)
@@ -3042,27 +3042,27 @@ docker_app_plus() {
 				rm -f /home/docker/${docker_name}_port.conf
 
 				sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-				send_stats "$app_name 卸载"
+				send_stats "$app_name 鍗歌浇"
 				;;
 
 			5)
-				echo "${docker_name}域名访问设置"
-				send_stats "${docker_name}域名访问设置"
+				echo "${docker_name}鍩熷悕璁块棶璁剧疆"
+				send_stats "${docker_name}鍩熷悕璁块棶璁剧疆"
 				add_yuming
 				ldnmp_Proxy ${yuming} 127.0.0.1 ${docker_port}
 				block_container_port "$docker_name" "$ipv4_address"
 
 				;;
 			6)
-				echo "域名格式 example.com 不带https://"
+				echo "鍩熷悕鏍煎紡 example.com 涓嶅甫https://"
 				web_del
 				;;
 			7)
-				send_stats "允许IP访问 ${docker_name}"
+				send_stats "鍏佽IP璁块棶 ${docker_name}"
 				clear_container_rules "$docker_name" "$ipv4_address"
 				;;
 			8)
-				send_stats "阻止IP访问 ${docker_name}"
+				send_stats "闃绘IP璁块棶 ${docker_name}"
 				block_container_port "$docker_name" "$ipv4_address"
 				;;
 			*)
@@ -3147,17 +3147,17 @@ tmux_run_d() {
 local base_name="tmuxd"
 local tmuxd_ID=1
 
-# 检查会话是否存在的函数
+# 妫€鏌ヤ細璇濇槸鍚﹀瓨鍦ㄧ殑鍑芥暟
 session_exists() {
   tmux has-session -t $1 2>/dev/null
 }
 
-# 循环直到找到一个不存在的会话名�?
+# 寰幆鐩村埌鎵惧埌涓€涓笉瀛樺湪鐨勪細璇濆悕绉?
 while session_exists "$base_name-$tmuxd_ID"; do
   local tmuxd_ID=$((tmuxd_ID + 1))
 done
 
-# 创建新的 tmux 会话
+# 鍒涘缓鏂扮殑 tmux 浼氳瘽
 tmux new -d -s "$base_name-$tmuxd_ID" "$tmuxd"
 
 
@@ -3177,9 +3177,9 @@ f2b_status_xxx() {
 
 check_f2b_status() {
 	if command -v fail2ban-client >/dev/null 2>&1; then
-		check_f2b_status="${gl_lv}已安�?{gl_bai}"
+		check_f2b_status="${gl_lv}宸插畨瑁?{gl_bai}"
 	else
-		check_f2b_status="${gl_hui}未安�?{gl_bai}"
+		check_f2b_status="${gl_hui}鏈畨瑁?{gl_bai}"
 	fi
 }
 
@@ -3218,14 +3218,14 @@ f2b_sshd() {
 
 server_reboot() {
 
-	read -e -p "$(echo -e "${gl_huang}提示: ${gl_bai}现在重启服务器吗�?Y/N): ")" rboot
+	read -e -p "$(echo -e "${gl_huang}鎻愮ず: ${gl_bai}鐜板湪閲嶅惎鏈嶅姟鍣ㄥ悧锛?Y/N): ")" rboot
 	case "$rboot" in
 	  [Yy])
-		echo "已重�?
+		echo "宸查噸鍚?
 		reboot
 		;;
 	  *)
-		echo "已取�?
+		echo "宸插彇娑?
 		;;
 	esac
 
@@ -3268,8 +3268,8 @@ ldnmp_install_status_one() {
 
    if docker inspect "php" &>/dev/null; then
 	clear
-	send_stats "无法再次安装LDNMP环境"
-	echo -e "${gl_huang}提示: ${gl_bai}建站环境已安装。无需再次安装�?
+	send_stats "鏃犳硶鍐嶆瀹夎LDNMP鐜"
+	echo -e "${gl_huang}鎻愮ず: ${gl_bai}寤虹珯鐜宸插畨瑁呫€傛棤闇€鍐嶆瀹夎锛?
 	break_end
 	linux_ldnmp
    fi
@@ -3279,10 +3279,10 @@ ldnmp_install_status_one() {
 
 ldnmp_install_all() {
 cd ~
-send_stats "安装LDNMP环境"
+send_stats "瀹夎LDNMP鐜"
 root_use
 clear
-echo -e "${gl_huang}LDNMP环境未安装，开始安装LDNMP环境...${gl_bai}"
+echo -e "${gl_huang}LDNMP鐜鏈畨瑁咃紝寮€濮嬪畨瑁匧DNMP鐜...${gl_bai}"
 check_disk_space 3 /home
 install_dependency
 install_docker
@@ -3295,10 +3295,10 @@ install_ldnmp
 
 nginx_install_all() {
 cd ~
-send_stats "安装nginx环境"
+send_stats "瀹夎nginx鐜"
 root_use
 clear
-echo -e "${gl_huang}nginx未安装，开始安装nginx环境...${gl_bai}"
+echo -e "${gl_huang}nginx鏈畨瑁咃紝寮€濮嬪畨瑁卬ginx鐜...${gl_bai}"
 install_dependency
 install_docker
 install_certbot
@@ -3307,8 +3307,8 @@ nginx_upgrade
 clear
 local nginx_version=$(docker exec nginx nginx -v 2>&1)
 local nginx_version=$(echo "$nginx_version" | grep -oP "nginx/\K[0-9]+\.[0-9]+\.[0-9]+")
-echo "nginx已安装完�?
-echo -e "当前版本: ${gl_huang}v$nginx_version${gl_bai}"
+echo "nginx宸插畨瑁呭畬鎴?
+echo -e "褰撳墠鐗堟湰: ${gl_huang}v$nginx_version${gl_bai}"
 echo ""
 
 }
@@ -3319,7 +3319,7 @@ echo ""
 ldnmp_install_status() {
 
 	if ! docker inspect "php" &>/dev/null; then
-		send_stats "请先安装LDNMP环境"
+		send_stats "璇峰厛瀹夎LDNMP鐜"
 		ldnmp_install_all
 	fi
 
@@ -3329,7 +3329,7 @@ ldnmp_install_status() {
 nginx_install_status() {
 
 	if ! docker inspect "nginx" &>/dev/null; then
-		send_stats "请先安装nginx环境"
+		send_stats "璇峰厛瀹夎nginx鐜"
 		nginx_install_all
 	fi
 
@@ -3340,10 +3340,10 @@ nginx_install_status() {
 
 ldnmp_web_on() {
 	  clear
-	  echo "您的 $webname 搭建好了�?
+	  echo "鎮ㄧ殑 $webname 鎼缓濂戒簡锛?
 	  echo "https://$yuming"
 	  echo "------------------------"
-	  echo "$webname 安装信息如下: "
+	  echo "$webname 瀹夎淇℃伅濡備笅: "
 
 }
 
@@ -3353,7 +3353,7 @@ nginx_web_on() {
 	local ipv4_pattern='^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
 	local ipv6_pattern='^(([0-9A-Fa-f]{1,4}:){1,7}:|([0-9A-Fa-f]{1,4}:){7,7}[0-9A-Fa-f]{1,4}|::1)$'
 
-	echo "您的 $webname 搭建好了�?
+	echo "鎮ㄧ殑 $webname 鎼缓濂戒簡锛?
 
 	if [[ "$yuming" =~ $ipv4_pattern || "$yuming" =~ $ipv6_pattern ]]; then
 		mv /home/web/conf.d/"$yuming".conf /home/web/conf.d/"${yuming}_${access_port}".conf
@@ -3372,8 +3372,8 @@ ldnmp_wp() {
   # wordpress
   webname="WordPress"
   yuming="${1:-}"
-  send_stats "安装$webname"
-  echo "开始部�?$webname"
+  send_stats "瀹夎$webname"
+  echo "寮€濮嬮儴缃?$webname"
   if [ -z "$yuming" ]; then
 	add_yuming
   fi
@@ -3415,13 +3415,13 @@ ldnmp_wp() {
 
 ldnmp_Proxy() {
 	clear
-	webname="反向代理-IP+端口"
+	webname="鍙嶅悜浠ｇ悊-IP+绔彛"
 	yuming="${1:-}"
 	reverseproxy="${2:-}"
 	port="${3:-}"
 
-	send_stats "安装$webname"
-	echo "开始部�?$webname"
+	send_stats "瀹夎$webname"
+	echo "寮€濮嬮儴缃?$webname"
 	if [ -z "$yuming" ]; then
 		add_yuming
 	fi
@@ -3429,12 +3429,12 @@ ldnmp_Proxy() {
 	check_ip_and_get_access_port "$yuming"
 
 	if [ -z "$reverseproxy" ]; then
-		read -e -p "请输入你的反代IP (回车默认本机IP 127.0.0.1): " reverseproxy
+		read -e -p "璇疯緭鍏ヤ綘鐨勫弽浠P (鍥炶溅榛樿鏈満IP 127.0.0.1): " reverseproxy
 		reverseproxy=${reverseproxy:-127.0.0.1}
 	fi
 
 	if [ -z "$port" ]; then
-		read -e -p "请输入你的反代端�? " port
+		read -e -p "璇疯緭鍏ヤ綘鐨勫弽浠ｇ鍙? " port
 	fi
 	nginx_install_status
 
@@ -3457,7 +3457,7 @@ ldnmp_Proxy() {
 		upstream_servers="$upstream_servers    server $server;\n"
 	done
 
-	sed -i "s/# 动态添�?$upstream_servers/g" /home/web/conf.d/$yuming.conf
+	sed -i "s/# 鍔ㄦ€佹坊鍔?$upstream_servers/g" /home/web/conf.d/$yuming.conf
 	sed -i '/remote_addr/d' /home/web/conf.d/$yuming.conf
 
 	update_nginx_listen_port "$yuming" "$access_port"
@@ -3471,10 +3471,10 @@ ldnmp_Proxy() {
 
 ldnmp_Proxy_backend() {
 	clear
-	webname="反向代理-负载均衡"
+	webname="鍙嶅悜浠ｇ悊-璐熻浇鍧囪　"
 
-	send_stats "安装$webname"
-	echo "开始部�?$webname"
+	send_stats "瀹夎$webname"
+	echo "寮€濮嬮儴缃?$webname"
 	if [ -z "$yuming" ]; then
 		add_yuming
 	fi
@@ -3482,7 +3482,7 @@ ldnmp_Proxy_backend() {
 	check_ip_and_get_access_port "$yuming"
 
 	if [ -z "$reverseproxy_port" ]; then
-		read -e -p "请输入你的多个反代IP+端口用空格隔开（例�?127.0.0.1:3000 127.0.0.1:3002）： " reverseproxy_port
+		read -e -p "璇疯緭鍏ヤ綘鐨勫涓弽浠P+绔彛鐢ㄧ┖鏍奸殧寮€锛堜緥濡?127.0.0.1:3000 127.0.0.1:3002锛夛細 " reverseproxy_port
 	fi
 
 	nginx_install_status
@@ -3504,7 +3504,7 @@ ldnmp_Proxy_backend() {
 		upstream_servers="$upstream_servers    server $server;\n"
 	done
 
-	sed -i "s/# 动态添�?$upstream_servers/g" /home/web/conf.d/$yuming.conf
+	sed -i "s/# 鍔ㄦ€佹坊鍔?$upstream_servers/g" /home/web/conf.d/$yuming.conf
 
 
 	update_nginx_listen_port "$yuming" "$access_port"
@@ -3522,34 +3522,34 @@ ldnmp_Proxy_backend() {
 list_stream_services() {
 
 	STREAM_DIR="/home/web/stream.d"
-	printf "%-25s %-18s %-25s %-20s\n" "服务�? "通信类型" "本机地址" "后端地址"
+	printf "%-25s %-18s %-25s %-20s\n" "鏈嶅姟鍚? "閫氫俊绫诲瀷" "鏈満鍦板潃" "鍚庣鍦板潃"
 
 	if [ -z "$(ls -A "$STREAM_DIR")" ]; then
 		return
 	fi
 
 	for conf in "$STREAM_DIR"/*; do
-		# 服务名取文件�?
+		# 鏈嶅姟鍚嶅彇鏂囦欢鍚?
 		service_name=$(basename "$conf" .conf)
 
-		# 获取 upstream 块中�?server 后端 IP:端口
+		# 鑾峰彇 upstream 鍧椾腑鐨?server 鍚庣 IP:绔彛
 		backend=$(grep -Po '(?<=server )[^;]+' "$conf" | head -n1)
 
-		# 获取 listen 端口
+		# 鑾峰彇 listen 绔彛
 		listen_port=$(grep -Po '(?<=listen )[^;]+' "$conf" | head -n1)
 
-		# 默认本地 IP
+		# 榛樿鏈湴 IP
 		ip_address
 		local_ip="$ipv4_address"
 
-		# 获取通信类型，优先从文件名后缀或内容判�?
+		# 鑾峰彇閫氫俊绫诲瀷锛屼紭鍏堜粠鏂囦欢鍚嶅悗缂€鎴栧唴瀹瑰垽鏂?
 		if grep -qi 'udp;' "$conf"; then
 			proto="udp"
 		else
 			proto="tcp"
 		fi
 
-		# 拼接监听 IP:端口
+		# 鎷兼帴鐩戝惉 IP:绔彛
 		local_addr="$local_ip:$listen_port"
 
 		printf "%-22s %-14s %-21s %-20s\n" "$service_name" "$proto" "$local_addr" "$backend"
@@ -3565,7 +3565,7 @@ list_stream_services() {
 
 
 stream_panel() {
-	send_stats "Stream四层代理"
+	send_stats "Stream鍥涘眰浠ｇ悊"
 	local app_id="104"
 	local docker_name="nginx"
 
@@ -3573,42 +3573,42 @@ stream_panel() {
 		clear
 		check_docker_app
 		check_docker_image_update $docker_name
-		echo -e "Stream四层代理转发工具 $check_docker $update_status"
-		echo "NGINX Stream �?NGINX �?TCP/UDP 代理模块，用于实现高性能�?传输层流量转发和负载均衡�?
+		echo -e "Stream鍥涘眰浠ｇ悊杞彂宸ュ叿 $check_docker $update_status"
+		echo "NGINX Stream 鏄?NGINX 鐨?TCP/UDP 浠ｇ悊妯″潡锛岀敤浜庡疄鐜伴珮鎬ц兘鐨?浼犺緭灞傛祦閲忚浆鍙戝拰璐熻浇鍧囪　銆?
 		echo "------------------------"
 		if [ -d "/home/web/stream.d" ]; then
 			list_stream_services
 		fi
 		echo ""
 		echo "------------------------"
-		echo "1. 安装               2. 更新               3. 卸载"
+		echo "1. 瀹夎               2. 鏇存柊               3. 鍗歌浇"
 		echo "------------------------"
-		echo "4. 添加转发服务       5. 修改转发服务       6. 删除转发服务"
+		echo "4. 娣诲姞杞彂鏈嶅姟       5. 淇敼杞彂鏈嶅姟       6. 鍒犻櫎杞彂鏈嶅姟"
 		echo "------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "------------------------"
-		read -e -p "输入你的选择: " choice
+		read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 		case $choice in
 			1)
 				nginx_install_status
 				add_app_id
-				send_stats "安装Stream四层代理"
+				send_stats "瀹夎Stream鍥涘眰浠ｇ悊"
 				;;
 			2)
 				update_docker_compose_with_db_creds
 				nginx_upgrade
 				add_app_id
-				send_stats "更新Stream四层代理"
+				send_stats "鏇存柊Stream鍥涘眰浠ｇ悊"
 				;;
 			3)
-				read -e -p "确定要删�?nginx 容器吗？这可能会影响网站功能�?y/N): " confirm
+				read -e -p "纭畾瑕佸垹闄?nginx 瀹瑰櫒鍚楋紵杩欏彲鑳戒細褰卞搷缃戠珯鍔熻兘锛?y/N): " confirm
 				if [[ "$confirm" =~ ^[Yy]$ ]]; then
 					docker rm -f nginx
 					sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-					send_stats "更新Stream四层代理"
-					echo "nginx 容器已删除�?
+					send_stats "鏇存柊Stream鍥涘眰浠ｇ悊"
+					echo "nginx 瀹瑰櫒宸插垹闄ゃ€?
 				else
-					echo "操作已取消�?
+					echo "鎿嶄綔宸插彇娑堛€?
 				fi
 
 				;;
@@ -3616,22 +3616,22 @@ stream_panel() {
 			4)
 				ldnmp_Proxy_backend_stream
 				add_app_id
-				send_stats "添加四层代理"
+				send_stats "娣诲姞鍥涘眰浠ｇ悊"
 				;;
 			5)
-				send_stats "编辑转发配置"
-				read -e -p "请输入你要编辑的服务�? " stream_name
+				send_stats "缂栬緫杞彂閰嶇疆"
+				read -e -p "璇疯緭鍏ヤ綘瑕佺紪杈戠殑鏈嶅姟鍚? " stream_name
 				install nano
 				nano /home/web/stream.d/$stream_name.conf
 				docker restart nginx
-				send_stats "修改四层代理"
+				send_stats "淇敼鍥涘眰浠ｇ悊"
 				;;
 			6)
-				send_stats "删除转发配置"
-				read -e -p "请输入你要删除的服务�? " stream_name
+				send_stats "鍒犻櫎杞彂閰嶇疆"
+				read -e -p "璇疯緭鍏ヤ綘瑕佸垹闄ょ殑鏈嶅姟鍚? " stream_name
 				rm /home/web/stream.d/$stream_name.conf > /dev/null 2>&1
 				docker restart nginx
-				send_stats "删除四层代理"
+				send_stats "鍒犻櫎鍥涘眰浠ｇ悊"
 				;;
 			*)
 				break
@@ -3645,34 +3645,34 @@ stream_panel() {
 
 ldnmp_Proxy_backend_stream() {
 	clear
-	webname="Stream四层代理-负载均衡"
+	webname="Stream鍥涘眰浠ｇ悊-璐熻浇鍧囪　"
 
-	send_stats "安装$webname"
-	echo "开始部�?$webname"
+	send_stats "瀹夎$webname"
+	echo "寮€濮嬮儴缃?$webname"
 
-	# 获取代理名称
-	read -erp "请输入代理转发名�?(�?mysql_proxy): " proxy_name
+	# 鑾峰彇浠ｇ悊鍚嶇О
+	read -erp "璇疯緭鍏ヤ唬鐞嗚浆鍙戝悕绉?(濡?mysql_proxy): " proxy_name
 	if [ -z "$proxy_name" ]; then
-		echo "名称不能为空"; return 1
+		echo "鍚嶇О涓嶈兘涓虹┖"; return 1
 	fi
 
-	# 获取监听端口
-	read -erp "请输入本机监听端�?(�?3306): " listen_port
+	# 鑾峰彇鐩戝惉绔彛
+	read -erp "璇疯緭鍏ユ湰鏈虹洃鍚鍙?(濡?3306): " listen_port
 	if ! [[ "$listen_port" =~ ^[0-9]+$ ]]; then
-		echo "端口必须是数�?; return 1
+		echo "绔彛蹇呴』鏄暟瀛?; return 1
 	fi
 
-	echo "请选择协议类型�?
+	echo "璇烽€夋嫨鍗忚绫诲瀷锛?
 	echo "1. TCP    2. UDP"
-	read -erp "请输入序�?[1-2]: " proto_choice
+	read -erp "璇疯緭鍏ュ簭鍙?[1-2]: " proto_choice
 
 	case "$proto_choice" in
 		1) proto="tcp"; listen_suffix="" ;;
 		2) proto="udp"; listen_suffix=" udp" ;;
-		*) echo "无效选择"; return 1 ;;
+		*) echo "鏃犳晥閫夋嫨"; return 1 ;;
 	esac
 
-	read -e -p "请输入你的一个或者多个后端IP+端口用空格隔开（例�?10.13.0.2:3306 10.13.0.3:3306）： " reverseproxy_port
+	read -e -p "璇疯緭鍏ヤ綘鐨勪竴涓垨鑰呭涓悗绔疘P+绔彛鐢ㄧ┖鏍奸殧寮€锛堜緥濡?10.13.0.2:3306 10.13.0.3:3306锛夛細 " reverseproxy_port
 
 	nginx_install_status
 	cd /home && mkdir -p web/stream.d
@@ -3689,13 +3689,13 @@ ldnmp_Proxy_backend_stream() {
 		upstream_servers="$upstream_servers    server $server;\n"
 	done
 
-	sed -i "s/# 动态添�?$upstream_servers/g" /home/web/stream.d/$proxy_name.conf
+	sed -i "s/# 鍔ㄦ€佹坊鍔?$upstream_servers/g" /home/web/stream.d/$proxy_name.conf
 
 	docker exec nginx nginx -s reload
 	clear
-	echo "您的 $webname 搭建好了�?
+	echo "鎮ㄧ殑 $webname 鎼缓濂戒簡锛?
 	echo "------------------------"
-	echo "访问地址:"
+	echo "璁块棶鍦板潃:"
 	ip_address
 	if [ -n "$ipv4_address" ]; then
 		echo "$ipv4_address:${listen_port}"
@@ -3734,12 +3734,12 @@ ldnmp_web_status() {
 		local db_output="${gl_lv}${db_count}${gl_bai}"
 
 		clear
-		send_stats "LDNMP站点管理"
-		echo "LDNMP环境"
+		send_stats "LDNMP绔欑偣绠＄悊"
+		echo "LDNMP鐜"
 		echo "------------------------"
 		ldnmp_v
 
-		echo -e "站点: ${output}                      证书到期时间"
+		echo -e "绔欑偣: ${output}                      璇佷功鍒版湡鏃堕棿"
 		echo -e "------------------------"
 		for cert_file in /home/web/certs/*_cert.pem; do
 		  local domain=$(basename "$cert_file" | sed 's/_cert.pem//')
@@ -3771,35 +3771,35 @@ ldnmp_web_status() {
 
 		echo "------------------------"
 		echo ""
-		echo -e "数据�? ${db_output}"
+		echo -e "鏁版嵁搴? ${db_output}"
 		echo -e "------------------------"
 		local dbrootpasswd=$(grep -oP 'MYSQL_ROOT_PASSWORD:\s*\K.*' /home/web/docker-compose.yml | tr -d '[:space:]')
 		docker exec mysql mysql -u root -p"$dbrootpasswd" -e "SHOW DATABASES;" 2> /dev/null | grep -Ev "Database|information_schema|mysql|performance_schema|sys"
 
 		echo "------------------------"
 		echo ""
-		echo "站点目录"
+		echo "绔欑偣鐩綍"
 		echo "------------------------"
-		echo -e "数据 ${gl_hui}/home/web/html${gl_bai}     证书 ${gl_hui}/home/web/certs${gl_bai}     配置 ${gl_hui}/home/web/conf.d${gl_bai}"
+		echo -e "鏁版嵁 ${gl_hui}/home/web/html${gl_bai}     璇佷功 ${gl_hui}/home/web/certs${gl_bai}     閰嶇疆 ${gl_hui}/home/web/conf.d${gl_bai}"
 		echo "------------------------"
 		echo ""
-		echo "操作"
+		echo "鎿嶄綔"
 		echo "------------------------"
-		echo "1.  申请/更新域名证书               2.  克隆站点域名"
-		echo "3.  清理站点缓存                    4.  创建关联站点"
-		echo "5.  查看访问日志                    6.  查看错误日志"
-		echo "7.  编辑全局配置                    8.  编辑站点配置"
-		echo "9.  管理站点数据�?                 10. 查看站点分析报告"
+		echo "1.  鐢宠/鏇存柊鍩熷悕璇佷功               2.  鍏嬮殕绔欑偣鍩熷悕"
+		echo "3.  娓呯悊绔欑偣缂撳瓨                    4.  鍒涘缓鍏宠仈绔欑偣"
+		echo "5.  鏌ョ湅璁块棶鏃ュ織                    6.  鏌ョ湅閿欒鏃ュ織"
+		echo "7.  缂栬緫鍏ㄥ眬閰嶇疆                    8.  缂栬緫绔欑偣閰嶇疆"
+		echo "9.  绠＄悊绔欑偣鏁版嵁搴?                 10. 鏌ョ湅绔欑偣鍒嗘瀽鎶ュ憡"
 		echo "------------------------"
-		echo "20. 删除指定站点数据"
+		echo "20. 鍒犻櫎鎸囧畾绔欑偣鏁版嵁"
 		echo "------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "------------------------"
-		read -e -p "请输入你的选择: " sub_choice
+		read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 		case $sub_choice in
 			1)
-				send_stats "申请域名证书"
-				read -e -p "请输入你的域�? " yuming
+				send_stats "鐢宠鍩熷悕璇佷功"
+				read -e -p "璇疯緭鍏ヤ綘鐨勫煙鍚? " yuming
 				install_certbot
 				docker run --rm -v /etc/letsencrypt/:/etc/letsencrypt certbot/certbot delete --cert-name "$yuming" -n 2>/dev/null
 				install_ssltls
@@ -3808,9 +3808,9 @@ ldnmp_web_status() {
 				;;
 
 			2)
-				send_stats "克隆站点域名"
-				read -e -p "请输入旧域名: " oddyuming
-				read -e -p "请输入新域名: " yuming
+				send_stats "鍏嬮殕绔欑偣鍩熷悕"
+				read -e -p "璇疯緭鍏ユ棫鍩熷悕: " oddyuming
+				read -e -p "璇疯緭鍏ユ柊鍩熷悕: " yuming
 				install_certbot
 				install_ssltls
 				certs_status
@@ -3830,7 +3830,7 @@ ldnmp_web_status() {
 					done
 				done
 
-				# 网站目录替换
+				# 缃戠珯鐩綍鏇挎崲
 				cp -r /home/web/html/$oddyuming /home/web/html/$yuming
 
 				find /home/web/html/$yuming -type f -exec sed -i "s/$odd_dbname/$dbname/g" {} +
@@ -3848,10 +3848,10 @@ ldnmp_web_status() {
 				web_cache
 				;;
 			4)
-				send_stats "创建关联站点"
-				echo -e "为现有的站点再关联一个新域名用于访问"
-				read -e -p "请输入现有的域名: " oddyuming
-				read -e -p "请输入新域名: " yuming
+				send_stats "鍒涘缓鍏宠仈绔欑偣"
+				echo -e "涓虹幇鏈夌殑绔欑偣鍐嶅叧鑱斾竴涓柊鍩熷悕鐢ㄤ簬璁块棶"
+				read -e -p "璇疯緭鍏ョ幇鏈夌殑鍩熷悕: " oddyuming
+				read -e -p "璇疯緭鍏ユ柊鍩熷悕: " yuming
 				install_certbot
 				install_ssltls
 				certs_status
@@ -3865,25 +3865,25 @@ ldnmp_web_status() {
 
 				;;
 			5)
-				send_stats "查看访问日志"
+				send_stats "鏌ョ湅璁块棶鏃ュ織"
 				tail -n 200 /home/web/log/nginx/access.log
 				break_end
 				;;
 			6)
-				send_stats "查看错误日志"
+				send_stats "鏌ョ湅閿欒鏃ュ織"
 				tail -n 200 /home/web/log/nginx/error.log
 				break_end
 				;;
 			7)
-				send_stats "编辑全局配置"
+				send_stats "缂栬緫鍏ㄥ眬閰嶇疆"
 				install nano
 				nano /home/web/nginx.conf
 				docker exec nginx nginx -s reload
 				;;
 
 			8)
-				send_stats "编辑站点配置"
-				read -e -p "编辑站点配置，请输入你要编辑的域�? " yuming
+				send_stats "缂栬緫绔欑偣閰嶇疆"
+				read -e -p "缂栬緫绔欑偣閰嶇疆锛岃杈撳叆浣犺缂栬緫鐨勫煙鍚? " yuming
 				install nano
 				nano /home/web/conf.d/$yuming.conf
 				docker exec nginx nginx -s reload
@@ -3893,7 +3893,7 @@ ldnmp_web_status() {
 				break_end
 				;;
 			10)
-				send_stats "查看站点数据"
+				send_stats "鏌ョ湅绔欑偣鏁版嵁"
 				install goaccess
 				goaccess --log-format=COMBINED /home/web/log/nginx/access.log
 				;;
@@ -3904,7 +3904,7 @@ ldnmp_web_status() {
 
 				;;
 			*)
-				break  # 跳出循环，退出菜�?
+				break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 				;;
 		esac
 	done
@@ -3915,7 +3915,7 @@ ldnmp_web_status() {
 
 check_panel_app() {
 if $lujing > /dev/null 2>&1; then
-	check_panel="${gl_lv}已安�?{gl_bai}"
+	check_panel="${gl_lv}宸插畨瑁?{gl_bai}"
 else
 	check_panel=""
 fi
@@ -3924,21 +3924,21 @@ fi
 
 
 install_panel() {
-send_stats "${panelname}管理"
+send_stats "${panelname}绠＄悊"
 while true; do
 	clear
 	check_panel_app
 	echo -e "$panelname $check_panel"
-	echo "${panelname}是一款时下流行且强大的运维管理面板�?
-	echo "官网介绍: $panelurl "
+	echo "${panelname}鏄竴娆炬椂涓嬫祦琛屼笖寮哄ぇ鐨勮繍缁寸鐞嗛潰鏉裤€?
+	echo "瀹樼綉浠嬬粛: $panelurl "
 
 	echo ""
 	echo "------------------------"
-	echo "1. 安装            2. 管理            3. 卸载"
+	echo "1. 瀹夎            2. 绠＄悊            3. 鍗歌浇"
 	echo "------------------------"
-	echo "0. 返回上一级选单"
+	echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 	echo "------------------------"
-	read -e -p "请输入你的选择: " choice
+	read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " choice
 	 case $choice in
 		1)
 			check_disk_space 1
@@ -3947,20 +3947,20 @@ while true; do
 			panel_app_install
 
 			add_app_id
-			send_stats "${panelname}安装"
+			send_stats "${panelname}瀹夎"
 			;;
 		2)
 			panel_app_manage
 
 			add_app_id
-			send_stats "${panelname}控制"
+			send_stats "${panelname}鎺у埗"
 
 			;;
 		3)
 			panel_app_uninstall
 
 			sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-			send_stats "${panelname}卸载"
+			send_stats "${panelname}鍗歌浇"
 			;;
 		*)
 			break
@@ -3976,9 +3976,9 @@ done
 check_frp_app() {
 
 if [ -d "/home/frp/" ]; then
-	check_frp="${gl_lv}已安�?{gl_bai}"
+	check_frp="${gl_lv}宸插畨瑁?{gl_bai}"
 else
-	check_frp="${gl_hui}未安�?{gl_bai}"
+	check_frp="${gl_hui}鏈畨瑁?{gl_bai}"
 fi
 
 }
@@ -4004,8 +4004,8 @@ donlond_frp() {
 
 generate_frps_config() {
 
-	send_stats "安装frp服务�?
-	# 生成随机端口和凭�?
+	send_stats "瀹夎frp鏈嶅姟绔?
+	# 鐢熸垚闅忔満绔彛鍜屽嚟璇?
 	local bind_port=8055
 	local dashboard_port=8056
 	local token=$(openssl rand -hex 16)
@@ -4026,17 +4026,17 @@ EOF
 
 	donlond_frp frps
 
-	# 输出生成的信�?
+	# 杈撳嚭鐢熸垚鐨勪俊鎭?
 	ip_address
 	echo "------------------------"
-	echo "客户端部署时需要用的参�?
-	echo "服务IP: $ipv4_address"
+	echo "瀹㈡埛绔儴缃叉椂闇€瑕佺敤鐨勫弬鏁?
+	echo "鏈嶅姟IP: $ipv4_address"
 	echo "token: $token"
 	echo
-	echo "FRP面板信息"
-	echo "FRP面板地址: http://$ipv4_address:$dashboard_port"
-	echo "FRP面板用户�? $dashboard_user"
-	echo "FRP面板密码: $dashboard_pwd"
+	echo "FRP闈㈡澘淇℃伅"
+	echo "FRP闈㈡澘鍦板潃: http://$ipv4_address:$dashboard_port"
+	echo "FRP闈㈡澘鐢ㄦ埛鍚? $dashboard_user"
+	echo "FRP闈㈡澘瀵嗙爜: $dashboard_pwd"
 	echo
 
 	open_port 8055 8056
@@ -4046,9 +4046,9 @@ EOF
 
 
 configure_frpc() {
-	send_stats "安装frp客户�?
-	read -e -p "请输入外网对接IP: " server_addr
-	read -e -p "请输入外网对接token: " token
+	send_stats "瀹夎frp瀹㈡埛绔?
+	read -e -p "璇疯緭鍏ュ缃戝鎺P: " server_addr
+	read -e -p "璇疯緭鍏ュ缃戝鎺oken: " token
 	echo
 
 	mkdir -p /home/frp
@@ -4068,17 +4068,17 @@ EOF
 }
 
 add_forwarding_service() {
-	send_stats "添加frp内网服务"
-	# 提示用户输入服务名称和转发信�?
-	read -e -p "请输入服务名�? " service_name
-	read -e -p "请输入转发类�?(tcp/udp) [回车默认tcp]: " service_type
+	send_stats "娣诲姞frp鍐呯綉鏈嶅姟"
+	# 鎻愮ず鐢ㄦ埛杈撳叆鏈嶅姟鍚嶇О鍜岃浆鍙戜俊鎭?
+	read -e -p "璇疯緭鍏ユ湇鍔″悕绉? " service_name
+	read -e -p "璇疯緭鍏ヨ浆鍙戠被鍨?(tcp/udp) [鍥炶溅榛樿tcp]: " service_type
 	local service_type=${service_type:-tcp}
-	read -e -p "请输入内网IP [回车默认127.0.0.1]: " local_ip
+	read -e -p "璇疯緭鍏ュ唴缃慖P [鍥炶溅榛樿127.0.0.1]: " local_ip
 	local local_ip=${local_ip:-127.0.0.1}
-	read -e -p "请输入内网端�? " local_port
-	read -e -p "请输入外网端�? " remote_port
+	read -e -p "璇疯緭鍏ュ唴缃戠鍙? " local_port
+	read -e -p "璇疯緭鍏ュ缃戠鍙? " remote_port
 
-	# 将用户输入写入配置文�?
+	# 灏嗙敤鎴疯緭鍏ュ啓鍏ラ厤缃枃浠?
 	cat <<EOF >> /home/frp/frpc.toml
 [$service_name]
 type = ${service_type}
@@ -4088,8 +4088,8 @@ remote_port = ${remote_port}
 
 EOF
 
-	# 输出生成的信�?
-	echo "服务 $service_name 已成功添加到 frpc.toml"
+	# 杈撳嚭鐢熸垚鐨勪俊鎭?
+	echo "鏈嶅姟 $service_name 宸叉垚鍔熸坊鍔犲埌 frpc.toml"
 
 	docker restart frpc
 
@@ -4100,12 +4100,12 @@ EOF
 
 
 delete_forwarding_service() {
-	send_stats "删除frp内网服务"
-	# 提示用户输入需要删除的服务名称
-	read -e -p "请输入需要删除的服务名称: " service_name
-	# 使用 sed 删除该服务及其相关配�?
+	send_stats "鍒犻櫎frp鍐呯綉鏈嶅姟"
+	# 鎻愮ず鐢ㄦ埛杈撳叆闇€瑕佸垹闄ょ殑鏈嶅姟鍚嶇О
+	read -e -p "璇疯緭鍏ラ渶瑕佸垹闄ょ殑鏈嶅姟鍚嶇О: " service_name
+	# 浣跨敤 sed 鍒犻櫎璇ユ湇鍔″強鍏剁浉鍏抽厤缃?
 	sed -i "/\[$service_name\]/,/^$/d" /home/frp/frpc.toml
-	echo "服务 $service_name 已成功从 frpc.toml 删除"
+	echo "鏈嶅姟 $service_name 宸叉垚鍔熶粠 frpc.toml 鍒犻櫎"
 
 	docker restart frpc
 
@@ -4115,8 +4115,8 @@ delete_forwarding_service() {
 list_forwarding_services() {
 	local config_file="$1"
 
-	# 打印表头
-	printf "%-20s %-25s %-30s %-10s\n" "服务名称" "内网地址" "外网地址" "协议"
+	# 鎵撳嵃琛ㄥご
+	printf "%-20s %-25s %-30s %-10s\n" "鏈嶅姟鍚嶇О" "鍐呯綉鍦板潃" "澶栫綉鍦板潃" "鍗忚"
 
 	awk '
 	BEGIN {
@@ -4136,7 +4136,7 @@ list_forwarding_services() {
 	}
 
 	/^\[.*\]/ {
-		# 如果已有服务信息，在处理新服务之前打印当前服�?
+		# 濡傛灉宸叉湁鏈嶅姟淇℃伅锛屽湪澶勭悊鏂版湇鍔′箣鍓嶆墦鍗板綋鍓嶆湇鍔?
 		if (current_service != "" && current_service != "common" && local_ip != "" && local_port != "") {
 			printf "%-16s %-21s %-26s %-10s\n", \
 				current_service, \
@@ -4145,11 +4145,11 @@ list_forwarding_services() {
 				type
 		}
 
-		# 更新当前服务名称
+		# 鏇存柊褰撳墠鏈嶅姟鍚嶇О
 		if ($1 != "[common]") {
 			gsub(/[\[\]]/, "", $1)
 			current_service=$1
-			# 清除之前的�?
+			# 娓呴櫎涔嬪墠鐨勫€?
 			local_ip=""
 			local_port=""
 			remote_port=""
@@ -4178,7 +4178,7 @@ list_forwarding_services() {
 	}
 
 	END {
-		# 打印最后一个服务的信息
+		# 鎵撳嵃鏈€鍚庝竴涓湇鍔＄殑淇℃伅
 		if (current_service != "" && current_service != "common" && local_ip != "" && local_port != "") {
 			printf "%-16s %-21s %-26s %-10s\n", \
 				current_service, \
@@ -4191,17 +4191,17 @@ list_forwarding_services() {
 
 
 
-# 获取 FRP 服务端端�?
+# 鑾峰彇 FRP 鏈嶅姟绔鍙?
 get_frp_ports() {
 	mapfile -t ports < <(ss -tulnape | grep frps | awk '{print $5}' | awk -F':' '{print $NF}' | sort -u)
 }
 
-# 生成访问地址
+# 鐢熸垚璁块棶鍦板潃
 generate_access_urls() {
-	# 首先获取所有端�?
+	# 棣栧厛鑾峰彇鎵€鏈夌鍙?
 	get_frp_ports
 
-	# 检查是否有�?8055/8056 的端�?
+	# 妫€鏌ユ槸鍚︽湁闈?8055/8056 鐨勭鍙?
 	local has_valid_ports=false
 	for port in "${ports[@]}"; do
 		if [[ $port != "8055" && $port != "8056" ]]; then
@@ -4210,18 +4210,18 @@ generate_access_urls() {
 		fi
 	done
 
-	# 只在有有效端口时显示标题和内�?
+	# 鍙湪鏈夋湁鏁堢鍙ｆ椂鏄剧ず鏍囬鍜屽唴瀹?
 	if [ "$has_valid_ports" = true ]; then
-		echo "FRP服务对外访问地址:"
+		echo "FRP鏈嶅姟瀵瑰璁块棶鍦板潃:"
 
-		# 处理 IPv4 地址
+		# 澶勭悊 IPv4 鍦板潃
 		for port in "${ports[@]}"; do
 			if [[ $port != "8055" && $port != "8056" ]]; then
 				echo "http://${ipv4_address}:${port}"
 			fi
 		done
 
-		# 处理 IPv6 地址（如果存在）
+		# 澶勭悊 IPv6 鍦板潃锛堝鏋滃瓨鍦級
 		if [ -n "$ipv6_address" ]; then
 			for port in "${ports[@]}"; do
 				if [[ $port != "8055" && $port != "8056" ]]; then
@@ -4230,7 +4230,7 @@ generate_access_urls() {
 			done
 		fi
 
-		# 处理 HTTPS 配置
+		# 澶勭悊 HTTPS 閰嶇疆
 		for port in "${ports[@]}"; do
 			if [[ $port != "8055" && $port != "8056" ]]; then
 				local frps_search_pattern="${ipv4_address}:${port}"
@@ -4257,7 +4257,7 @@ frps_main_ports() {
 
 
 frps_panel() {
-	send_stats "FRP服务�?
+	send_stats "FRP鏈嶅姟绔?
 	local app_id="55"
 	local docker_name="frps"
 	local docker_port=8056
@@ -4265,25 +4265,25 @@ frps_panel() {
 		clear
 		check_frp_app
 		check_docker_image_update $docker_name
-		echo -e "FRP服务�?$check_frp $update_status"
-		echo "构建FRP内网穿透服务环境，将无公网IP的设备暴露到互联�?
-		echo "官网介绍: ${gh_https_url}github.com/fatedier/frp/"
-		echo "视频教学: https://www.bilibili.com/video/BV1yMw6e2EwL?t=124.0"
+		echo -e "FRP鏈嶅姟绔?$check_frp $update_status"
+		echo "鏋勫缓FRP鍐呯綉绌块€忔湇鍔＄幆澧冿紝灏嗘棤鍏綉IP鐨勮澶囨毚闇插埌浜掕仈缃?
+		echo "瀹樼綉浠嬬粛: ${gh_https_url}github.com/fatedier/frp/"
+		echo "瑙嗛鏁欏: https://www.bilibili.com/video/BV1yMw6e2EwL?t=124.0"
 		if [ -d "/home/frp/" ]; then
 			check_docker_app_ip
 			frps_main_ports
 		fi
 		echo ""
 		echo "------------------------"
-		echo "1. 安装                  2. 更新                  3. 卸载"
+		echo "1. 瀹夎                  2. 鏇存柊                  3. 鍗歌浇"
 		echo "------------------------"
-		echo "5. 内网服务域名访问      6. 删除域名访问"
+		echo "5. 鍐呯綉鏈嶅姟鍩熷悕璁块棶      6. 鍒犻櫎鍩熷悕璁块棶"
 		echo "------------------------"
-		echo "7. 允许IP+端口访问       8. 阻止IP+端口访问"
+		echo "7. 鍏佽IP+绔彛璁块棶       8. 闃绘IP+绔彛璁块棶"
 		echo "------------------------"
-		echo "00. 刷新服务状�?        0. 返回上一级选单"
+		echo "00. 鍒锋柊鏈嶅姟鐘舵€?        0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "------------------------"
-		read -e -p "输入你的选择: " choice
+		read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 		case $choice in
 			1)
 				install jq grep ss
@@ -4291,7 +4291,7 @@ frps_panel() {
 				generate_frps_config
 
 				add_app_id
-				echo "FRP服务端已经安装完�?
+				echo "FRP鏈嶅姟绔凡缁忓畨瑁呭畬鎴?
 				;;
 			2)
 				crontab -l | grep -v 'frps' | crontab - > /dev/null 2>&1
@@ -4301,7 +4301,7 @@ frps_panel() {
 				donlond_frp frps
 
 				add_app_id
-				echo "FRP服务端已经更新完�?
+				echo "FRP鏈嶅姟绔凡缁忔洿鏂板畬鎴?
 				;;
 			3)
 				crontab -l | grep -v 'frps' | crontab - > /dev/null 2>&1
@@ -4312,37 +4312,37 @@ frps_panel() {
 				close_port 8055 8056
 
 				sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-				echo "应用已卸�?
+				echo "搴旂敤宸插嵏杞?
 				;;
 			5)
-				echo "将内网穿透服务反代成域名访问"
-				send_stats "FRP对外域名访问"
+				echo "灏嗗唴缃戠┛閫忔湇鍔″弽浠ｆ垚鍩熷悕璁块棶"
+				send_stats "FRP瀵瑰鍩熷悕璁块棶"
 				add_yuming
-				read -e -p "请输入你的内网穿透服务端�? " frps_port
+				read -e -p "璇疯緭鍏ヤ綘鐨勫唴缃戠┛閫忔湇鍔＄鍙? " frps_port
 				ldnmp_Proxy ${yuming} 127.0.0.1 ${frps_port}
 				block_host_port "$frps_port" "$ipv4_address"
 				;;
 			6)
-				echo "域名格式 example.com 不带https://"
+				echo "鍩熷悕鏍煎紡 example.com 涓嶅甫https://"
 				web_del
 				;;
 
 			7)
-				send_stats "允许IP访问"
-				read -e -p "请输入需要放行的端口: " frps_port
+				send_stats "鍏佽IP璁块棶"
+				read -e -p "璇疯緭鍏ラ渶瑕佹斁琛岀殑绔彛: " frps_port
 				clear_host_port_rules "$frps_port" "$ipv4_address"
 				;;
 
 			8)
-				send_stats "阻止IP访问"
-				echo "如果你已经反代域名访问了，可用此功能阻止IP+端口访问，这样更安全�?
-				read -e -p "请输入需要阻止的端口: " frps_port
+				send_stats "闃绘IP璁块棶"
+				echo "濡傛灉浣犲凡缁忓弽浠ｅ煙鍚嶈闂簡锛屽彲鐢ㄦ鍔熻兘闃绘IP+绔彛璁块棶锛岃繖鏍锋洿瀹夊叏銆?
+				read -e -p "璇疯緭鍏ラ渶瑕侀樆姝㈢殑绔彛: " frps_port
 				block_host_port "$frps_port" "$ipv4_address"
 				;;
 
 			00)
-				send_stats "刷新FRP服务状�?
-				echo "已经刷新FRP服务状�?
+				send_stats "鍒锋柊FRP鏈嶅姟鐘舵€?
+				echo "宸茬粡鍒锋柊FRP鏈嶅姟鐘舵€?
 				;;
 
 			*)
@@ -4355,7 +4355,7 @@ frps_panel() {
 
 
 frpc_panel() {
-	send_stats "FRP客户�?
+	send_stats "FRP瀹㈡埛绔?
 	local app_id="56"
 	local docker_name="frpc"
 	local docker_port=8055
@@ -4363,10 +4363,10 @@ frpc_panel() {
 		clear
 		check_frp_app
 		check_docker_image_update $docker_name
-		echo -e "FRP客户�?$check_frp $update_status"
-		echo "与服务端对接，对接后可创建内网穿透服务到互联网访�?
-		echo "官网介绍: ${gh_https_url}github.com/fatedier/frp/"
-		echo "视频教学: https://www.bilibili.com/video/BV1yMw6e2EwL?t=173.9"
+		echo -e "FRP瀹㈡埛绔?$check_frp $update_status"
+		echo "涓庢湇鍔＄瀵规帴锛屽鎺ュ悗鍙垱寤哄唴缃戠┛閫忔湇鍔″埌浜掕仈缃戣闂?
+		echo "瀹樼綉浠嬬粛: ${gh_https_url}github.com/fatedier/frp/"
+		echo "瑙嗛鏁欏: https://www.bilibili.com/video/BV1yMw6e2EwL?t=173.9"
 		echo "------------------------"
 		if [ -d "/home/frp/" ]; then
 			[ -f /home/frp/frpc.toml ] || cp /home/frp/frp_0.61.0_linux_amd64/frpc.toml /home/frp/frpc.toml
@@ -4374,13 +4374,13 @@ frpc_panel() {
 		fi
 		echo ""
 		echo "------------------------"
-		echo "1. 安装               2. 更新               3. 卸载"
+		echo "1. 瀹夎               2. 鏇存柊               3. 鍗歌浇"
 		echo "------------------------"
-		echo "4. 添加对外服务       5. 删除对外服务       6. 手动配置服务"
+		echo "4. 娣诲姞瀵瑰鏈嶅姟       5. 鍒犻櫎瀵瑰鏈嶅姟       6. 鎵嬪姩閰嶇疆鏈嶅姟"
 		echo "------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "------------------------"
-		read -e -p "输入你的选择: " choice
+		read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 		case $choice in
 			1)
 				install jq grep ss
@@ -4388,7 +4388,7 @@ frpc_panel() {
 				configure_frpc
 
 				add_app_id
-				echo "FRP客户端已经安装完�?
+				echo "FRP瀹㈡埛绔凡缁忓畨瑁呭畬鎴?
 				;;
 			2)
 				crontab -l | grep -v 'frpc' | crontab - > /dev/null 2>&1
@@ -4398,7 +4398,7 @@ frpc_panel() {
 				donlond_frp frpc
 
 				add_app_id
-				echo "FRP客户端已经更新完�?
+				echo "FRP瀹㈡埛绔凡缁忔洿鏂板畬鎴?
 				;;
 
 			3)
@@ -4409,7 +4409,7 @@ frpc_panel() {
 				close_port 8055
 
 				sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-				echo "应用已卸�?
+				echo "搴旂敤宸插嵏杞?
 				;;
 
 			4)
@@ -4449,74 +4449,74 @@ yt_menu_pro() {
 	while true; do
 
 		if [ -x "/usr/local/bin/yt-dlp" ]; then
-		   local YTDLP_STATUS="${gl_lv}已安�?{gl_bai}"
+		   local YTDLP_STATUS="${gl_lv}宸插畨瑁?{gl_bai}"
 		else
-		   local YTDLP_STATUS="${gl_hui}未安�?{gl_bai}"
+		   local YTDLP_STATUS="${gl_hui}鏈畨瑁?{gl_bai}"
 		fi
 
 		clear
-		send_stats "yt-dlp 下载工具"
+		send_stats "yt-dlp 涓嬭浇宸ュ叿"
 		echo -e "yt-dlp $YTDLP_STATUS"
-		echo -e "yt-dlp 是一个功能强大的视频下载工具，支�?YouTube、Bilibili、Twitter 等数千站点�?
-		echo -e "官网地址�?{gh_https_url}github.com/yt-dlp/yt-dlp"
+		echo -e "yt-dlp 鏄竴涓姛鑳藉己澶х殑瑙嗛涓嬭浇宸ュ叿锛屾敮鎸?YouTube銆丅ilibili銆乀witter 绛夋暟鍗冪珯鐐广€?
+		echo -e "瀹樼綉鍦板潃锛?{gh_https_url}github.com/yt-dlp/yt-dlp"
 		echo "-------------------------"
-		echo "已下载视频列�?"
-		ls -td "$VIDEO_DIR"/*/ 2>/dev/null || echo "（暂无）"
+		echo "宸蹭笅杞借棰戝垪琛?"
+		ls -td "$VIDEO_DIR"/*/ 2>/dev/null || echo "锛堟殏鏃狅級"
 		echo "-------------------------"
-		echo "1.  安装               2.  更新               3.  卸载"
+		echo "1.  瀹夎               2.  鏇存柊               3.  鍗歌浇"
 		echo "-------------------------"
-		echo "5.  单个视频下载       6.  批量视频下载       7.  自定义参数下�?
-		echo "8.  下载为MP3音频      9.  删除视频目录       10. Cookie管理（开发中�?
+		echo "5.  鍗曚釜瑙嗛涓嬭浇       6.  鎵归噺瑙嗛涓嬭浇       7.  鑷畾涔夊弬鏁颁笅杞?
+		echo "8.  涓嬭浇涓篗P3闊抽      9.  鍒犻櫎瑙嗛鐩綍       10. Cookie绠＄悊锛堝紑鍙戜腑锛?
 		echo "-------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "-------------------------"
-		read -e -p "请输入选项编号: " choice
+		read -e -p "璇疯緭鍏ラ€夐」缂栧彿: " choice
 
 		case $choice in
 			1)
-				send_stats "正在安装 yt-dlp..."
-				echo "正在安装 yt-dlp..."
+				send_stats "姝ｅ湪瀹夎 yt-dlp..."
+				echo "姝ｅ湪瀹夎 yt-dlp..."
 				install ffmpeg
 				curl -L ${gh_https_url}github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
 				chmod a+rx /usr/local/bin/yt-dlp
 
 				add_app_id
-				echo "安装完成。按任意键继�?.."
+				echo "瀹夎瀹屾垚銆傛寜浠绘剰閿户缁?.."
 				read ;;
 			2)
-				send_stats "正在更新 yt-dlp..."
-				echo "正在更新 yt-dlp..."
+				send_stats "姝ｅ湪鏇存柊 yt-dlp..."
+				echo "姝ｅ湪鏇存柊 yt-dlp..."
 				yt-dlp -U
 
 				add_app_id
-				echo "更新完成。按任意键继�?.."
+				echo "鏇存柊瀹屾垚銆傛寜浠绘剰閿户缁?.."
 				read ;;
 			3)
-				send_stats "正在卸载 yt-dlp..."
-				echo "正在卸载 yt-dlp..."
+				send_stats "姝ｅ湪鍗歌浇 yt-dlp..."
+				echo "姝ｅ湪鍗歌浇 yt-dlp..."
 				rm -f /usr/local/bin/yt-dlp
 
 				sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-				echo "卸载完成。按任意键继�?.."
+				echo "鍗歌浇瀹屾垚銆傛寜浠绘剰閿户缁?.."
 				read ;;
 			5)
-				send_stats "单个视频下载"
-				read -e -p "请输入视频链�? " url
+				send_stats "鍗曚釜瑙嗛涓嬭浇"
+				read -e -p "璇疯緭鍏ヨ棰戦摼鎺? " url
 				yt-dlp -P "$VIDEO_DIR" -f "bv*+ba/b" --merge-output-format mp4 \
 					--write-subs --sub-langs all \
 					--write-thumbnail --embed-thumbnail \
 					--write-info-json \
 					-o "$VIDEO_DIR/%(title)s/%(title)s.%(ext)s" \
 					--no-overwrites --no-post-overwrites "$url"
-				read -e -p "下载完成，按任意键继�?.." ;;
+				read -e -p "涓嬭浇瀹屾垚锛屾寜浠绘剰閿户缁?.." ;;
 			6)
-				send_stats "批量视频下载"
+				send_stats "鎵归噺瑙嗛涓嬭浇"
 				install nano
 				if [ ! -f "$URL_FILE" ]; then
-				  echo -e "# 输入多个视频链接地址\n# https://www.bilibili.com/bangumi/play/ep733316?spm_id_from=333.337.0.0&from_spmid=666.25.episode.0" > "$URL_FILE"
+				  echo -e "# 杈撳叆澶氫釜瑙嗛閾炬帴鍦板潃\n# https://www.bilibili.com/bangumi/play/ep733316?spm_id_from=333.337.0.0&from_spmid=666.25.episode.0" > "$URL_FILE"
 				fi
 				nano $URL_FILE
-				echo "现在开始批量下�?.."
+				echo "鐜板湪寮€濮嬫壒閲忎笅杞?.."
 				yt-dlp -P "$VIDEO_DIR" -f "bv*+ba/b" --merge-output-format mp4 \
 					--write-subs --sub-langs all \
 					--write-thumbnail --embed-thumbnail \
@@ -4524,31 +4524,31 @@ yt_menu_pro() {
 					-a "$URL_FILE" \
 					-o "$VIDEO_DIR/%(title)s/%(title)s.%(ext)s" \
 					--no-overwrites --no-post-overwrites
-				read -e -p "批量下载完成，按任意键继�?.." ;;
+				read -e -p "鎵归噺涓嬭浇瀹屾垚锛屾寜浠绘剰閿户缁?.." ;;
 			7)
-				send_stats "自定义视频下�?
-				read -e -p "请输入完�?yt-dlp 参数（不�?yt-dlp�? " custom
+				send_stats "鑷畾涔夎棰戜笅杞?
+				read -e -p "璇疯緭鍏ュ畬鏁?yt-dlp 鍙傛暟锛堜笉鍚?yt-dlp锛? " custom
 				yt-dlp -P "$VIDEO_DIR" $custom \
 					--write-subs --sub-langs all \
 					--write-thumbnail --embed-thumbnail \
 					--write-info-json \
 					-o "$VIDEO_DIR/%(title)s/%(title)s.%(ext)s" \
 					--no-overwrites --no-post-overwrites
-				read -e -p "执行完成，按任意键继�?.." ;;
+				read -e -p "鎵ц瀹屾垚锛屾寜浠绘剰閿户缁?.." ;;
 			8)
-				send_stats "MP3下载"
-				read -e -p "请输入视频链�? " url
+				send_stats "MP3涓嬭浇"
+				read -e -p "璇疯緭鍏ヨ棰戦摼鎺? " url
 				yt-dlp -P "$VIDEO_DIR" -x --audio-format mp3 \
 					--write-subs --sub-langs all \
 					--write-thumbnail --embed-thumbnail \
 					--write-info-json \
 					-o "$VIDEO_DIR/%(title)s/%(title)s.%(ext)s" \
 					--no-overwrites --no-post-overwrites "$url"
-				read -e -p "音频下载完成，按任意键继�?.." ;;
+				read -e -p "闊抽涓嬭浇瀹屾垚锛屾寜浠绘剰閿户缁?.." ;;
 
 			9)
-				send_stats "删除视频"
-				read -e -p "请输入删除视频名�? " rmdir
+				send_stats "鍒犻櫎瑙嗛"
+				read -e -p "璇疯緭鍏ュ垹闄よ棰戝悕绉? " rmdir
 				rm -rf "$VIDEO_DIR/$rmdir"
 				;;
 			*)
@@ -4584,7 +4584,7 @@ set_timedate() {
 
 
 
-# 修复dpkg中断问题
+# 淇dpkg涓柇闂
 fix_dpkg() {
 	pkill -9 -f 'apt|dpkg'
 	rm -f /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock
@@ -4593,7 +4593,7 @@ fix_dpkg() {
 
 
 linux_update() {
-	echo -e "${gl_kjlan}正在系统更新...${gl_bai}"
+	echo -e "${gl_kjlan}姝ｅ湪绯荤粺鏇存柊...${gl_bai}"
 	if command -v dnf &>/dev/null; then
 		dnf -y update
 	elif command -v yum &>/dev/null; then
@@ -4612,7 +4612,7 @@ linux_update() {
 	elif command -v opkg &>/dev/null; then
 		opkg update
 	else
-		echo "未知的包管理�?"
+		echo "鏈煡鐨勫寘绠＄悊鍣?"
 		return
 	fi
 }
@@ -4620,7 +4620,7 @@ linux_update() {
 
 
 linux_clean() {
-	echo -e "${gl_kjlan}正在系统清理...${gl_bai}"
+	echo -e "${gl_kjlan}姝ｅ湪绯荤粺娓呯悊...${gl_bai}"
 	if command -v dnf &>/dev/null; then
 		rpm --rebuilddb
 		dnf autoremove -y
@@ -4649,13 +4649,13 @@ linux_clean() {
 		journalctl --vacuum-size=500M
 
 	elif command -v apk &>/dev/null; then
-		echo "清理包管理器缓存..."
+		echo "娓呯悊鍖呯鐞嗗櫒缂撳瓨..."
 		apk cache clean
-		echo "删除系统日志..."
+		echo "鍒犻櫎绯荤粺鏃ュ織..."
 		rm -rf /var/log/*
-		echo "删除APK缓存..."
+		echo "鍒犻櫎APK缂撳瓨..."
 		rm -rf /var/cache/apk/*
-		echo "删除临时文件..."
+		echo "鍒犻櫎涓存椂鏂囦欢..."
 		rm -rf /tmp/*
 
 	elif command -v pacman &>/dev/null; then
@@ -4673,23 +4673,23 @@ linux_clean() {
 		journalctl --vacuum-size=500M
 
 	elif command -v opkg &>/dev/null; then
-		echo "删除系统日志..."
+		echo "鍒犻櫎绯荤粺鏃ュ織..."
 		rm -rf /var/log/*
-		echo "删除临时文件..."
+		echo "鍒犻櫎涓存椂鏂囦欢..."
 		rm -rf /tmp/*
 
 	elif command -v pkg &>/dev/null; then
-		echo "清理未使用的依赖..."
+		echo "娓呯悊鏈娇鐢ㄧ殑渚濊禆..."
 		pkg autoremove -y
-		echo "清理包管理器缓存..."
+		echo "娓呯悊鍖呯鐞嗗櫒缂撳瓨..."
 		pkg clean -y
-		echo "删除系统日志..."
+		echo "鍒犻櫎绯荤粺鏃ュ織..."
 		rm -rf /var/log/*
-		echo "删除临时文件..."
+		echo "鍒犻櫎涓存椂鏂囦欢..."
 		rm -rf /tmp/*
 
 	else
-		echo "未知的包管理�?"
+		echo "鏈煡鐨勫寘绠＄悊鍣?"
 		return
 	fi
 	return
@@ -4735,26 +4735,26 @@ chattr +i /etc/resolv.conf
 
 set_dns_ui() {
 root_use
-send_stats "优化DNS"
+send_stats "浼樺寲DNS"
 while true; do
 	clear
-	echo "优化DNS地址"
+	echo "浼樺寲DNS鍦板潃"
 	echo "------------------------"
-	echo "当前DNS地址"
+	echo "褰撳墠DNS鍦板潃"
 	cat /etc/resolv.conf
 	echo "------------------------"
 	echo ""
-	echo "1. 国外DNS优化: "
+	echo "1. 鍥藉DNS浼樺寲: "
 	echo " v4: 1.1.1.1 8.8.8.8"
 	echo " v6: 2606:4700:4700::1111 2001:4860:4860::8888"
-	echo "2. 国内DNS优化: "
+	echo "2. 鍥藉唴DNS浼樺寲: "
 	echo " v4: 223.5.5.5 183.60.83.19"
 	echo " v6: 2400:3200::1 2400:da00::6666"
-	echo "3. 手动编辑DNS配置"
+	echo "3. 鎵嬪姩缂栬緫DNS閰嶇疆"
 	echo "------------------------"
-	echo "0. 返回上一级选单"
+	echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 	echo "------------------------"
-	read -e -p "请输入你的选择: " Limiting
+	read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " Limiting
 	case "$Limiting" in
 	  1)
 		local dns1_ipv4="1.1.1.1"
@@ -4762,7 +4762,7 @@ while true; do
 		local dns1_ipv6="2606:4700:4700::1111"
 		local dns2_ipv6="2001:4860:4860::8888"
 		set_dns
-		send_stats "国外DNS优化"
+		send_stats "鍥藉DNS浼樺寲"
 		;;
 	  2)
 		local dns1_ipv4="223.5.5.5"
@@ -4770,14 +4770,14 @@ while true; do
 		local dns1_ipv6="2400:3200::1"
 		local dns2_ipv6="2400:da00::6666"
 		set_dns
-		send_stats "国内DNS优化"
+		send_stats "鍥藉唴DNS浼樺寲"
 		;;
 	  3)
 		install nano
 		chattr -i /etc/resolv.conf
 		nano /etc/resolv.conf
 		chattr +i /etc/resolv.conf
-		send_stats "手动编辑DNS配置"
+		send_stats "鎵嬪姩缂栬緫DNS閰嶇疆"
 		;;
 	  *)
 		break
@@ -4831,7 +4831,7 @@ new_ssh_port() {
   open_port $new_port
   remove iptables-persistent ufw firewalld iptables-services > /dev/null 2>&1
 
-  echo "SSH 端口已修改为: $new_port"
+  echo "SSH 绔彛宸蹭慨鏀逛负: $new_port"
 
   sleep 1
 
@@ -4847,7 +4847,7 @@ sshkey_on() {
 		   -e 's/^\s*#\?\s*ChallengeResponseAuthentication .*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
 	rm -rf /etc/ssh/sshd_config.d/* /etc/ssh/ssh_config.d/*
 	restart_ssh
-	echo -e "${gl_lv}用户密钥登录模式已开启，已关闭密码登录模式，重连将会生效${gl_bai}"
+	echo -e "${gl_lv}鐢ㄦ埛瀵嗛挜鐧诲綍妯″紡宸插紑鍚紝宸插叧闂瘑鐮佺櫥褰曟ā寮忥紝閲嶈繛灏嗕細鐢熸晥${gl_bai}"
 
 }
 
@@ -4865,7 +4865,7 @@ add_sshkey() {
 	chmod 600 "${HOME}/.ssh/authorized_keys"
 
 	ip_address
-	echo -e "私钥信息已生成，务必复制保存，可保存�?${gl_huang}${ipv4_address}_ssh.key${gl_bai} 文件，用于以后的SSH登录"
+	echo -e "绉侀挜淇℃伅宸茬敓鎴愶紝鍔″繀澶嶅埗淇濆瓨锛屽彲淇濆瓨鎴?${gl_huang}${ipv4_address}_ssh.key${gl_bai} 鏂囦欢锛岀敤浜庝互鍚庣殑SSH鐧诲綍"
 
 	echo "--------------------------------"
 	cat "${HOME}/.ssh/sshkey"
@@ -4886,21 +4886,21 @@ import_sshkey() {
 	local auth_keys="${ssh_dir}/authorized_keys"
 
 	if [[ -z "$public_key" ]]; then
-		read -e -p "请输入您的SSH公钥内容（通常�?'ssh-rsa' �?'ssh-ed25519' 开头）: " public_key
+		read -e -p "璇疯緭鍏ユ偍鐨凷SH鍏挜鍐呭锛堥€氬父浠?'ssh-rsa' 鎴?'ssh-ed25519' 寮€澶达級: " public_key
 	fi
 
 	if [[ -z "$public_key" ]]; then
-		echo -e "${gl_hong}错误：未输入公钥内容�?{gl_bai}"
+		echo -e "${gl_hong}閿欒锛氭湭杈撳叆鍏挜鍐呭銆?{gl_bai}"
 		return 1
 	fi
 
 	if [[ ! "$public_key" =~ ^ssh-(rsa|ed25519|ecdsa) ]]; then
-		echo -e "${gl_hong}错误：看起来不像合法�?SSH 公钥�?{gl_bai}"
+		echo -e "${gl_hong}閿欒锛氱湅璧锋潵涓嶅儚鍚堟硶鐨?SSH 鍏挜銆?{gl_bai}"
 		return 1
 	fi
 
 	if grep -Fxq "$public_key" "$auth_keys" 2>/dev/null; then
-		echo "该公钥已存在，无需重复添加"
+		echo "璇ュ叕閽ュ凡瀛樺湪锛屾棤闇€閲嶅娣诲姞"
 		return 0
 	fi
 
@@ -4924,40 +4924,40 @@ fetch_remote_ssh_keys() {
 	local temp_file
 
 	if [[ -z "${keys_url}" ]]; then
-		read -e -p "请输入您的远端公钥URL�?" keys_url
+		read -e -p "璇疯緭鍏ユ偍鐨勮繙绔叕閽RL锛?" keys_url
 	fi
 
-	echo "此脚本将从远�?URL 拉取 SSH 公钥，并添加�?${authorized_keys}"
+	echo "姝よ剼鏈皢浠庤繙绋?URL 鎷夊彇 SSH 鍏挜锛屽苟娣诲姞鍒?${authorized_keys}"
 	echo ""
-	echo "远程公钥地址�?
+	echo "杩滅▼鍏挜鍦板潃锛?
 	echo "  ${keys_url}"
 	echo ""
 
-	# 创建临时文件
+	# 鍒涘缓涓存椂鏂囦欢
 	temp_file=$(mktemp)
 
-	# 下载公钥
+	# 涓嬭浇鍏挜
 	if command -v curl >/dev/null 2>&1; then
 		curl -fsSL --connect-timeout 10 "${keys_url}" -o "${temp_file}" || {
-			echo "错误：无法从 URL 下载公钥（网络问题或地址无效�? >&2
+			echo "閿欒锛氭棤娉曚粠 URL 涓嬭浇鍏挜锛堢綉缁滈棶棰樻垨鍦板潃鏃犳晥锛? >&2
 			rm -f "${temp_file}"
 			return 1
 		}
 	elif command -v wget >/dev/null 2>&1; then
 		wget -q --timeout=10 -O "${temp_file}" "${keys_url}" || {
-			echo "错误：无法从 URL 下载公钥（网络问题或地址无效�? >&2
+			echo "閿欒锛氭棤娉曚粠 URL 涓嬭浇鍏挜锛堢綉缁滈棶棰樻垨鍦板潃鏃犳晥锛? >&2
 			rm -f "${temp_file}"
 			return 1
 		}
 	else
-		echo "错误：系统中未找�?curl �?wget，无法下载公�? >&2
+		echo "閿欒锛氱郴缁熶腑鏈壘鍒?curl 鎴?wget锛屾棤娉曚笅杞藉叕閽? >&2
 		rm -f "${temp_file}"
 		return 1
 	fi
 
-	# 检查内容是否有�?
+	# 妫€鏌ュ唴瀹规槸鍚︽湁鏁?
 	if [[ ! -s "${temp_file}" ]]; then
-		echo "错误：下载到的文件为空，URL 可能不包含任何公�? >&2
+		echo "閿欒锛氫笅杞藉埌鐨勬枃浠朵负绌猴紝URL 鍙兘涓嶅寘鍚换浣曞叕閽? >&2
 		rm -f "${temp_file}"
 		return 1
 	fi
@@ -4967,13 +4967,13 @@ fetch_remote_ssh_keys() {
 	touch "${authorized_keys}"
 	chmod 600 "${authorized_keys}"
 
-	# 备份原有 authorized_keys
+	# 澶囦唤鍘熸湁 authorized_keys
 	if [[ -f "${authorized_keys}" ]]; then
 		cp "${authorized_keys}" "${authorized_keys}.bak.$(date +%Y%m%d-%H%M%S)"
-		echo "已备份原�?authorized_keys 文件"
+		echo "宸插浠藉師鏈?authorized_keys 鏂囦欢"
 	fi
 
-	# 追加公钥（避免重复）
+	# 杩藉姞鍏挜锛堥伩鍏嶉噸澶嶏級
 	local added=0
 	while IFS= read -r line; do
 		[[ -z "${line}" || "${line}" =~ ^# ]] && continue
@@ -4988,10 +4988,10 @@ fetch_remote_ssh_keys() {
 
 	echo ""
 	if (( added > 0 )); then
-		echo "成功添加 ${added} 条新的公钥到 ${authorized_keys}"
+		echo "鎴愬姛娣诲姞 ${added} 鏉℃柊鐨勫叕閽ュ埌 ${authorized_keys}"
 		sshkey_on
 	else
-		echo "没有新的公钥需要添加（可能已全部存在）"
+		echo "娌℃湁鏂扮殑鍏挜闇€瑕佹坊鍔狅紙鍙兘宸插叏閮ㄥ瓨鍦級"
 	fi
 
 	echo ""
@@ -5005,24 +5005,24 @@ fetch_github_ssh_keys() {
 	local username="$1"
 	local base_dir="${2:-$HOME}"
 
-	echo "操作前，请确保您已在 GitHub 账户中添加了 SSH 公钥�?
-	echo "  1. 登录 ${gh_https_url}github.com/settings/keys"
-	echo "  2. 点击 New SSH key �?Add SSH key"
-	echo "  3. Title 可随意填写（例如：Home Laptop 2026�?
-	echo "  4. 将本地公钥内容（通常�?~/.ssh/id_ed25519.pub �?id_rsa.pub 的全部内容）粘贴�?Key 字段"
-	echo "  5. 点击 Add SSH key 完成添加"
+	echo "鎿嶄綔鍓嶏紝璇风‘淇濇偍宸插湪 GitHub 璐︽埛涓坊鍔犱簡 SSH 鍏挜锛?
+	echo "  1. 鐧诲綍 ${gh_https_url}github.com/settings/keys"
+	echo "  2. 鐐瑰嚮 New SSH key 鎴?Add SSH key"
+	echo "  3. Title 鍙殢鎰忓～鍐欙紙渚嬪锛欻ome Laptop 2026锛?
+	echo "  4. 灏嗘湰鍦板叕閽ュ唴瀹癸紙閫氬父鏄?~/.ssh/id_ed25519.pub 鎴?id_rsa.pub 鐨勫叏閮ㄥ唴瀹癸級绮樿创鍒?Key 瀛楁"
+	echo "  5. 鐐瑰嚮 Add SSH key 瀹屾垚娣诲姞"
 	echo ""
-	echo "添加完成后，GitHub 会公开提供您的所有公钥，地址为："
-	echo "  ${gh_https_url}github.com/您的用户�?keys"
+	echo "娣诲姞瀹屾垚鍚庯紝GitHub 浼氬叕寮€鎻愪緵鎮ㄧ殑鎵€鏈夊叕閽ワ紝鍦板潃涓猴細"
+	echo "  ${gh_https_url}github.com/鎮ㄧ殑鐢ㄦ埛鍚?keys"
 	echo ""
 
 
 	if [[ -z "${username}" ]]; then
-		read -e -p "请输入您�?GitHub 用户名（username，不�?@）： " username
+		read -e -p "璇疯緭鍏ユ偍鐨?GitHub 鐢ㄦ埛鍚嶏紙username锛屼笉鍚?@锛夛細 " username
 	fi
 
 	if [[ -z "${username}" ]]; then
-		echo "错误：GitHub 用户名不能为�? >&2
+		echo "閿欒锛欸itHub 鐢ㄦ埛鍚嶄笉鑳戒负绌? >&2
 		return 1
 	fi
 
@@ -5035,70 +5035,70 @@ fetch_github_ssh_keys() {
 
 sshkey_panel() {
   root_use
-  send_stats "用户密钥登录"
+  send_stats "鐢ㄦ埛瀵嗛挜鐧诲綍"
   while true; do
 	  clear
 	  local REAL_STATUS=$(grep -i "^PubkeyAuthentication" /etc/ssh/sshd_config | tr '[:upper:]' '[:lower:]')
 	  if [[ "$REAL_STATUS" =~ "yes" ]]; then
-		  IS_KEY_ENABLED="${gl_lv}已启�?{gl_bai}"
+		  IS_KEY_ENABLED="${gl_lv}宸插惎鐢?{gl_bai}"
 	  else
-	  	  IS_KEY_ENABLED="${gl_hui}未启�?{gl_bai}"
+	  	  IS_KEY_ENABLED="${gl_hui}鏈惎鐢?{gl_bai}"
 	  fi
-  	  echo -e "用户密钥登录模式 ${IS_KEY_ENABLED}"
-  	  echo "进阶玩法: https://blog.kejilion.pro/ssh-key"
+  	  echo -e "鐢ㄦ埛瀵嗛挜鐧诲綍妯″紡 ${IS_KEY_ENABLED}"
+  	  echo "杩涢樁鐜╂硶: https://blog.kejilion.pro/ssh-key"
   	  echo "------------------------------------------------"
-  	  echo "将会生成密钥对，更安全的方式SSH登录"
+  	  echo "灏嗕細鐢熸垚瀵嗛挜瀵癸紝鏇村畨鍏ㄧ殑鏂瑰紡SSH鐧诲綍"
 	  echo "------------------------"
-	  echo "1. 生成新密钥对                  2. 手动输入已有公钥"
-	  echo "3. 从GitHub导入已有公钥          4. 从URL导入已有公钥"
-	  echo "5. 编辑公钥文件                  6. 查看本机密钥"
+	  echo "1. 鐢熸垚鏂板瘑閽ュ                  2. 鎵嬪姩杈撳叆宸叉湁鍏挜"
+	  echo "3. 浠嶨itHub瀵煎叆宸叉湁鍏挜          4. 浠嶶RL瀵煎叆宸叉湁鍏挜"
+	  echo "5. 缂栬緫鍏挜鏂囦欢                  6. 鏌ョ湅鏈満瀵嗛挜"
 	  echo "------------------------"
-	  echo "0. 返回上一级选单"
+	  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 	  echo "------------------------"
-	  read -e -p "请输入你的选择: " host_dns
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " host_dns
 	  case $host_dns in
 		  1)
-	  		send_stats "生成新密�?
+	  		send_stats "鐢熸垚鏂板瘑閽?
 	  		add_sshkey
 			break_end
 			  ;;
 		  2)
-			send_stats "导入已有公钥"
+			send_stats "瀵煎叆宸叉湁鍏挜"
 			import_sshkey
 			break_end
 			  ;;
 		  3)
-			send_stats "导入GitHub远端公钥"
+			send_stats "瀵煎叆GitHub杩滅鍏挜"
 			fetch_github_ssh_keys
 			break_end
 			  ;;
 		  4)
-			send_stats "导入URL远端公钥"
-			read -e -p "请输入您的远端公钥URL�?" keys_url
+			send_stats "瀵煎叆URL杩滅鍏挜"
+			read -e -p "璇疯緭鍏ユ偍鐨勮繙绔叕閽RL锛?" keys_url
 			fetch_remote_ssh_keys "${keys_url}"
 			break_end
 			  ;;
 
 		  5)
-			send_stats "编辑公钥文件"
+			send_stats "缂栬緫鍏挜鏂囦欢"
 			install nano
 			nano ${HOME}/.ssh/authorized_keys
 			break_end
 			  ;;
 
 		  6)
-			send_stats "查看本机密钥"
+			send_stats "鏌ョ湅鏈満瀵嗛挜"
 			echo "------------------------"
-			echo "公钥信息"
+			echo "鍏挜淇℃伅"
 			cat ${HOME}/.ssh/authorized_keys
 			echo "------------------------"
-			echo "私钥信息"
+			echo "绉侀挜淇℃伅"
 			cat ${HOME}/.ssh/sshkey
 			echo "------------------------"
 			break_end
 			  ;;
 		  *)
-			  break  # 跳出循环，退出菜�?
+			  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 			  ;;
 	  esac
   done
@@ -5114,22 +5114,22 @@ sshkey_panel() {
 add_sshpasswd() {
 
 	root_use
-	send_stats "设置密码登录模式"
-	echo "设置密码登录模式"
+	send_stats "璁剧疆瀵嗙爜鐧诲綍妯″紡"
+	echo "璁剧疆瀵嗙爜鐧诲綍妯″紡"
 
 	local target_user="$1"
 
-	# 如果没有通过参数传入，则交互输入
+	# 濡傛灉娌℃湁閫氳繃鍙傛暟浼犲叆锛屽垯浜や簰杈撳叆
 	if [[ -z "$target_user" ]]; then
-		read -e -p "请输入要修改密码的用户名（默�?root�? " target_user
+		read -e -p "璇疯緭鍏ヨ淇敼瀵嗙爜鐨勭敤鎴峰悕锛堥粯璁?root锛? " target_user
 	fi
 
-	# 回车不输入，默认 root
+	# 鍥炶溅涓嶈緭鍏ワ紝榛樿 root
 	target_user=${target_user:-root}
 
-	# 校验用户是否存在
+	# 鏍￠獙鐢ㄦ埛鏄惁瀛樺湪
 	if ! id "$target_user" >/dev/null 2>&1; then
-		echo "错误：用�?$target_user 不存�?
+		echo "閿欒锛氱敤鎴?$target_user 涓嶅瓨鍦?
 		return 1
 	fi
 
@@ -5144,7 +5144,7 @@ add_sshpasswd() {
 
 	restart_ssh
 
-	echo -e "${gl_lv}密码设置完毕，已更改为密码登录模式！${gl_bai}"
+	echo -e "${gl_lv}瀵嗙爜璁剧疆瀹屾瘯锛屽凡鏇存敼涓哄瘑鐮佺櫥褰曟ā寮忥紒${gl_bai}"
 }
 
 
@@ -5162,7 +5162,7 @@ add_sshpasswd() {
 
 root_use() {
 clear
-[ "$EUID" -ne 0 ] && echo -e "${gl_huang}提示: ${gl_bai}该功能需要root用户才能运行�? && break_end && kejilion
+[ "$EUID" -ne 0 ] && echo -e "${gl_huang}鎻愮ず: ${gl_bai}璇ュ姛鑳介渶瑕乺oot鐢ㄦ埛鎵嶈兘杩愯锛? && break_end && kejilion
 }
 
 
@@ -5177,7 +5177,7 @@ clear
 
 
 dd_xitong() {
-		send_stats "重装系统"
+		send_stats "閲嶈绯荤粺"
 		dd_xitong_MollyLau() {
 			wget --no-check-certificate -qO InstallNET.sh "${gh_proxy}raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh" && chmod a+x InstallNET.sh
 
@@ -5188,44 +5188,44 @@ dd_xitong() {
 		}
 
 		dd_xitong_1() {
-		  echo -e "重装后初始用户名: ${gl_huang}root${gl_bai}  初始密码: ${gl_huang}LeitboGi0ro${gl_bai}  初始端口: ${gl_huang}22${gl_bai}"
-		  echo -e "${gl_huang}重装后请及时修改初始密码，防止暴力入侵。命令行输入passwd修改密码${gl_bai}"
-		  echo -e "按任意键继续..."
+		  echo -e "閲嶈鍚庡垵濮嬬敤鎴峰悕: ${gl_huang}root${gl_bai}  鍒濆瀵嗙爜: ${gl_huang}LeitboGi0ro${gl_bai}  鍒濆绔彛: ${gl_huang}22${gl_bai}"
+		  echo -e "${gl_huang}閲嶈鍚庤鍙婃椂淇敼鍒濆瀵嗙爜锛岄槻姝㈡毚鍔涘叆渚点€傚懡浠よ杈撳叆passwd淇敼瀵嗙爜${gl_bai}"
+		  echo -e "鎸変换鎰忛敭缁х画..."
 		  read -n 1 -s -r -p ""
 		  install wget
 		  dd_xitong_MollyLau
 		}
 
 		dd_xitong_2() {
-		  echo -e "重装后初始用户名: ${gl_huang}Administrator${gl_bai}  初始密码: ${gl_huang}Teddysun.com${gl_bai}  初始端口: ${gl_huang}3389${gl_bai}"
-		  echo -e "按任意键继续..."
+		  echo -e "閲嶈鍚庡垵濮嬬敤鎴峰悕: ${gl_huang}Administrator${gl_bai}  鍒濆瀵嗙爜: ${gl_huang}Teddysun.com${gl_bai}  鍒濆绔彛: ${gl_huang}3389${gl_bai}"
+		  echo -e "鎸変换鎰忛敭缁х画..."
 		  read -n 1 -s -r -p ""
 		  install wget
 		  dd_xitong_MollyLau
 		}
 
 		dd_xitong_3() {
-		  echo -e "重装后初始用户名: ${gl_huang}root${gl_bai}  初始密码: ${gl_huang}123@@@${gl_bai}  初始端口: ${gl_huang}22${gl_bai}"
-		  echo -e "按任意键继续..."
+		  echo -e "閲嶈鍚庡垵濮嬬敤鎴峰悕: ${gl_huang}root${gl_bai}  鍒濆瀵嗙爜: ${gl_huang}123@@@${gl_bai}  鍒濆绔彛: ${gl_huang}22${gl_bai}"
+		  echo -e "鎸変换鎰忛敭缁х画..."
 		  read -n 1 -s -r -p ""
 		  dd_xitong_bin456789
 		}
 
 		dd_xitong_4() {
-		  echo -e "重装后初始用户名: ${gl_huang}Administrator${gl_bai}  初始密码: ${gl_huang}123@@@${gl_bai}  初始端口: ${gl_huang}3389${gl_bai}"
-		  echo -e "按任意键继续..."
+		  echo -e "閲嶈鍚庡垵濮嬬敤鎴峰悕: ${gl_huang}Administrator${gl_bai}  鍒濆瀵嗙爜: ${gl_huang}123@@@${gl_bai}  鍒濆绔彛: ${gl_huang}3389${gl_bai}"
+		  echo -e "鎸変换鎰忛敭缁х画..."
 		  read -n 1 -s -r -p ""
 		  dd_xitong_bin456789
 		}
 
 		  while true; do
 			root_use
-			echo "重装系统"
+			echo "閲嶈绯荤粺"
 			echo "--------------------------------"
-			echo -e "${gl_hong}注意: ${gl_bai}重装有风险失联，不放心者慎用。重装预计花�?5分钟，请提前备份数据�?
-			echo -e "${gl_hui}感谢bin456789大佬和leitbogioro大佬的脚本支持！${gl_bai} "
-			echo -e "${gl_hui}bin456789项目地址: ${gh_https_url}github.com/bin456789/reinstall${gl_bai}"
-			echo -e "${gl_hui}leitbogioro项目地址: ${gh_https_url}github.com/leitbogioro/Tools${gl_bai}"
+			echo -e "${gl_hong}娉ㄦ剰: ${gl_bai}閲嶈鏈夐闄╁け鑱旓紝涓嶆斁蹇冭€呮厧鐢ㄣ€傞噸瑁呴璁¤姳璐?5鍒嗛挓锛岃鎻愬墠澶囦唤鏁版嵁銆?
+			echo -e "${gl_hui}鎰熻阿bin456789澶т浆鍜宭eitbogioro澶т浆鐨勮剼鏈敮鎸侊紒${gl_bai} "
+			echo -e "${gl_hui}bin456789椤圭洰鍦板潃: ${gh_https_url}github.com/bin456789/reinstall${gl_bai}"
+			echo -e "${gl_hui}leitbogioro椤圭洰鍦板潃: ${gh_https_url}github.com/leitbogioro/Tools${gl_bai}"
 			echo "------------------------"
 			echo "1. Debian 13                  2. Debian 12"
 			echo "3. Debian 11                  4. Debian 10"
@@ -5241,21 +5241,21 @@ dd_xitong() {
 			echo "------------------------"
 			echo "31. Alpine Linux              32. Arch Linux"
 			echo "33. Kali Linux                34. openEuler"
-			echo "35. openSUSE Tumbleweed       36. fnos飞牛公测�?
+			echo "35. openSUSE Tumbleweed       36. fnos椋炵墰鍏祴鐗?
 			echo "------------------------"
 			echo "41. Windows 11                42. Windows 10"
 			echo "43. Windows 7                 44. Windows Server 2025"
 			echo "45. Windows Server 2022       46. Windows Server 2019"
 			echo "47. Windows 11 ARM"
 			echo "------------------------"
-			echo "0. 返回上一级选单"
+			echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 			echo "------------------------"
-			read -e -p "请选择要重装的系统: " sys_choice
+			read -e -p "璇烽€夋嫨瑕侀噸瑁呯殑绯荤粺: " sys_choice
 			case "$sys_choice" in
 
 
 			  1)
-				send_stats "重装debian 13"
+				send_stats "閲嶈debian 13"
 				dd_xitong_3
 				bash reinstall.sh debian 13
 				reboot
@@ -5263,49 +5263,49 @@ dd_xitong() {
 				;;
 
 			  2)
-				send_stats "重装debian 12"
+				send_stats "閲嶈debian 12"
 				dd_xitong_1
 				bash InstallNET.sh -debian 12
 				reboot
 				exit
 				;;
 			  3)
-				send_stats "重装debian 11"
+				send_stats "閲嶈debian 11"
 				dd_xitong_1
 				bash InstallNET.sh -debian 11
 				reboot
 				exit
 				;;
 			  4)
-				send_stats "重装debian 10"
+				send_stats "閲嶈debian 10"
 				dd_xitong_1
 				bash InstallNET.sh -debian 10
 				reboot
 				exit
 				;;
 			  11)
-				send_stats "重装ubuntu 24.04"
+				send_stats "閲嶈ubuntu 24.04"
 				dd_xitong_1
 				bash InstallNET.sh -ubuntu 24.04
 				reboot
 				exit
 				;;
 			  12)
-				send_stats "重装ubuntu 22.04"
+				send_stats "閲嶈ubuntu 22.04"
 				dd_xitong_1
 				bash InstallNET.sh -ubuntu 22.04
 				reboot
 				exit
 				;;
 			  13)
-				send_stats "重装ubuntu 20.04"
+				send_stats "閲嶈ubuntu 20.04"
 				dd_xitong_1
 				bash InstallNET.sh -ubuntu 20.04
 				reboot
 				exit
 				;;
 			  14)
-				send_stats "重装ubuntu 18.04"
+				send_stats "閲嶈ubuntu 18.04"
 				dd_xitong_1
 				bash InstallNET.sh -ubuntu 18.04
 				reboot
@@ -5314,7 +5314,7 @@ dd_xitong() {
 
 
 			  21)
-				send_stats "重装rockylinux10"
+				send_stats "閲嶈rockylinux10"
 				dd_xitong_3
 				bash reinstall.sh rocky
 				reboot
@@ -5322,7 +5322,7 @@ dd_xitong() {
 				;;
 
 			  22)
-				send_stats "重装rockylinux9"
+				send_stats "閲嶈rockylinux9"
 				dd_xitong_3
 				bash reinstall.sh rocky 9
 				reboot
@@ -5330,7 +5330,7 @@ dd_xitong() {
 				;;
 
 			  23)
-				send_stats "重装alma10"
+				send_stats "閲嶈alma10"
 				dd_xitong_3
 				bash reinstall.sh almalinux
 				reboot
@@ -5338,7 +5338,7 @@ dd_xitong() {
 				;;
 
 			  24)
-				send_stats "重装alma9"
+				send_stats "閲嶈alma9"
 				dd_xitong_3
 				bash reinstall.sh almalinux 9
 				reboot
@@ -5346,7 +5346,7 @@ dd_xitong() {
 				;;
 
 			  25)
-				send_stats "重装oracle10"
+				send_stats "閲嶈oracle10"
 				dd_xitong_3
 				bash reinstall.sh oracle
 				reboot
@@ -5354,7 +5354,7 @@ dd_xitong() {
 				;;
 
 			  26)
-				send_stats "重装oracle9"
+				send_stats "閲嶈oracle9"
 				dd_xitong_3
 				bash reinstall.sh oracle 9
 				reboot
@@ -5362,7 +5362,7 @@ dd_xitong() {
 				;;
 
 			  27)
-				send_stats "重装fedora42"
+				send_stats "閲嶈fedora42"
 				dd_xitong_3
 				bash reinstall.sh fedora
 				reboot
@@ -5370,7 +5370,7 @@ dd_xitong() {
 				;;
 
 			  28)
-				send_stats "重装fedora41"
+				send_stats "閲嶈fedora41"
 				dd_xitong_3
 				bash reinstall.sh fedora 41
 				reboot
@@ -5378,7 +5378,7 @@ dd_xitong() {
 				;;
 
 			  29)
-				send_stats "重装centos10"
+				send_stats "閲嶈centos10"
 				dd_xitong_3
 				bash reinstall.sh centos 10
 				reboot
@@ -5386,7 +5386,7 @@ dd_xitong() {
 				;;
 
 			  30)
-				send_stats "重装centos9"
+				send_stats "閲嶈centos9"
 				dd_xitong_3
 				bash reinstall.sh centos 9
 				reboot
@@ -5394,7 +5394,7 @@ dd_xitong() {
 				;;
 
 			  31)
-				send_stats "重装alpine"
+				send_stats "閲嶈alpine"
 				dd_xitong_1
 				bash InstallNET.sh -alpine
 				reboot
@@ -5402,7 +5402,7 @@ dd_xitong() {
 				;;
 
 			  32)
-				send_stats "重装arch"
+				send_stats "閲嶈arch"
 				dd_xitong_3
 				bash reinstall.sh arch
 				reboot
@@ -5410,7 +5410,7 @@ dd_xitong() {
 				;;
 
 			  33)
-				send_stats "重装kali"
+				send_stats "閲嶈kali"
 				dd_xitong_3
 				bash reinstall.sh kali
 				reboot
@@ -5418,7 +5418,7 @@ dd_xitong() {
 				;;
 
 			  34)
-				send_stats "重装openeuler"
+				send_stats "閲嶈openeuler"
 				dd_xitong_3
 				bash reinstall.sh openeuler
 				reboot
@@ -5426,7 +5426,7 @@ dd_xitong() {
 				;;
 
 			  35)
-				send_stats "重装opensuse"
+				send_stats "閲嶈opensuse"
 				dd_xitong_3
 				bash reinstall.sh opensuse
 				reboot
@@ -5434,7 +5434,7 @@ dd_xitong() {
 				;;
 
 			  36)
-				send_stats "重装飞牛"
+				send_stats "閲嶈椋炵墰"
 				dd_xitong_3
 				bash reinstall.sh fnos
 				reboot
@@ -5442,7 +5442,7 @@ dd_xitong() {
 				;;
 
 			  41)
-				send_stats "重装windows11"
+				send_stats "閲嶈windows11"
 				dd_xitong_2
 				bash InstallNET.sh -windows 11 -lang "cn"
 				reboot
@@ -5451,14 +5451,14 @@ dd_xitong() {
 
 			  42)
 				dd_xitong_2
-				send_stats "重装windows10"
+				send_stats "閲嶈windows10"
 				bash InstallNET.sh -windows 10 -lang "cn"
 				reboot
 				exit
 				;;
 
 			  43)
-				send_stats "重装windows7"
+				send_stats "閲嶈windows7"
 				dd_xitong_4
 				bash reinstall.sh windows --iso="https://drive.massgrave.dev/cn_windows_7_professional_with_sp1_x64_dvd_u_677031.iso" --image-name='Windows 7 PROFESSIONAL'
 				reboot
@@ -5466,7 +5466,7 @@ dd_xitong() {
 				;;
 
 			  44)
-				send_stats "重装windows server 25"
+				send_stats "閲嶈windows server 25"
 				dd_xitong_2
 				bash InstallNET.sh -windows 2025 -lang "cn"
 				reboot
@@ -5474,7 +5474,7 @@ dd_xitong() {
 				;;
 
 			  45)
-				send_stats "重装windows server 22"
+				send_stats "閲嶈windows server 22"
 				dd_xitong_2
 				bash InstallNET.sh -windows 2022 -lang "cn"
 				reboot
@@ -5482,7 +5482,7 @@ dd_xitong() {
 				;;
 
 			  46)
-				send_stats "重装windows server 19"
+				send_stats "閲嶈windows server 19"
 				dd_xitong_2
 				bash InstallNET.sh -windows 2019 -lang "cn"
 				reboot
@@ -5490,7 +5490,7 @@ dd_xitong() {
 				;;
 
 			  47)
-				send_stats "重装windows11 ARM"
+				send_stats "閲嶈windows11 ARM"
 				dd_xitong_4
 				bash reinstall.sh dd --img https://r2.hotdog.eu.org/win11-arm-with-pagefile-15g.xz
 				reboot
@@ -5507,7 +5507,7 @@ dd_xitong() {
 
 bbrv3() {
 		  root_use
-		  send_stats "bbrv3管理"
+		  send_stats "bbrv3绠＄悊"
 
 		  local cpu_arch=$(uname -m)
 		  if [ "$cpu_arch" = "aarch64" ]; then
@@ -5520,17 +5520,17 @@ bbrv3() {
 			while true; do
 				  clear
 				  local kernel_version=$(uname -r)
-				  echo "您已安装xanmod的BBRv3内核"
-				  echo "当前内核版本: $kernel_version"
+				  echo "鎮ㄥ凡瀹夎xanmod鐨凚BRv3鍐呮牳"
+				  echo "褰撳墠鍐呮牳鐗堟湰: $kernel_version"
 
 				  echo ""
-				  echo "内核管理"
+				  echo "鍐呮牳绠＄悊"
 				  echo "------------------------"
-				  echo "1. 更新BBRv3内核              2. 卸载BBRv3内核"
+				  echo "1. 鏇存柊BBRv3鍐呮牳              2. 鍗歌浇BBRv3鍐呮牳"
 				  echo "------------------------"
-				  echo "0. 返回上一级选单"
+				  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				  echo "------------------------"
-				  read -e -p "请输入你的选择: " sub_choice
+				  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 				  case $sub_choice in
 					  1)
@@ -5540,7 +5540,7 @@ bbrv3() {
 						# wget -qO - https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg --yes
 						wget -qO - ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg --yes
 
-						# 步骤3：添加存储库
+						# 姝ラ3锛氭坊鍔犲瓨鍌ㄥ簱
 						echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
 
 						# version=$(wget -q https://dl.xanmod.org/check_x86-64_psabi.sh && chmod +x check_x86-64_psabi.sh && ./check_x86-64_psabi.sh | grep -oP 'x86-64-v\K\d+|x86-64-v\d+')
@@ -5549,7 +5549,7 @@ bbrv3() {
 						apt update -y
 						apt install -y linux-xanmod-x64v$version
 
-						echo "XanMod内核已更新。重启后生效"
+						echo "XanMod鍐呮牳宸叉洿鏂般€傞噸鍚悗鐢熸晥"
 						rm -f /etc/apt/sources.list.d/xanmod-release.list
 						rm -f check_x86-64_psabi.sh*
 
@@ -5559,12 +5559,12 @@ bbrv3() {
 					  2)
 						apt purge -y 'linux-*xanmod1*'
 						update-grub
-						echo "XanMod内核已卸载。重启后生效"
+						echo "XanMod鍐呮牳宸插嵏杞姐€傞噸鍚悗鐢熸晥"
 						server_reboot
 						  ;;
 
 					  *)
-						  break  # 跳出循环，退出菜�?
+						  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 						  ;;
 
 				  esac
@@ -5572,13 +5572,13 @@ bbrv3() {
 		else
 
 		  clear
-		  echo "设置BBR3加�?
-		  echo "视频介绍: https://www.bilibili.com/video/BV14K421x7BS?t=0.1"
+		  echo "璁剧疆BBR3鍔犻€?
+		  echo "瑙嗛浠嬬粛: https://www.bilibili.com/video/BV14K421x7BS?t=0.1"
 		  echo "------------------------------------------------"
-		  echo "仅支持Debian/Ubuntu"
-		  echo "请备份数据，将为你升级Linux内核开启BBR3"
+		  echo "浠呮敮鎸丏ebian/Ubuntu"
+		  echo "璇峰浠芥暟鎹紝灏嗕负浣犲崌绾inux鍐呮牳寮€鍚疊BR3"
 		  echo "------------------------------------------------"
-		  read -e -p "确定继续吗？(Y/N): " choice
+		  read -e -p "纭畾缁х画鍚楋紵(Y/N): " choice
 
 		  case "$choice" in
 			[Yy])
@@ -5586,12 +5586,12 @@ bbrv3() {
 			if [ -r /etc/os-release ]; then
 				. /etc/os-release
 				if [ "$ID" != "debian" ] && [ "$ID" != "ubuntu" ]; then
-					echo "当前环境不支持，仅支持Debian和Ubuntu系统"
+					echo "褰撳墠鐜涓嶆敮鎸侊紝浠呮敮鎸丏ebian鍜孶buntu绯荤粺"
 					break_end
 					linux_Settings
 				fi
 			else
-				echo "无法确定操作系统类型"
+				echo "鏃犳硶纭畾鎿嶄綔绯荤粺绫诲瀷"
 				break_end
 				linux_Settings
 			fi
@@ -5602,7 +5602,7 @@ bbrv3() {
 			# wget -qO - https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg --yes
 			wget -qO - ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg --yes
 
-			# 步骤3：添加存储库
+			# 姝ラ3锛氭坊鍔犲瓨鍌ㄥ簱
 			echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
 
 			# version=$(wget -q https://dl.xanmod.org/check_x86-64_psabi.sh && chmod +x check_x86-64_psabi.sh && ./check_x86-64_psabi.sh | grep -oP 'x86-64-v\K\d+|x86-64-v\d+')
@@ -5613,17 +5613,17 @@ bbrv3() {
 
 			bbr_on
 
-			echo "XanMod内核安装并BBR3启用成功。重启后生效"
+			echo "XanMod鍐呮牳瀹夎骞禕BR3鍚敤鎴愬姛銆傞噸鍚悗鐢熸晥"
 			rm -f /etc/apt/sources.list.d/xanmod-release.list
 			rm -f check_x86-64_psabi.sh*
 			server_reboot
 
 			  ;;
 			[Nn])
-			  echo "已取�?
+			  echo "宸插彇娑?
 			  ;;
 			*)
-			  echo "无效的选择，请输入 Y �?N�?
+			  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 			  ;;
 		  esac
 		fi
@@ -5632,40 +5632,40 @@ bbrv3() {
 
 
 elrepo_install() {
-	# 导入 ELRepo GPG 公钥
-	echo "导入 ELRepo GPG 公钥..."
+	# 瀵煎叆 ELRepo GPG 鍏挜
+	echo "瀵煎叆 ELRepo GPG 鍏挜..."
 	rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-	# 检测系统版�?
+	# 妫€娴嬬郴缁熺増鏈?
 	local os_version=$(rpm -q --qf "%{VERSION}" $(rpm -qf /etc/os-release) 2>/dev/null | awk -F '.' '{print $1}')
 	local os_name=$(awk -F= '/^NAME/{print $2}' /etc/os-release)
-	# 确保我们在一个支持的操作系统上运�?
+	# 纭繚鎴戜滑鍦ㄤ竴涓敮鎸佺殑鎿嶄綔绯荤粺涓婅繍琛?
 	if [[ "$os_name" != *"Red Hat"* && "$os_name" != *"AlmaLinux"* && "$os_name" != *"Rocky"* && "$os_name" != *"Oracle"* && "$os_name" != *"CentOS"* ]]; then
-		echo "不支持的操作系统�?os_name"
+		echo "涓嶆敮鎸佺殑鎿嶄綔绯荤粺锛?os_name"
 		break_end
 		linux_Settings
 	fi
-	# 打印检测到的操作系统信�?
-	echo "检测到的操作系�? $os_name $os_version"
-	# 根据系统版本安装对应�?ELRepo 仓库配置
+	# 鎵撳嵃妫€娴嬪埌鐨勬搷浣滅郴缁熶俊鎭?
+	echo "妫€娴嬪埌鐨勬搷浣滅郴缁? $os_name $os_version"
+	# 鏍规嵁绯荤粺鐗堟湰瀹夎瀵瑰簲鐨?ELRepo 浠撳簱閰嶇疆
 	if [[ "$os_version" == 8 ]]; then
-		echo "安装 ELRepo 仓库配置 (版本 8)..."
+		echo "瀹夎 ELRepo 浠撳簱閰嶇疆 (鐗堟湰 8)..."
 		yum -y install https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm
 	elif [[ "$os_version" == 9 ]]; then
-		echo "安装 ELRepo 仓库配置 (版本 9)..."
+		echo "瀹夎 ELRepo 浠撳簱閰嶇疆 (鐗堟湰 9)..."
 		yum -y install https://www.elrepo.org/elrepo-release-9.el9.elrepo.noarch.rpm
 	elif [[ "$os_version" == 10 ]]; then
-		echo "安装 ELRepo 仓库配置 (版本 10)..."
+		echo "瀹夎 ELRepo 浠撳簱閰嶇疆 (鐗堟湰 10)..."
 		yum -y install https://www.elrepo.org/elrepo-release-10.el10.elrepo.noarch.rpm
 	else
-		echo "不支持的系统版本�?os_version"
+		echo "涓嶆敮鎸佺殑绯荤粺鐗堟湰锛?os_version"
 		break_end
 		linux_Settings
 	fi
-	# 启用 ELRepo 内核仓库并安装最新的主线内核
-	echo "启用 ELRepo 内核仓库并安装最新的主线内核..."
+	# 鍚敤 ELRepo 鍐呮牳浠撳簱骞跺畨瑁呮渶鏂扮殑涓荤嚎鍐呮牳
+	echo "鍚敤 ELRepo 鍐呮牳浠撳簱骞跺畨瑁呮渶鏂扮殑涓荤嚎鍐呮牳..."
 	# yum -y --enablerepo=elrepo-kernel install kernel-ml
 	yum --nogpgcheck -y --enablerepo=elrepo-kernel install kernel-ml
-	echo "已安�?ELRepo 仓库配置并更新到最新主线内核�?
+	echo "宸插畨瑁?ELRepo 浠撳簱閰嶇疆骞舵洿鏂板埌鏈€鏂颁富绾垮唴鏍搞€?
 	server_reboot
 
 }
@@ -5673,42 +5673,42 @@ elrepo_install() {
 
 elrepo() {
 		  root_use
-		  send_stats "红帽内核管理"
+		  send_stats "绾㈠附鍐呮牳绠＄悊"
 		  if uname -r | grep -q 'elrepo'; then
 			while true; do
 				  clear
 				  kernel_version=$(uname -r)
-				  echo "您已安装elrepo内核"
-				  echo "当前内核版本: $kernel_version"
+				  echo "鎮ㄥ凡瀹夎elrepo鍐呮牳"
+				  echo "褰撳墠鍐呮牳鐗堟湰: $kernel_version"
 
 				  echo ""
-				  echo "内核管理"
+				  echo "鍐呮牳绠＄悊"
 				  echo "------------------------"
-				  echo "1. 更新elrepo内核              2. 卸载elrepo内核"
+				  echo "1. 鏇存柊elrepo鍐呮牳              2. 鍗歌浇elrepo鍐呮牳"
 				  echo "------------------------"
-				  echo "0. 返回上一级选单"
+				  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				  echo "------------------------"
-				  read -e -p "请输入你的选择: " sub_choice
+				  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 				  case $sub_choice in
 					  1)
 						dnf remove -y elrepo-release
 						rpm -qa | grep elrepo | grep kernel | xargs rpm -e --nodeps
 						elrepo_install
-						send_stats "更新红帽内核"
+						send_stats "鏇存柊绾㈠附鍐呮牳"
 						server_reboot
 
 						  ;;
 					  2)
 						dnf remove -y elrepo-release
 						rpm -qa | grep elrepo | grep kernel | xargs rpm -e --nodeps
-						echo "elrepo内核已卸载。重启后生效"
-						send_stats "卸载红帽内核"
+						echo "elrepo鍐呮牳宸插嵏杞姐€傞噸鍚悗鐢熸晥"
+						send_stats "鍗歌浇绾㈠附鍐呮牳"
 						server_reboot
 
 						  ;;
 					  *)
-						  break  # 跳出循环，退出菜�?
+						  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 						  ;;
 
 				  esac
@@ -5716,26 +5716,26 @@ elrepo() {
 		else
 
 		  clear
-		  echo "请备份数据，将为你升级Linux内核"
-		  echo "视频介绍: https://www.bilibili.com/video/BV1mH4y1w7qA?t=529.2"
+		  echo "璇峰浠芥暟鎹紝灏嗕负浣犲崌绾inux鍐呮牳"
+		  echo "瑙嗛浠嬬粛: https://www.bilibili.com/video/BV1mH4y1w7qA?t=529.2"
 		  echo "------------------------------------------------"
-		  echo "仅支持红帽系列发行版 CentOS/RedHat/Alma/Rocky/oracle "
-		  echo "升级Linux内核可提升系统性能和安全，建议有条件的尝试，生产环境谨慎升级！"
+		  echo "浠呮敮鎸佺孩甯界郴鍒楀彂琛岀増 CentOS/RedHat/Alma/Rocky/oracle "
+		  echo "鍗囩骇Linux鍐呮牳鍙彁鍗囩郴缁熸€ц兘鍜屽畨鍏紝寤鸿鏈夋潯浠剁殑灏濊瘯锛岀敓浜х幆澧冭皑鎱庡崌绾э紒"
 		  echo "------------------------------------------------"
-		  read -e -p "确定继续吗？(Y/N): " choice
+		  read -e -p "纭畾缁х画鍚楋紵(Y/N): " choice
 
 		  case "$choice" in
 			[Yy])
 			  check_swap
 			  elrepo_install
-			  send_stats "升级红帽内核"
+			  send_stats "鍗囩骇绾㈠附鍐呮牳"
 			  server_reboot
 			  ;;
 			[Nn])
-			  echo "已取�?
+			  echo "宸插彇娑?
 			  ;;
 			*)
-			  echo "无效的选择，请输入 Y �?N�?
+			  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 			  ;;
 		  esac
 		fi
@@ -5746,7 +5746,7 @@ elrepo() {
 
 
 clamav_freshclam() {
-	echo -e "${gl_kjlan}正在更新病毒�?..${gl_bai}"
+	echo -e "${gl_kjlan}姝ｅ湪鏇存柊鐥呮瘨搴?..${gl_bai}"
 	docker run --rm \
 		--name clamav \
 		--mount source=clam_db,target=/var/lib/clamav \
@@ -5756,19 +5756,19 @@ clamav_freshclam() {
 
 clamav_scan() {
 	if [ $# -eq 0 ]; then
-		echo "请指定要扫描的目录�?
+		echo "璇锋寚瀹氳鎵弿鐨勭洰褰曘€?
 		return
 	fi
 
-	echo -e "${gl_kjlan}正在扫描目录$@... ${gl_bai}"
+	echo -e "${gl_kjlan}姝ｅ湪鎵弿鐩綍$@... ${gl_bai}"
 
-	# 构建 mount 参数
+	# 鏋勫缓 mount 鍙傛暟
 	local MOUNT_PARAMS=""
 	for dir in "$@"; do
 		MOUNT_PARAMS+="--mount type=bind,source=${dir},target=/mnt/host${dir} "
 	done
 
-	# 构建 clamscan 命令参数
+	# 鏋勫缓 clamscan 鍛戒护鍙傛暟
 	local SCAN_PARAMS=""
 	for dir in "$@"; do
 		SCAN_PARAMS+="/mnt/host${dir} "
@@ -5777,7 +5777,7 @@ clamav_scan() {
 	mkdir -p /home/docker/clamav/log/ > /dev/null 2>&1
 	> /home/docker/clamav/log/scan.log > /dev/null 2>&1
 
-	# 执行 Docker 命令
+	# 鎵ц Docker 鍛戒护
 	docker run --rm \
 		--name clamav \
 		--mount source=clam_db,target=/var/lib/clamav \
@@ -5786,8 +5786,8 @@ clamav_scan() {
 		clamav/clamav-debian:latest \
 		clamscan -r --log=/var/log/clamav/scan.log $SCAN_PARAMS
 
-	echo -e "${gl_lv}$@ 扫描完成，病毒报告存放在${gl_huang}/home/docker/clamav/log/scan.log${gl_bai}"
-	echo -e "${gl_lv}如果有病毒请�?{gl_huang}scan.log${gl_lv}文件中搜索FOUND关键字确认病毒位�?${gl_bai}"
+	echo -e "${gl_lv}$@ 鎵弿瀹屾垚锛岀梾姣掓姤鍛婂瓨鏀惧湪${gl_huang}/home/docker/clamav/log/scan.log${gl_bai}"
+	echo -e "${gl_lv}濡傛灉鏈夌梾姣掕鍦?{gl_huang}scan.log${gl_lv}鏂囦欢涓悳绱OUND鍏抽敭瀛楃‘璁ょ梾姣掍綅缃?${gl_bai}"
 
 }
 
@@ -5799,23 +5799,23 @@ clamav_scan() {
 
 clamav() {
 		  root_use
-		  send_stats "病毒扫描管理"
+		  send_stats "鐥呮瘨鎵弿绠＄悊"
 		  while true; do
 				clear
-				echo "clamav病毒扫描工具"
-				echo "视频介绍: https://www.bilibili.com/video/BV1TqvZe4EQm?t=0.1"
+				echo "clamav鐥呮瘨鎵弿宸ュ叿"
+				echo "瑙嗛浠嬬粛: https://www.bilibili.com/video/BV1TqvZe4EQm?t=0.1"
 				echo "------------------------"
-				echo "是一个开源的防病毒软件工具，主要用于检测和删除各种类型的恶意软件�?
-				echo "包括病毒、特洛伊木马、间谍软件、恶意脚本和其他有害软件�?
+				echo "鏄竴涓紑婧愮殑闃茬梾姣掕蒋浠跺伐鍏凤紝涓昏鐢ㄤ簬妫€娴嬪拰鍒犻櫎鍚勭绫诲瀷鐨勬伓鎰忚蒋浠躲€?
+				echo "鍖呮嫭鐥呮瘨銆佺壒娲涗紛鏈ㄩ┈銆侀棿璋嶈蒋浠躲€佹伓鎰忚剼鏈拰鍏朵粬鏈夊杞欢銆?
 				echo "------------------------"
-				echo -e "${gl_lv}1. 全盘扫描 ${gl_bai}             ${gl_huang}2. 重要目录扫描 ${gl_bai}            ${gl_kjlan} 3. 自定义目录扫�?${gl_bai}"
+				echo -e "${gl_lv}1. 鍏ㄧ洏鎵弿 ${gl_bai}             ${gl_huang}2. 閲嶈鐩綍鎵弿 ${gl_bai}            ${gl_kjlan} 3. 鑷畾涔夌洰褰曟壂鎻?${gl_bai}"
 				echo "------------------------"
-				echo "0. 返回上一级选单"
+				echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				echo "------------------------"
-				read -e -p "请输入你的选择: " sub_choice
+				read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 				case $sub_choice in
 					1)
-					  send_stats "全盘扫描"
+					  send_stats "鍏ㄧ洏鎵弿"
 					  install_docker
 					  docker volume create clam_db > /dev/null 2>&1
 					  clamav_freshclam
@@ -5824,7 +5824,7 @@ clamav() {
 
 						;;
 					2)
-					  send_stats "重要目录扫描"
+					  send_stats "閲嶈鐩綍鎵弿"
 					  install_docker
 					  docker volume create clam_db > /dev/null 2>&1
 					  clamav_freshclam
@@ -5832,15 +5832,15 @@ clamav() {
 					  break_end
 						;;
 					3)
-					  send_stats "自定义目录扫�?
-					  read -e -p "请输入要扫描的目录，用空格分隔（例如�?etc /var /usr /home /root�? " directories
+					  send_stats "鑷畾涔夌洰褰曟壂鎻?
+					  read -e -p "璇疯緭鍏ヨ鎵弿鐨勭洰褰曪紝鐢ㄧ┖鏍煎垎闅旓紙渚嬪锛?etc /var /usr /home /root锛? " directories
 					  install_docker
 					  clamav_freshclam
 					  clamav_scan $directories
 					  break_end
 						;;
 					*)
-					  break  # 跳出循环，退出菜�?
+					  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 						;;
 				esac
 		  done
@@ -5850,21 +5850,21 @@ clamav() {
 
 
 
-# 高性能模式优化函数
+# 楂樻€ц兘妯″紡浼樺寲鍑芥暟
 optimize_high_performance() {
-	echo -e "${gl_lv}切换�?{tiaoyou_moshi}...${gl_bai}"
+	echo -e "${gl_lv}鍒囨崲鍒?{tiaoyou_moshi}...${gl_bai}"
 
-	echo -e "${gl_lv}优化文件描述�?..${gl_bai}"
+	echo -e "${gl_lv}浼樺寲鏂囦欢鎻忚堪绗?..${gl_bai}"
 	ulimit -n 65535
 
-	echo -e "${gl_lv}优化虚拟内存...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲铏氭嫙鍐呭瓨...${gl_bai}"
 	sysctl -w vm.swappiness=10 2>/dev/null
 	sysctl -w vm.dirty_ratio=15 2>/dev/null
 	sysctl -w vm.dirty_background_ratio=5 2>/dev/null
 	sysctl -w vm.overcommit_memory=1 2>/dev/null
 	sysctl -w vm.min_free_kbytes=65536 2>/dev/null
 
-	echo -e "${gl_lv}优化网络设置...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲缃戠粶璁剧疆...${gl_bai}"
 	sysctl -w net.core.rmem_max=16777216 2>/dev/null
 	sysctl -w net.core.wmem_max=16777216 2>/dev/null
 	sysctl -w net.core.netdev_max_backlog=250000 2>/dev/null
@@ -5876,36 +5876,36 @@ optimize_high_performance() {
 	sysctl -w net.ipv4.tcp_tw_reuse=1 2>/dev/null
 	sysctl -w net.ipv4.ip_local_port_range='1024 65535' 2>/dev/null
 
-	echo -e "${gl_lv}优化缓存管理...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲缂撳瓨绠＄悊...${gl_bai}"
 	sysctl -w vm.vfs_cache_pressure=50 2>/dev/null
 
-	echo -e "${gl_lv}优化CPU设置...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲CPU璁剧疆...${gl_bai}"
 	sysctl -w kernel.sched_autogroup_enabled=0 2>/dev/null
 
-	echo -e "${gl_lv}其他优化...${gl_bai}"
-	# 禁用透明大页面，减少延迟
+	echo -e "${gl_lv}鍏朵粬浼樺寲...${gl_bai}"
+	# 绂佺敤閫忔槑澶ч〉闈紝鍑忓皯寤惰繜
 	echo never > /sys/kernel/mm/transparent_hugepage/enabled
-	# 禁用 NUMA balancing
+	# 绂佺敤 NUMA balancing
 	sysctl -w kernel.numa_balancing=0 2>/dev/null
 
 
 }
 
-# 均衡模式优化函数
+# 鍧囪　妯″紡浼樺寲鍑芥暟
 optimize_balanced() {
-	echo -e "${gl_lv}切换到均衡模�?..${gl_bai}"
+	echo -e "${gl_lv}鍒囨崲鍒板潎琛℃ā寮?..${gl_bai}"
 
-	echo -e "${gl_lv}优化文件描述�?..${gl_bai}"
+	echo -e "${gl_lv}浼樺寲鏂囦欢鎻忚堪绗?..${gl_bai}"
 	ulimit -n 32768
 
-	echo -e "${gl_lv}优化虚拟内存...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲铏氭嫙鍐呭瓨...${gl_bai}"
 	sysctl -w vm.swappiness=30 2>/dev/null
 	sysctl -w vm.dirty_ratio=20 2>/dev/null
 	sysctl -w vm.dirty_background_ratio=10 2>/dev/null
 	sysctl -w vm.overcommit_memory=0 2>/dev/null
 	sysctl -w vm.min_free_kbytes=32768 2>/dev/null
 
-	echo -e "${gl_lv}优化网络设置...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲缃戠粶璁剧疆...${gl_bai}"
 	sysctl -w net.core.rmem_max=8388608 2>/dev/null
 	sysctl -w net.core.wmem_max=8388608 2>/dev/null
 	sysctl -w net.core.netdev_max_backlog=125000 2>/dev/null
@@ -5917,36 +5917,36 @@ optimize_balanced() {
 	sysctl -w net.ipv4.tcp_tw_reuse=1 2>/dev/null
 	sysctl -w net.ipv4.ip_local_port_range='1024 49151' 2>/dev/null
 
-	echo -e "${gl_lv}优化缓存管理...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲缂撳瓨绠＄悊...${gl_bai}"
 	sysctl -w vm.vfs_cache_pressure=75 2>/dev/null
 
-	echo -e "${gl_lv}优化CPU设置...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲CPU璁剧疆...${gl_bai}"
 	sysctl -w kernel.sched_autogroup_enabled=1 2>/dev/null
 
-	echo -e "${gl_lv}其他优化...${gl_bai}"
-	# 还原透明大页�?
+	echo -e "${gl_lv}鍏朵粬浼樺寲...${gl_bai}"
+	# 杩樺師閫忔槑澶ч〉闈?
 	echo always > /sys/kernel/mm/transparent_hugepage/enabled
-	# 还原 NUMA balancing
+	# 杩樺師 NUMA balancing
 	sysctl -w kernel.numa_balancing=1 2>/dev/null
 
 
 }
 
-# 还原默认设置函数
+# 杩樺師榛樿璁剧疆鍑芥暟
 restore_defaults() {
-	echo -e "${gl_lv}还原到默认设�?..${gl_bai}"
+	echo -e "${gl_lv}杩樺師鍒伴粯璁よ缃?..${gl_bai}"
 
-	echo -e "${gl_lv}还原文件描述�?..${gl_bai}"
+	echo -e "${gl_lv}杩樺師鏂囦欢鎻忚堪绗?..${gl_bai}"
 	ulimit -n 1024
 
-	echo -e "${gl_lv}还原虚拟内存...${gl_bai}"
+	echo -e "${gl_lv}杩樺師铏氭嫙鍐呭瓨...${gl_bai}"
 	sysctl -w vm.swappiness=60 2>/dev/null
 	sysctl -w vm.dirty_ratio=20 2>/dev/null
 	sysctl -w vm.dirty_background_ratio=10 2>/dev/null
 	sysctl -w vm.overcommit_memory=0 2>/dev/null
 	sysctl -w vm.min_free_kbytes=16384 2>/dev/null
 
-	echo -e "${gl_lv}还原网络设置...${gl_bai}"
+	echo -e "${gl_lv}杩樺師缃戠粶璁剧疆...${gl_bai}"
 	sysctl -w net.core.rmem_max=212992 2>/dev/null
 	sysctl -w net.core.wmem_max=212992 2>/dev/null
 	sysctl -w net.core.netdev_max_backlog=1000 2>/dev/null
@@ -5958,37 +5958,37 @@ restore_defaults() {
 	sysctl -w net.ipv4.tcp_tw_reuse=0 2>/dev/null
 	sysctl -w net.ipv4.ip_local_port_range='32768 60999' 2>/dev/null
 
-	echo -e "${gl_lv}还原缓存管理...${gl_bai}"
+	echo -e "${gl_lv}杩樺師缂撳瓨绠＄悊...${gl_bai}"
 	sysctl -w vm.vfs_cache_pressure=100 2>/dev/null
 
-	echo -e "${gl_lv}还原CPU设置...${gl_bai}"
+	echo -e "${gl_lv}杩樺師CPU璁剧疆...${gl_bai}"
 	sysctl -w kernel.sched_autogroup_enabled=1 2>/dev/null
 
-	echo -e "${gl_lv}还原其他优化...${gl_bai}"
-	# 还原透明大页�?
+	echo -e "${gl_lv}杩樺師鍏朵粬浼樺寲...${gl_bai}"
+	# 杩樺師閫忔槑澶ч〉闈?
 	echo always > /sys/kernel/mm/transparent_hugepage/enabled
-	# 还原 NUMA balancing
+	# 杩樺師 NUMA balancing
 	sysctl -w kernel.numa_balancing=1 2>/dev/null
 
 }
 
 
 
-# 网站搭建优化函数
+# 缃戠珯鎼缓浼樺寲鍑芥暟
 optimize_web_server() {
-	echo -e "${gl_lv}切换到网站搭建优化模�?..${gl_bai}"
+	echo -e "${gl_lv}鍒囨崲鍒扮綉绔欐惌寤轰紭鍖栨ā寮?..${gl_bai}"
 
-	echo -e "${gl_lv}优化文件描述�?..${gl_bai}"
+	echo -e "${gl_lv}浼樺寲鏂囦欢鎻忚堪绗?..${gl_bai}"
 	ulimit -n 65535
 
-	echo -e "${gl_lv}优化虚拟内存...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲铏氭嫙鍐呭瓨...${gl_bai}"
 	sysctl -w vm.swappiness=10 2>/dev/null
 	sysctl -w vm.dirty_ratio=20 2>/dev/null
 	sysctl -w vm.dirty_background_ratio=10 2>/dev/null
 	sysctl -w vm.overcommit_memory=1 2>/dev/null
 	sysctl -w vm.min_free_kbytes=65536 2>/dev/null
 
-	echo -e "${gl_lv}优化网络设置...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲缃戠粶璁剧疆...${gl_bai}"
 	sysctl -w net.core.rmem_max=16777216 2>/dev/null
 	sysctl -w net.core.wmem_max=16777216 2>/dev/null
 	sysctl -w net.core.netdev_max_backlog=5000 2>/dev/null
@@ -6000,16 +6000,16 @@ optimize_web_server() {
 	sysctl -w net.ipv4.tcp_tw_reuse=1 2>/dev/null
 	sysctl -w net.ipv4.ip_local_port_range='1024 65535' 2>/dev/null
 
-	echo -e "${gl_lv}优化缓存管理...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲缂撳瓨绠＄悊...${gl_bai}"
 	sysctl -w vm.vfs_cache_pressure=50 2>/dev/null
 
-	echo -e "${gl_lv}优化CPU设置...${gl_bai}"
+	echo -e "${gl_lv}浼樺寲CPU璁剧疆...${gl_bai}"
 	sysctl -w kernel.sched_autogroup_enabled=0 2>/dev/null
 
-	echo -e "${gl_lv}其他优化...${gl_bai}"
-	# 禁用透明大页面，减少延迟
+	echo -e "${gl_lv}鍏朵粬浼樺寲...${gl_bai}"
+	# 绂佺敤閫忔槑澶ч〉闈紝鍑忓皯寤惰繜
 	echo never > /sys/kernel/mm/transparent_hugepage/enabled
-	# 禁用 NUMA balancing
+	# 绂佺敤 NUMA balancing
 	sysctl -w kernel.numa_balancing=0 2>/dev/null
 
 
@@ -6020,62 +6020,62 @@ Kernel_optimize() {
 	root_use
 	while true; do
 	  clear
-	  send_stats "Linux内核调优管理"
-	  echo "Linux系统内核参数优化"
-	  echo "视频介绍: https://www.bilibili.com/video/BV1Kb421J7yg?t=0.1"
+	  send_stats "Linux鍐呮牳璋冧紭绠＄悊"
+	  echo "Linux绯荤粺鍐呮牳鍙傛暟浼樺寲"
+	  echo "瑙嗛浠嬬粛: https://www.bilibili.com/video/BV1Kb421J7yg?t=0.1"
 	  echo "------------------------------------------------"
-	  echo "提供多种系统参数调优模式，用户可以根据自身使用场景进行选择切换�?
-	  echo -e "${gl_huang}提示: ${gl_bai}生产环境请谨慎使用！"
+	  echo "鎻愪緵澶氱绯荤粺鍙傛暟璋冧紭妯″紡锛岀敤鎴峰彲浠ユ牴鎹嚜韬娇鐢ㄥ満鏅繘琛岄€夋嫨鍒囨崲銆?
+	  echo -e "${gl_huang}鎻愮ず: ${gl_bai}鐢熶骇鐜璇疯皑鎱庝娇鐢紒"
 	  echo "--------------------"
-	  echo "1. 高性能优化模式�?    最大化系统性能，优化文件描述符、虚拟内存、网络设置、缓存管理和CPU设置�?
-	  echo "2. 均衡优化模式�?      在性能与资源消耗之间取得平衡，适合日常使用�?
-	  echo "3. 网站优化模式�?      针对网站服务器进行优化，提高并发连接处理能力、响应速度和整体性能�?
-	  echo "4. 直播优化模式�?      针对直播推流的特殊需求进行优化，减少延迟，提高传输性能�?
-	  echo "5. 游戏服优化模式：     针对游戏服务器进行优化，提高并发处理能力和响应速度�?
-	  echo "6. 还原默认设置�?      将系统设置还原为默认配置�?
+	  echo "1. 楂樻€ц兘浼樺寲妯″紡锛?    鏈€澶у寲绯荤粺鎬ц兘锛屼紭鍖栨枃浠舵弿杩扮銆佽櫄鎷熷唴瀛樸€佺綉缁滆缃€佺紦瀛樼鐞嗗拰CPU璁剧疆銆?
+	  echo "2. 鍧囪　浼樺寲妯″紡锛?      鍦ㄦ€ц兘涓庤祫婧愭秷鑰椾箣闂村彇寰楀钩琛★紝閫傚悎鏃ュ父浣跨敤銆?
+	  echo "3. 缃戠珯浼樺寲妯″紡锛?      閽堝缃戠珯鏈嶅姟鍣ㄨ繘琛屼紭鍖栵紝鎻愰珮骞跺彂杩炴帴澶勭悊鑳藉姏銆佸搷搴旈€熷害鍜屾暣浣撴€ц兘銆?
+	  echo "4. 鐩存挱浼樺寲妯″紡锛?      閽堝鐩存挱鎺ㄦ祦鐨勭壒娈婇渶姹傝繘琛屼紭鍖栵紝鍑忓皯寤惰繜锛屾彁楂樹紶杈撴€ц兘銆?
+	  echo "5. 娓告垙鏈嶄紭鍖栨ā寮忥細     閽堝娓告垙鏈嶅姟鍣ㄨ繘琛屼紭鍖栵紝鎻愰珮骞跺彂澶勭悊鑳藉姏鍜屽搷搴旈€熷害銆?
+	  echo "6. 杩樺師榛樿璁剧疆锛?      灏嗙郴缁熻缃繕鍘熶负榛樿閰嶇疆銆?
 	  echo "--------------------"
-	  echo "0. 返回上一级选单"
+	  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 	  echo "--------------------"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 	  case $sub_choice in
 		  1)
 			  cd ~
 			  clear
-			  local tiaoyou_moshi="高性能优化模式"
+			  local tiaoyou_moshi="楂樻€ц兘浼樺寲妯″紡"
 			  optimize_high_performance
-			  send_stats "高性能模式优化"
+			  send_stats "楂樻€ц兘妯″紡浼樺寲"
 			  ;;
 		  2)
 			  cd ~
 			  clear
 			  optimize_balanced
-			  send_stats "均衡模式优化"
+			  send_stats "鍧囪　妯″紡浼樺寲"
 			  ;;
 		  3)
 			  cd ~
 			  clear
 			  optimize_web_server
-			  send_stats "网站优化模式"
+			  send_stats "缃戠珯浼樺寲妯″紡"
 			  ;;
 		  4)
 			  cd ~
 			  clear
-			  local tiaoyou_moshi="直播优化模式"
+			  local tiaoyou_moshi="鐩存挱浼樺寲妯″紡"
 			  optimize_high_performance
-			  send_stats "直播推流优化"
+			  send_stats "鐩存挱鎺ㄦ祦浼樺寲"
 			  ;;
 		  5)
 			  cd ~
 			  clear
-			  local tiaoyou_moshi="游戏服优化模�?
+			  local tiaoyou_moshi="娓告垙鏈嶄紭鍖栨ā寮?
 			  optimize_high_performance
-			  send_stats "游戏服优�?
+			  send_stats "娓告垙鏈嶄紭鍖?
 			  ;;
 		  6)
 			  cd ~
 			  clear
 			  restore_defaults
-			  send_stats "还原默认设置"
+			  send_stats "杩樺師榛樿璁剧疆"
 			  ;;
 		  *)
 			  break
@@ -6102,7 +6102,7 @@ update_locale() {
 				locale-gen
 				echo "LANG=${lang}" > /etc/default/locale
 				export LANG=${lang}
-				echo -e "${gl_lv}系统语言已经修改�? $lang 重新连接SSH生效�?{gl_bai}"
+				echo -e "${gl_lv}绯荤粺璇█宸茬粡淇敼涓? $lang 閲嶆柊杩炴帴SSH鐢熸晥銆?{gl_bai}"
 				hash -r
 				break_end
 
@@ -6111,17 +6111,17 @@ update_locale() {
 				install glibc-langpack-zh
 				localectl set-locale LANG=${lang}
 				echo "LANG=${lang}" | tee /etc/locale.conf
-				echo -e "${gl_lv}系统语言已经修改�? $lang 重新连接SSH生效�?{gl_bai}"
+				echo -e "${gl_lv}绯荤粺璇█宸茬粡淇敼涓? $lang 閲嶆柊杩炴帴SSH鐢熸晥銆?{gl_bai}"
 				hash -r
 				break_end
 				;;
 			*)
-				echo "不支持的系统: $ID"
+				echo "涓嶆敮鎸佺殑绯荤粺: $ID"
 				break_end
 				;;
 		esac
 	else
-		echo "不支持的系统，无法识别系统类型�?
+		echo "涓嶆敮鎸佺殑绯荤粺锛屾棤娉曡瘑鍒郴缁熺被鍨嬨€?
 		break_end
 	fi
 }
@@ -6131,29 +6131,29 @@ update_locale() {
 
 linux_language() {
 root_use
-send_stats "切换系统语言"
+send_stats "鍒囨崲绯荤粺璇█"
 while true; do
   clear
-  echo "当前系统语言: $LANG"
+  echo "褰撳墠绯荤粺璇█: $LANG"
   echo "------------------------"
-  echo "1. 英文          2. 简体中�?         3. 繁体中文"
+  echo "1. 鑻辨枃          2. 绠€浣撲腑鏂?         3. 绻佷綋涓枃"
   echo "------------------------"
-  echo "0. 返回上一级选单"
+  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
   echo "------------------------"
-  read -e -p "输入你的选择: " choice
+  read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 
   case $choice in
 	  1)
 		  update_locale "en_US.UTF-8" "en_US.UTF-8"
-		  send_stats "切换到英�?
+		  send_stats "鍒囨崲鍒拌嫳鏂?
 		  ;;
 	  2)
 		  update_locale "zh_CN.UTF-8" "zh_CN.UTF-8"
-		  send_stats "切换到简体中�?
+		  send_stats "鍒囨崲鍒扮畝浣撲腑鏂?
 		  ;;
 	  3)
 		  update_locale "zh_TW.UTF-8" "zh_TW.UTF-8"
-		  send_stats "切换到繁体中�?
+		  send_stats "鍒囨崲鍒扮箒浣撲腑鏂?
 		  ;;
 	  *)
 		  break
@@ -6175,7 +6175,7 @@ else
 	echo "${bianse}" >> ~/.profile
 	# source ~/.profile
 fi
-echo -e "${gl_lv}变更完成。重新连接SSH后可查看变化�?{gl_bai}"
+echo -e "${gl_lv}鍙樻洿瀹屾垚銆傞噸鏂拌繛鎺SH鍚庡彲鏌ョ湅鍙樺寲锛?{gl_bai}"
 
 hash -r
 break_end
@@ -6186,10 +6186,10 @@ break_end
 
 shell_bianse() {
   root_use
-  send_stats "命令行美化工�?
+  send_stats "鍛戒护琛岀編鍖栧伐鍏?
   while true; do
 	clear
-	echo "命令行美化工�?
+	echo "鍛戒护琛岀編鍖栧伐鍏?
 	echo "------------------------"
 	echo -e "1. \033[1;32mroot \033[1;34mlocalhost \033[1;31m~ \033[0m${gl_bai}#"
 	echo -e "2. \033[1;35mroot \033[1;36mlocalhost \033[1;33m~ \033[0m${gl_bai}#"
@@ -6199,9 +6199,9 @@ shell_bianse() {
 	echo -e "6. \033[1;33mroot \033[1;34mlocalhost \033[1;35m~ \033[0m${gl_bai}#"
 	echo -e "7. root localhost ~ #"
 	echo "------------------------"
-	echo "0. 返回上一级选单"
+	echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 	echo "------------------------"
-	read -e -p "输入你的选择: " choice
+	read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 
 	case $choice in
 	  1)
@@ -6246,7 +6246,7 @@ shell_bianse() {
 
 linux_trash() {
   root_use
-  send_stats "系统回收�?
+  send_stats "绯荤粺鍥炴敹绔?
 
   local bashrc_profile="/root/.bashrc"
   local TRASH_DIR="$HOME/.local/share/Trash/files"
@@ -6255,23 +6255,23 @@ linux_trash() {
 
 	local trash_status
 	if ! grep -q "trash-put" "$bashrc_profile"; then
-		trash_status="${gl_hui}未启�?{gl_bai}"
+		trash_status="${gl_hui}鏈惎鐢?{gl_bai}"
 	else
-		trash_status="${gl_lv}已启�?{gl_bai}"
+		trash_status="${gl_lv}宸插惎鐢?{gl_bai}"
 	fi
 
 	clear
-	echo -e "当前回收�?${trash_status}"
-	echo -e "启用后rm删除的文件先进入回收站，防止误删重要文件�?
+	echo -e "褰撳墠鍥炴敹绔?${trash_status}"
+	echo -e "鍚敤鍚巖m鍒犻櫎鐨勬枃浠跺厛杩涘叆鍥炴敹绔欙紝闃叉璇垹閲嶈鏂囦欢锛?
 	echo "------------------------------------------------"
-	ls -l --color=auto "$TRASH_DIR" 2>/dev/null || echo "回收站为�?
+	ls -l --color=auto "$TRASH_DIR" 2>/dev/null || echo "鍥炴敹绔欎负绌?
 	echo "------------------------"
-	echo "1. 启用回收�?         2. 关闭回收�?
-	echo "3. 还原内容            4. 清空回收�?
+	echo "1. 鍚敤鍥炴敹绔?         2. 鍏抽棴鍥炴敹绔?
+	echo "3. 杩樺師鍐呭            4. 娓呯┖鍥炴敹绔?
 	echo "------------------------"
-	echo "0. 返回上一级选单"
+	echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 	echo "------------------------"
-	read -e -p "输入你的选择: " choice
+	read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 
 	case $choice in
 	  1)
@@ -6279,7 +6279,7 @@ linux_trash() {
 		sed -i '/alias rm/d' "$bashrc_profile"
 		echo "alias rm='trash-put'" >> "$bashrc_profile"
 		source "$bashrc_profile"
-		echo "回收站已启用，删除的文件将移至回收站�?
+		echo "鍥炴敹绔欏凡鍚敤锛屽垹闄ょ殑鏂囦欢灏嗙Щ鑷冲洖鏀剁珯銆?
 		sleep 2
 		;;
 	  2)
@@ -6287,23 +6287,23 @@ linux_trash() {
 		sed -i '/alias rm/d' "$bashrc_profile"
 		echo "alias rm='rm -i'" >> "$bashrc_profile"
 		source "$bashrc_profile"
-		echo "回收站已关闭，文件将直接删除�?
+		echo "鍥炴敹绔欏凡鍏抽棴锛屾枃浠跺皢鐩存帴鍒犻櫎銆?
 		sleep 2
 		;;
 	  3)
-		read -e -p "输入要还原的文件�? " file_to_restore
+		read -e -p "杈撳叆瑕佽繕鍘熺殑鏂囦欢鍚? " file_to_restore
 		if [ -e "$TRASH_DIR/$file_to_restore" ]; then
 		  mv "$TRASH_DIR/$file_to_restore" "$HOME/"
-		  echo "$file_to_restore 已还原到主目录�?
+		  echo "$file_to_restore 宸茶繕鍘熷埌涓荤洰褰曘€?
 		else
-		  echo "文件不存在�?
+		  echo "鏂囦欢涓嶅瓨鍦ㄣ€?
 		fi
 		;;
 	  4)
-		read -e -p "确认清空回收站？[y/n]: " confirm
+		read -e -p "纭娓呯┖鍥炴敹绔欙紵[y/n]: " confirm
 		if [[ "$confirm" == "y" ]]; then
 		  trash-empty
-		  echo "回收站已清空�?
+		  echo "鍥炴敹绔欏凡娓呯┖銆?
 		fi
 		;;
 	  *)
@@ -6314,143 +6314,143 @@ linux_trash() {
 }
 
 linux_fav() {
-send_stats "命令收藏�?
+send_stats "鍛戒护鏀惰棌澶?
 bash <(curl -l -s ${gh_proxy}raw.githubusercontent.com/byJoey/cmdbox/refs/heads/main/install.sh)
 }
 
-# 创建备份
+# 鍒涘缓澶囦唤
 create_backup() {
-	send_stats "创建备份"
+	send_stats "鍒涘缓澶囦唤"
 	local TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 
-	# 提示用户输入备份目录
-	echo "创建备份示例�?
-	echo "  - 备份单个目录: /var/www"
-	echo "  - 备份多个目录: /etc /home /var/log"
-	echo "  - 直接回车将使用默认目�?(/etc /usr /home)"
-	read -e -p "请输入要备份的目录（多个目录用空格分隔，直接回车则使用默认目录）�? input
+	# 鎻愮ず鐢ㄦ埛杈撳叆澶囦唤鐩綍
+	echo "鍒涘缓澶囦唤绀轰緥锛?
+	echo "  - 澶囦唤鍗曚釜鐩綍: /var/www"
+	echo "  - 澶囦唤澶氫釜鐩綍: /etc /home /var/log"
+	echo "  - 鐩存帴鍥炶溅灏嗕娇鐢ㄩ粯璁ょ洰褰?(/etc /usr /home)"
+	read -e -p "璇疯緭鍏ヨ澶囦唤鐨勭洰褰曪紙澶氫釜鐩綍鐢ㄧ┖鏍煎垎闅旓紝鐩存帴鍥炶溅鍒欎娇鐢ㄩ粯璁ょ洰褰曪級锛? input
 
-	# 如果用户没有输入目录，则使用默认目录
+	# 濡傛灉鐢ㄦ埛娌℃湁杈撳叆鐩綍锛屽垯浣跨敤榛樿鐩綍
 	if [ -z "$input" ]; then
 		BACKUP_PATHS=(
-			"/etc"              # 配置文件和软件包配置
-			"/usr"              # 已安装的软件文件
-			"/home"             # 用户数据
+			"/etc"              # 閰嶇疆鏂囦欢鍜岃蒋浠跺寘閰嶇疆
+			"/usr"              # 宸插畨瑁呯殑杞欢鏂囦欢
+			"/home"             # 鐢ㄦ埛鏁版嵁
 		)
 	else
-		# 将用户输入的目录按空格分隔成数组
+		# 灏嗙敤鎴疯緭鍏ョ殑鐩綍鎸夌┖鏍煎垎闅旀垚鏁扮粍
 		IFS=' ' read -r -a BACKUP_PATHS <<< "$input"
 	fi
 
-	# 生成备份文件前缀
+	# 鐢熸垚澶囦唤鏂囦欢鍓嶇紑
 	local PREFIX=""
 	for path in "${BACKUP_PATHS[@]}"; do
-		# 提取目录名称并去除斜�?
+		# 鎻愬彇鐩綍鍚嶇О骞跺幓闄ゆ枩鏉?
 		dir_name=$(basename "$path")
 		PREFIX+="${dir_name}_"
 	done
 
-	# 去除最后一个下划线
+	# 鍘婚櫎鏈€鍚庝竴涓笅鍒掔嚎
 	local PREFIX=${PREFIX%_}
 
-	# 生成备份文件�?
+	# 鐢熸垚澶囦唤鏂囦欢鍚?
 	local BACKUP_NAME="${PREFIX}_$TIMESTAMP.tar.gz"
 
-	# 打印用户选择的目�?
-	echo "您选择的备份目录为�?
+	# 鎵撳嵃鐢ㄦ埛閫夋嫨鐨勭洰褰?
+	echo "鎮ㄩ€夋嫨鐨勫浠界洰褰曚负锛?
 	for path in "${BACKUP_PATHS[@]}"; do
 		echo "- $path"
 	done
 
-	# 创建备份
-	echo "正在创建备份 $BACKUP_NAME..."
+	# 鍒涘缓澶囦唤
+	echo "姝ｅ湪鍒涘缓澶囦唤 $BACKUP_NAME..."
 	install tar
 	tar -czvf "$BACKUP_DIR/$BACKUP_NAME" "${BACKUP_PATHS[@]}"
 
-	# 检查命令是否成�?
+	# 妫€鏌ュ懡浠ゆ槸鍚︽垚鍔?
 	if [ $? -eq 0 ]; then
-		echo "备份创建成功: $BACKUP_DIR/$BACKUP_NAME"
+		echo "澶囦唤鍒涘缓鎴愬姛: $BACKUP_DIR/$BACKUP_NAME"
 	else
-		echo "备份创建失败�?
+		echo "澶囦唤鍒涘缓澶辫触锛?
 		exit 1
 	fi
 }
 
-# 恢复备份
+# 鎭㈠澶囦唤
 restore_backup() {
-	send_stats "恢复备份"
-	# 选择要恢复的备份
-	read -e -p "请输入要恢复的备份文件名: " BACKUP_NAME
+	send_stats "鎭㈠澶囦唤"
+	# 閫夋嫨瑕佹仮澶嶇殑澶囦唤
+	read -e -p "璇疯緭鍏ヨ鎭㈠鐨勫浠芥枃浠跺悕: " BACKUP_NAME
 
-	# 检查备份文件是否存�?
+	# 妫€鏌ュ浠芥枃浠舵槸鍚﹀瓨鍦?
 	if [ ! -f "$BACKUP_DIR/$BACKUP_NAME" ]; then
-		echo "备份文件不存在！"
+		echo "澶囦唤鏂囦欢涓嶅瓨鍦紒"
 		exit 1
 	fi
 
-	echo "正在恢复备份 $BACKUP_NAME..."
+	echo "姝ｅ湪鎭㈠澶囦唤 $BACKUP_NAME..."
 	tar -xzvf "$BACKUP_DIR/$BACKUP_NAME" -C /
 
 	if [ $? -eq 0 ]; then
-		echo "备份恢复成功�?
+		echo "澶囦唤鎭㈠鎴愬姛锛?
 	else
-		echo "备份恢复失败�?
+		echo "澶囦唤鎭㈠澶辫触锛?
 		exit 1
 	fi
 }
 
-# 列出备份
+# 鍒楀嚭澶囦唤
 list_backups() {
-	echo "可用的备份："
+	echo "鍙敤鐨勫浠斤細"
 	ls -1 "$BACKUP_DIR"
 }
 
-# 删除备份
+# 鍒犻櫎澶囦唤
 delete_backup() {
-	send_stats "删除备份"
+	send_stats "鍒犻櫎澶囦唤"
 
-	read -e -p "请输入要删除的备份文件名: " BACKUP_NAME
+	read -e -p "璇疯緭鍏ヨ鍒犻櫎鐨勫浠芥枃浠跺悕: " BACKUP_NAME
 
-	# 检查备份文件是否存�?
+	# 妫€鏌ュ浠芥枃浠舵槸鍚﹀瓨鍦?
 	if [ ! -f "$BACKUP_DIR/$BACKUP_NAME" ]; then
-		echo "备份文件不存在！"
+		echo "澶囦唤鏂囦欢涓嶅瓨鍦紒"
 		exit 1
 	fi
 
-	# 删除备份
+	# 鍒犻櫎澶囦唤
 	rm -f "$BACKUP_DIR/$BACKUP_NAME"
 
 	if [ $? -eq 0 ]; then
-		echo "备份删除成功�?
+		echo "澶囦唤鍒犻櫎鎴愬姛锛?
 	else
-		echo "备份删除失败�?
+		echo "澶囦唤鍒犻櫎澶辫触锛?
 		exit 1
 	fi
 }
 
-# 备份主菜�?
+# 澶囦唤涓昏彍鍗?
 linux_backup() {
 	BACKUP_DIR="/backups"
 	mkdir -p "$BACKUP_DIR"
 	while true; do
 		clear
-		send_stats "系统备份功能"
-		echo "系统备份功能"
+		send_stats "绯荤粺澶囦唤鍔熻兘"
+		echo "绯荤粺澶囦唤鍔熻兘"
 		echo "------------------------"
 		list_backups
 		echo "------------------------"
-		echo "1. 创建备份        2. 恢复备份        3. 删除备份"
+		echo "1. 鍒涘缓澶囦唤        2. 鎭㈠澶囦唤        3. 鍒犻櫎澶囦唤"
 		echo "------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "------------------------"
-		read -e -p "请输入你的选择: " choice
+		read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " choice
 		case $choice in
 			1) create_backup ;;
 			2) restore_backup ;;
 			3) delete_backup ;;
 			*) break ;;
 		esac
-		read -e -p "按回车键继续..."
+		read -e -p "鎸夊洖杞﹂敭缁х画..."
 	done
 }
 
@@ -6462,56 +6462,56 @@ linux_backup() {
 
 
 
-# 显示连接列表
+# 鏄剧ず杩炴帴鍒楄〃
 list_connections() {
-	echo "已保存的连接:"
+	echo "宸蹭繚瀛樼殑杩炴帴:"
 	echo "------------------------"
 	cat "$CONFIG_FILE" | awk -F'|' '{print NR " - " $1 " (" $2 ")"}'
 	echo "------------------------"
 }
 
 
-# 添加新连�?
+# 娣诲姞鏂拌繛鎺?
 add_connection() {
-	send_stats "添加新连�?
-	echo "创建新连接示例："
-	echo "  - 连接名称: my_server"
-	echo "  - IP地址: 192.168.1.100"
-	echo "  - 用户�? root"
-	echo "  - 端口: 22"
+	send_stats "娣诲姞鏂拌繛鎺?
+	echo "鍒涘缓鏂拌繛鎺ョず渚嬶細"
+	echo "  - 杩炴帴鍚嶇О: my_server"
+	echo "  - IP鍦板潃: 192.168.1.100"
+	echo "  - 鐢ㄦ埛鍚? root"
+	echo "  - 绔彛: 22"
 	echo "------------------------"
-	read -e -p "请输入连接名�? " name
-	read -e -p "请输入IP地址: " ip
-	read -e -p "请输入用户名 (默认: root): " user
-	local user=${user:-root}  # 如果用户未输入，则使用默认�?root
-	read -e -p "请输入端口号 (默认: 22): " port
-	local port=${port:-22}  # 如果用户未输入，则使用默认�?22
+	read -e -p "璇疯緭鍏ヨ繛鎺ュ悕绉? " name
+	read -e -p "璇疯緭鍏P鍦板潃: " ip
+	read -e -p "璇疯緭鍏ョ敤鎴峰悕 (榛樿: root): " user
+	local user=${user:-root}  # 濡傛灉鐢ㄦ埛鏈緭鍏ワ紝鍒欎娇鐢ㄩ粯璁ゅ€?root
+	read -e -p "璇疯緭鍏ョ鍙ｅ彿 (榛樿: 22): " port
+	local port=${port:-22}  # 濡傛灉鐢ㄦ埛鏈緭鍏ワ紝鍒欎娇鐢ㄩ粯璁ゅ€?22
 
-	echo "请选择身份验证方式:"
-	echo "1. 密码"
-	echo "2. 密钥"
-	read -e -p "请输入选择 (1/2): " auth_choice
+	echo "璇烽€夋嫨韬唤楠岃瘉鏂瑰紡:"
+	echo "1. 瀵嗙爜"
+	echo "2. 瀵嗛挜"
+	read -e -p "璇疯緭鍏ラ€夋嫨 (1/2): " auth_choice
 
 	case $auth_choice in
 		1)
-			read -s -p "请输入密�? " password_or_key
-			echo  # 换行
+			read -s -p "璇疯緭鍏ュ瘑鐮? " password_or_key
+			echo  # 鎹㈣
 			;;
 		2)
-			echo "请粘贴密钥内�?(粘贴完成后按两次回车)�?
+			echo "璇风矘璐村瘑閽ュ唴瀹?(绮樿创瀹屾垚鍚庢寜涓ゆ鍥炶溅)锛?
 			local password_or_key=""
 			while IFS= read -r line; do
-				# 如果输入为空行且密钥内容已经包含了开头，则结束输�?
+				# 濡傛灉杈撳叆涓虹┖琛屼笖瀵嗛挜鍐呭宸茬粡鍖呭惈浜嗗紑澶达紝鍒欑粨鏉熻緭鍏?
 				if [[ -z "$line" && "$password_or_key" == *"-----BEGIN"* ]]; then
 					break
 				fi
-				# 如果是第一行或已经开始输入密钥内容，则继续添�?
+				# 濡傛灉鏄涓€琛屾垨宸茬粡寮€濮嬭緭鍏ュ瘑閽ュ唴瀹癸紝鍒欑户缁坊鍔?
 				if [[ -n "$line" || "$password_or_key" == *"-----BEGIN"* ]]; then
 					local password_or_key+="${line}"$'\n'
 				fi
 			done
 
-			# 检查是否是密钥内容
+			# 妫€鏌ユ槸鍚︽槸瀵嗛挜鍐呭
 			if [[ "$password_or_key" == *"-----BEGIN"* && "$password_or_key" == *"PRIVATE KEY-----"* ]]; then
 				local key_file="$KEY_DIR/$name.key"
 				echo -n "$password_or_key" > "$key_file"
@@ -6520,89 +6520,89 @@ add_connection() {
 			fi
 			;;
 		*)
-			echo "无效的选择�?
+			echo "鏃犳晥鐨勯€夋嫨锛?
 			return
 			;;
 	esac
 
 	echo "$name|$ip|$user|$port|$password_or_key" >> "$CONFIG_FILE"
-	echo "连接已保�?"
+	echo "杩炴帴宸蹭繚瀛?"
 }
 
 
 
-# 删除连接
+# 鍒犻櫎杩炴帴
 delete_connection() {
-	send_stats "删除连接"
-	read -e -p "请输入要删除的连接编�? " num
+	send_stats "鍒犻櫎杩炴帴"
+	read -e -p "璇疯緭鍏ヨ鍒犻櫎鐨勮繛鎺ョ紪鍙? " num
 
 	local connection=$(sed -n "${num}p" "$CONFIG_FILE")
 	if [[ -z "$connection" ]]; then
-		echo "错误：未找到对应的连接�?
+		echo "閿欒锛氭湭鎵惧埌瀵瑰簲鐨勮繛鎺ャ€?
 		return
 	fi
 
 	IFS='|' read -r name ip user port password_or_key <<< "$connection"
 
-	# 如果连接使用的是密钥文件，则删除该密钥文�?
+	# 濡傛灉杩炴帴浣跨敤鐨勬槸瀵嗛挜鏂囦欢锛屽垯鍒犻櫎璇ュ瘑閽ユ枃浠?
 	if [[ "$password_or_key" == "$KEY_DIR"* ]]; then
 		rm -f "$password_or_key"
 	fi
 
 	sed -i "${num}d" "$CONFIG_FILE"
-	echo "连接已删�?"
+	echo "杩炴帴宸插垹闄?"
 }
 
-# 使用连接
+# 浣跨敤杩炴帴
 use_connection() {
-	send_stats "使用连接"
-	read -e -p "请输入要使用的连接编�? " num
+	send_stats "浣跨敤杩炴帴"
+	read -e -p "璇疯緭鍏ヨ浣跨敤鐨勮繛鎺ョ紪鍙? " num
 
 	local connection=$(sed -n "${num}p" "$CONFIG_FILE")
 	if [[ -z "$connection" ]]; then
-		echo "错误：未找到对应的连接�?
+		echo "閿欒锛氭湭鎵惧埌瀵瑰簲鐨勮繛鎺ャ€?
 		return
 	fi
 
 	IFS='|' read -r name ip user port password_or_key <<< "$connection"
 
-	echo "正在连接�?$name ($ip)..."
+	echo "姝ｅ湪杩炴帴鍒?$name ($ip)..."
 	if [[ -f "$password_or_key" ]]; then
-		# 使用密钥连接
+		# 浣跨敤瀵嗛挜杩炴帴
 		ssh -o StrictHostKeyChecking=no -i "$password_or_key" -p "$port" "$user@$ip"
 		if [[ $? -ne 0 ]]; then
-			echo "连接失败！请检查以下内容："
-			echo "1. 密钥文件路径是否正确�?password_or_key"
-			echo "2. 密钥文件权限是否正确（应�?600）�?
-			echo "3. 目标服务器是否允许使用密钥登录�?
+			echo "杩炴帴澶辫触锛佽妫€鏌ヤ互涓嬪唴瀹癸細"
+			echo "1. 瀵嗛挜鏂囦欢璺緞鏄惁姝ｇ‘锛?password_or_key"
+			echo "2. 瀵嗛挜鏂囦欢鏉冮檺鏄惁姝ｇ‘锛堝簲涓?600锛夈€?
+			echo "3. 鐩爣鏈嶅姟鍣ㄦ槸鍚﹀厑璁镐娇鐢ㄥ瘑閽ョ櫥褰曘€?
 		fi
 	else
-		# 使用密码连接
+		# 浣跨敤瀵嗙爜杩炴帴
 		if ! command -v sshpass &> /dev/null; then
-			echo "错误：未安装 sshpass，请先安�?sshpass�?
-			echo "安装方法�?
+			echo "閿欒锛氭湭瀹夎 sshpass锛岃鍏堝畨瑁?sshpass銆?
+			echo "瀹夎鏂规硶锛?
 			echo "  - Ubuntu/Debian: apt install sshpass"
 			echo "  - CentOS/RHEL: yum install sshpass"
 			return
 		fi
 		sshpass -p "$password_or_key" ssh -o StrictHostKeyChecking=no -p "$port" "$user@$ip"
 		if [[ $? -ne 0 ]]; then
-			echo "连接失败！请检查以下内容："
-			echo "1. 用户名和密码是否正确�?
-			echo "2. 目标服务器是否允许密码登录�?
-			echo "3. 目标服务器的 SSH 服务是否正常运行�?
+			echo "杩炴帴澶辫触锛佽妫€鏌ヤ互涓嬪唴瀹癸細"
+			echo "1. 鐢ㄦ埛鍚嶅拰瀵嗙爜鏄惁姝ｇ‘銆?
+			echo "2. 鐩爣鏈嶅姟鍣ㄦ槸鍚﹀厑璁稿瘑鐮佺櫥褰曘€?
+			echo "3. 鐩爣鏈嶅姟鍣ㄧ殑 SSH 鏈嶅姟鏄惁姝ｅ父杩愯銆?
 		fi
 	fi
 }
 
 
 ssh_manager() {
-	send_stats "ssh远程连接工具"
+	send_stats "ssh杩滅▼杩炴帴宸ュ叿"
 
 	CONFIG_FILE="$HOME/.ssh_connections"
 	KEY_DIR="$HOME/.ssh/ssh_manager_keys"
 
-	# 检查配置文件和密钥目录是否存在，如果不存在则创�?
+	# 妫€鏌ラ厤缃枃浠跺拰瀵嗛挜鐩綍鏄惁瀛樺湪锛屽鏋滀笉瀛樺湪鍒欏垱寤?
 	if [[ ! -f "$CONFIG_FILE" ]]; then
 		touch "$CONFIG_FILE"
 	fi
@@ -6614,21 +6614,21 @@ ssh_manager() {
 
 	while true; do
 		clear
-		echo "SSH 远程连接工具"
-		echo "可以通过SSH连接到其他Linux系统�?
+		echo "SSH 杩滅▼杩炴帴宸ュ叿"
+		echo "鍙互閫氳繃SSH杩炴帴鍒板叾浠朙inux绯荤粺涓?
 		echo "------------------------"
 		list_connections
-		echo "1. 创建新连�?       2. 使用连接        3. 删除连接"
+		echo "1. 鍒涘缓鏂拌繛鎺?       2. 浣跨敤杩炴帴        3. 鍒犻櫎杩炴帴"
 		echo "------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "------------------------"
-		read -e -p "请输入你的选择: " choice
+		read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " choice
 		case $choice in
 			1) add_connection ;;
 			2) use_connection ;;
 			3) delete_connection ;;
 			0) break ;;
-			*) echo "无效的选择，请重试�? ;;
+			*) echo "鏃犳晥鐨勯€夋嫨锛岃閲嶈瘯銆? ;;
 		esac
 	done
 }
@@ -6644,184 +6644,184 @@ ssh_manager() {
 
 
 
-# 列出可用的硬盘分�?
+# 鍒楀嚭鍙敤鐨勭‖鐩樺垎鍖?
 list_partitions() {
-	echo "可用的硬盘分区："
+	echo "鍙敤鐨勭‖鐩樺垎鍖猴細"
 	lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT | grep -v "sr\|loop"
 }
 
 
-# 持久化挂载分�?
+# 鎸佷箙鍖栨寕杞藉垎鍖?
 mount_partition() {
-	send_stats "挂载分区"
-	read -e -p "请输入要挂载的分区名称（例如 sda1�? " PARTITION
+	send_stats "鎸傝浇鍒嗗尯"
+	read -e -p "璇疯緭鍏ヨ鎸傝浇鐨勫垎鍖哄悕绉帮紙渚嬪 sda1锛? " PARTITION
 
 	DEVICE="/dev/$PARTITION"
 	MOUNT_POINT="/mnt/$PARTITION"
 
-	# 检查分区是否存�?
+	# 妫€鏌ュ垎鍖烘槸鍚﹀瓨鍦?
 	if ! lsblk -no NAME | grep -qw "$PARTITION"; then
-		echo "分区不存在！"
+		echo "鍒嗗尯涓嶅瓨鍦紒"
 		return 1
 	fi
 
-	# 检查是否已挂载
+	# 妫€鏌ユ槸鍚﹀凡鎸傝浇
 	if mount | grep -qw "$DEVICE"; then
-		echo "分区已经挂载�?
+		echo "鍒嗗尯宸茬粡鎸傝浇锛?
 		return 1
 	fi
 
-	# 获取 UUID
+	# 鑾峰彇 UUID
 	UUID=$(blkid -s UUID -o value "$DEVICE")
 	if [ -z "$UUID" ]; then
-		echo "无法获取 UUID�?
+		echo "鏃犳硶鑾峰彇 UUID锛?
 		return 1
 	fi
 
-	# 获取文件系统类型
+	# 鑾峰彇鏂囦欢绯荤粺绫诲瀷
 	FSTYPE=$(blkid -s TYPE -o value "$DEVICE")
 	if [ -z "$FSTYPE" ]; then
-		echo "无法获取文件系统类型�?
+		echo "鏃犳硶鑾峰彇鏂囦欢绯荤粺绫诲瀷锛?
 		return 1
 	fi
 
-	# 创建挂载�?
+	# 鍒涘缓鎸傝浇鐐?
 	mkdir -p "$MOUNT_POINT"
 
-	# 挂载
+	# 鎸傝浇
 	if ! mount "$DEVICE" "$MOUNT_POINT"; then
-		echo "分区挂载失败�?
+		echo "鍒嗗尯鎸傝浇澶辫触锛?
 		rmdir "$MOUNT_POINT"
 		return 1
 	fi
 
-	echo "分区已成功挂载到 $MOUNT_POINT"
+	echo "鍒嗗尯宸叉垚鍔熸寕杞藉埌 $MOUNT_POINT"
 
-	# 检�?/etc/fstab 是否已经存在 UUID 或挂载点
+	# 妫€鏌?/etc/fstab 鏄惁宸茬粡瀛樺湪 UUID 鎴栨寕杞界偣
 	if grep -qE "UUID=$UUID|[[:space:]]$MOUNT_POINT[[:space:]]" /etc/fstab; then
-		echo "/etc/fstab 中已存在该分区记录，跳过写入"
+		echo "/etc/fstab 涓凡瀛樺湪璇ュ垎鍖鸿褰曪紝璺宠繃鍐欏叆"
 		return 0
 	fi
 
-	# 写入 /etc/fstab
+	# 鍐欏叆 /etc/fstab
 	echo "UUID=$UUID $MOUNT_POINT $FSTYPE defaults,nofail 0 2" >> /etc/fstab
 
-	echo "已写�?/etc/fstab，实现持久化挂载"
+	echo "宸插啓鍏?/etc/fstab锛屽疄鐜版寔涔呭寲鎸傝浇"
 }
 
 
-# 卸载分区
+# 鍗歌浇鍒嗗尯
 unmount_partition() {
-	send_stats "卸载分区"
-	read -e -p "请输入要卸载的分区名称（例如 sda1�? " PARTITION
+	send_stats "鍗歌浇鍒嗗尯"
+	read -e -p "璇疯緭鍏ヨ鍗歌浇鐨勫垎鍖哄悕绉帮紙渚嬪 sda1锛? " PARTITION
 
-	# 检查分区是否已经挂�?
+	# 妫€鏌ュ垎鍖烘槸鍚﹀凡缁忔寕杞?
 	MOUNT_POINT=$(lsblk -o MOUNTPOINT | grep -w "$PARTITION")
 	if [ -z "$MOUNT_POINT" ]; then
-		echo "分区未挂载！"
+		echo "鍒嗗尯鏈寕杞斤紒"
 		return
 	fi
 
-	# 卸载分区
+	# 鍗歌浇鍒嗗尯
 	umount "/dev/$PARTITION"
 
 	if [ $? -eq 0 ]; then
-		echo "分区卸载成功: $MOUNT_POINT"
+		echo "鍒嗗尯鍗歌浇鎴愬姛: $MOUNT_POINT"
 		rmdir "$MOUNT_POINT"
 	else
-		echo "分区卸载失败�?
+		echo "鍒嗗尯鍗歌浇澶辫触锛?
 	fi
 }
 
-# 列出已挂载的分区
+# 鍒楀嚭宸叉寕杞界殑鍒嗗尯
 list_mounted_partitions() {
-	echo "已挂载的分区�?
+	echo "宸叉寕杞界殑鍒嗗尯锛?
 	df -h | grep -v "tmpfs\|udev\|overlay"
 }
 
-# 格式化分�?
+# 鏍煎紡鍖栧垎鍖?
 format_partition() {
-	send_stats "格式化分�?
-	read -e -p "请输入要格式化的分区名称（例�?sda1�? " PARTITION
+	send_stats "鏍煎紡鍖栧垎鍖?
+	read -e -p "璇疯緭鍏ヨ鏍煎紡鍖栫殑鍒嗗尯鍚嶇О锛堜緥濡?sda1锛? " PARTITION
 
-	# 检查分区是否存�?
+	# 妫€鏌ュ垎鍖烘槸鍚﹀瓨鍦?
 	if ! lsblk -o NAME | grep -w "$PARTITION" > /dev/null; then
-		echo "分区不存在！"
+		echo "鍒嗗尯涓嶅瓨鍦紒"
 		return
 	fi
 
-	# 检查分区是否已经挂�?
+	# 妫€鏌ュ垎鍖烘槸鍚﹀凡缁忔寕杞?
 	if lsblk -o MOUNTPOINT | grep -w "$PARTITION" > /dev/null; then
-		echo "分区已经挂载，请先卸载！"
+		echo "鍒嗗尯宸茬粡鎸傝浇锛岃鍏堝嵏杞斤紒"
 		return
 	fi
 
-	# 选择文件系统类型
-	echo "请选择文件系统类型�?
+	# 閫夋嫨鏂囦欢绯荤粺绫诲瀷
+	echo "璇烽€夋嫨鏂囦欢绯荤粺绫诲瀷锛?
 	echo "1. ext4"
 	echo "2. xfs"
 	echo "3. ntfs"
 	echo "4. vfat"
-	read -e -p "请输入你的选择: " FS_CHOICE
+	read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " FS_CHOICE
 
 	case $FS_CHOICE in
 		1) FS_TYPE="ext4" ;;
 		2) FS_TYPE="xfs" ;;
 		3) FS_TYPE="ntfs" ;;
 		4) FS_TYPE="vfat" ;;
-		*) echo "无效的选择�?; return ;;
+		*) echo "鏃犳晥鐨勯€夋嫨锛?; return ;;
 	esac
 
-	# 确认格式�?
-	read -e -p "确认格式化分�?/dev/$PARTITION �?$FS_TYPE 吗？(y/n): " CONFIRM
+	# 纭鏍煎紡鍖?
+	read -e -p "纭鏍煎紡鍖栧垎鍖?/dev/$PARTITION 涓?$FS_TYPE 鍚楋紵(y/n): " CONFIRM
 	if [ "$CONFIRM" != "y" ]; then
-		echo "操作已取消�?
+		echo "鎿嶄綔宸插彇娑堛€?
 		return
 	fi
 
-	# 格式化分�?
-	echo "正在格式化分�?/dev/$PARTITION �?$FS_TYPE ..."
+	# 鏍煎紡鍖栧垎鍖?
+	echo "姝ｅ湪鏍煎紡鍖栧垎鍖?/dev/$PARTITION 涓?$FS_TYPE ..."
 	mkfs.$FS_TYPE "/dev/$PARTITION"
 
 	if [ $? -eq 0 ]; then
-		echo "分区格式化成功！"
+		echo "鍒嗗尯鏍煎紡鍖栨垚鍔燂紒"
 	else
-		echo "分区格式化失败！"
+		echo "鍒嗗尯鏍煎紡鍖栧け璐ワ紒"
 	fi
 }
 
-# 检查分区状�?
+# 妫€鏌ュ垎鍖虹姸鎬?
 check_partition() {
-	send_stats "检查分区状�?
-	read -e -p "请输入要检查的分区名称（例�?sda1�? " PARTITION
+	send_stats "妫€鏌ュ垎鍖虹姸鎬?
+	read -e -p "璇疯緭鍏ヨ妫€鏌ョ殑鍒嗗尯鍚嶇О锛堜緥濡?sda1锛? " PARTITION
 
-	# 检查分区是否存�?
+	# 妫€鏌ュ垎鍖烘槸鍚﹀瓨鍦?
 	if ! lsblk -o NAME | grep -w "$PARTITION" > /dev/null; then
-		echo "分区不存在！"
+		echo "鍒嗗尯涓嶅瓨鍦紒"
 		return
 	fi
 
-	# 检查分区状�?
-	echo "检查分�?/dev/$PARTITION 的状态："
+	# 妫€鏌ュ垎鍖虹姸鎬?
+	echo "妫€鏌ュ垎鍖?/dev/$PARTITION 鐨勭姸鎬侊細"
 	fsck "/dev/$PARTITION"
 }
 
-# 主菜�?
+# 涓昏彍鍗?
 disk_manager() {
-	send_stats "硬盘管理功能"
+	send_stats "纭洏绠＄悊鍔熻兘"
 	while true; do
 		clear
-		echo "硬盘分区管理"
-		echo -e "${gl_huang}该功能内部测试阶段，请勿在生产环境使用�?{gl_bai}"
+		echo "纭洏鍒嗗尯绠＄悊"
+		echo -e "${gl_huang}璇ュ姛鑳藉唴閮ㄦ祴璇曢樁娈碉紝璇峰嬁鍦ㄧ敓浜х幆澧冧娇鐢ㄣ€?{gl_bai}"
 		echo "------------------------"
 		list_partitions
 		echo "------------------------"
-		echo "1. 挂载分区        2. 卸载分区        3. 查看已挂载分�?
-		echo "4. 格式化分�?     5. 检查分区状�?
+		echo "1. 鎸傝浇鍒嗗尯        2. 鍗歌浇鍒嗗尯        3. 鏌ョ湅宸叉寕杞藉垎鍖?
+		echo "4. 鏍煎紡鍖栧垎鍖?     5. 妫€鏌ュ垎鍖虹姸鎬?
 		echo "------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "------------------------"
-		read -e -p "请输入你的选择: " choice
+		read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " choice
 		case $choice in
 			1) mount_partition ;;
 			2) unmount_partition ;;
@@ -6830,64 +6830,64 @@ disk_manager() {
 			5) check_partition ;;
 			*) break ;;
 		esac
-		read -e -p "按回车键继续..."
+		read -e -p "鎸夊洖杞﹂敭缁х画..."
 	done
 }
 
 
 
 
-# 显示任务列表
+# 鏄剧ず浠诲姟鍒楄〃
 list_tasks() {
-	echo "已保存的同步任务:"
+	echo "宸蹭繚瀛樼殑鍚屾浠诲姟:"
 	echo "---------------------------------"
 	awk -F'|' '{print NR " - " $1 " ( " $2 " -> " $3":"$4 " )"}' "$CONFIG_FILE"
 	echo "---------------------------------"
 }
 
-# 添加新任�?
+# 娣诲姞鏂颁换鍔?
 add_task() {
-	send_stats "添加新同步任�?
-	echo "创建新同步任务示例："
-	echo "  - 任务名称: backup_www"
-	echo "  - 本地目录: /var/www"
-	echo "  - 远程地址: user@192.168.1.100"
-	echo "  - 远程目录: /backup/www"
-	echo "  - 端口�?(默认 22)"
+	send_stats "娣诲姞鏂板悓姝ヤ换鍔?
+	echo "鍒涘缓鏂板悓姝ヤ换鍔＄ず渚嬶細"
+	echo "  - 浠诲姟鍚嶇О: backup_www"
+	echo "  - 鏈湴鐩綍: /var/www"
+	echo "  - 杩滅▼鍦板潃: user@192.168.1.100"
+	echo "  - 杩滅▼鐩綍: /backup/www"
+	echo "  - 绔彛鍙?(榛樿 22)"
 	echo "---------------------------------"
-	read -e -p "请输入任务名�? " name
-	read -e -p "请输入本地目�? " local_path
-	read -e -p "请输入远程目�? " remote_path
-	read -e -p "请输入远程用户@IP: " remote
-	read -e -p "请输�?SSH 端口 (默认 22): " port
+	read -e -p "璇疯緭鍏ヤ换鍔″悕绉? " name
+	read -e -p "璇疯緭鍏ユ湰鍦扮洰褰? " local_path
+	read -e -p "璇疯緭鍏ヨ繙绋嬬洰褰? " remote_path
+	read -e -p "璇疯緭鍏ヨ繙绋嬬敤鎴稝IP: " remote
+	read -e -p "璇疯緭鍏?SSH 绔彛 (榛樿 22): " port
 	port=${port:-22}
 
-	echo "请选择身份验证方式:"
-	echo "1. 密码"
-	echo "2. 密钥"
-	read -e -p "请选择 (1/2): " auth_choice
+	echo "璇烽€夋嫨韬唤楠岃瘉鏂瑰紡:"
+	echo "1. 瀵嗙爜"
+	echo "2. 瀵嗛挜"
+	read -e -p "璇烽€夋嫨 (1/2): " auth_choice
 
 	case $auth_choice in
 		1)
-			read -s -p "请输入密�? " password_or_key
-			echo  # 换行
+			read -s -p "璇疯緭鍏ュ瘑鐮? " password_or_key
+			echo  # 鎹㈣
 			auth_method="password"
 			;;
 		2)
-			echo "请粘贴密钥内�?(粘贴完成后按两次回车)�?
+			echo "璇风矘璐村瘑閽ュ唴瀹?(绮樿创瀹屾垚鍚庢寜涓ゆ鍥炶溅)锛?
 			local password_or_key=""
 			while IFS= read -r line; do
-				# 如果输入为空行且密钥内容已经包含了开头，则结束输�?
+				# 濡傛灉杈撳叆涓虹┖琛屼笖瀵嗛挜鍐呭宸茬粡鍖呭惈浜嗗紑澶达紝鍒欑粨鏉熻緭鍏?
 				if [[ -z "$line" && "$password_or_key" == *"-----BEGIN"* ]]; then
 					break
 				fi
-				# 如果是第一行或已经开始输入密钥内容，则继续添�?
+				# 濡傛灉鏄涓€琛屾垨宸茬粡寮€濮嬭緭鍏ュ瘑閽ュ唴瀹癸紝鍒欑户缁坊鍔?
 				if [[ -n "$line" || "$password_or_key" == *"-----BEGIN"* ]]; then
 					password_or_key+="${line}"$'\n'
 				fi
 			done
 
-			# 检查是否是密钥内容
+			# 妫€鏌ユ槸鍚︽槸瀵嗛挜鍐呭
 			if [[ "$password_or_key" == *"-----BEGIN"* && "$password_or_key" == *"PRIVATE KEY-----"* ]]; then
 				local key_file="$KEY_DIR/${name}_sync.key"
 				echo -n "$password_or_key" > "$key_file"
@@ -6895,64 +6895,64 @@ add_task() {
 				password_or_key="$key_file"
 				auth_method="key"
 			else
-				echo "无效的密钥内容！"
+				echo "鏃犳晥鐨勫瘑閽ュ唴瀹癸紒"
 				return
 			fi
 			;;
 		*)
-			echo "无效的选择�?
+			echo "鏃犳晥鐨勯€夋嫨锛?
 			return
 			;;
 	esac
 
-	echo "请选择同步模式:"
-	echo "1. 标准模式 (-avz)"
-	echo "2. 删除目标文件 (-avz --delete)"
-	read -e -p "请选择 (1/2): " mode
+	echo "璇烽€夋嫨鍚屾妯″紡:"
+	echo "1. 鏍囧噯妯″紡 (-avz)"
+	echo "2. 鍒犻櫎鐩爣鏂囦欢 (-avz --delete)"
+	read -e -p "璇烽€夋嫨 (1/2): " mode
 	case $mode in
 		1) options="-avz" ;;
 		2) options="-avz --delete" ;;
-		*) echo "无效选择，使用默�?-avz"; options="-avz" ;;
+		*) echo "鏃犳晥閫夋嫨锛屼娇鐢ㄩ粯璁?-avz"; options="-avz" ;;
 	esac
 
 	echo "$name|$local_path|$remote|$remote_path|$port|$options|$auth_method|$password_or_key" >> "$CONFIG_FILE"
 
 	install rsync rsync
 
-	echo "任务已保�?"
+	echo "浠诲姟宸蹭繚瀛?"
 }
 
-# 删除任务
+# 鍒犻櫎浠诲姟
 delete_task() {
-	send_stats "删除同步任务"
-	read -e -p "请输入要删除的任务编�? " num
+	send_stats "鍒犻櫎鍚屾浠诲姟"
+	read -e -p "璇疯緭鍏ヨ鍒犻櫎鐨勪换鍔＄紪鍙? " num
 
 	local task=$(sed -n "${num}p" "$CONFIG_FILE")
 	if [[ -z "$task" ]]; then
-		echo "错误：未找到对应的任务�?
+		echo "閿欒锛氭湭鎵惧埌瀵瑰簲鐨勪换鍔°€?
 		return
 	fi
 
 	IFS='|' read -r name local_path remote remote_path port options auth_method password_or_key <<< "$task"
 
-	# 如果任务使用的是密钥文件，则删除该密钥文�?
+	# 濡傛灉浠诲姟浣跨敤鐨勬槸瀵嗛挜鏂囦欢锛屽垯鍒犻櫎璇ュ瘑閽ユ枃浠?
 	if [[ "$auth_method" == "key" && "$password_or_key" == "$KEY_DIR"* ]]; then
 		rm -f "$password_or_key"
 	fi
 
 	sed -i "${num}d" "$CONFIG_FILE"
-	echo "任务已删�?"
+	echo "浠诲姟宸插垹闄?"
 }
 
 
 run_task() {
-	send_stats "执行同步任务"
+	send_stats "鎵ц鍚屾浠诲姟"
 
 	CONFIG_FILE="$HOME/.rsync_tasks"
 	CRON_FILE="$HOME/.rsync_cron"
 
-	# 解析参数
-	local direction="push"  # 默认是推送到远端
+	# 瑙ｆ瀽鍙傛暟
+	local direction="push"  # 榛樿鏄帹閫佸埌杩滅
 	local num
 
 	if [[ "$1" == "push" || "$1" == "pull" ]]; then
@@ -6962,51 +6962,51 @@ run_task() {
 		num="$1"
 	fi
 
-	# 如果没有传入任务编号，提示用户输�?
+	# 濡傛灉娌℃湁浼犲叆浠诲姟缂栧彿锛屾彁绀虹敤鎴疯緭鍏?
 	if [[ -z "$num" ]]; then
-		read -e -p "请输入要执行的任务编�? " num
+		read -e -p "璇疯緭鍏ヨ鎵ц鐨勪换鍔＄紪鍙? " num
 	fi
 
 	local task=$(sed -n "${num}p" "$CONFIG_FILE")
 	if [[ -z "$task" ]]; then
-		echo "错误: 未找到该任务!"
+		echo "閿欒: 鏈壘鍒拌浠诲姟!"
 		return
 	fi
 
 	IFS='|' read -r name local_path remote remote_path port options auth_method password_or_key <<< "$task"
 
-	# 根据同步方向调整源和目标路径
+	# 鏍规嵁鍚屾鏂瑰悜璋冩暣婧愬拰鐩爣璺緞
 	if [[ "$direction" == "pull" ]]; then
-		echo "正在拉取同步到本�? $remote:$local_path -> $remote_path"
+		echo "姝ｅ湪鎷夊彇鍚屾鍒版湰鍦? $remote:$local_path -> $remote_path"
 		source="$remote:$local_path"
 		destination="$remote_path"
 	else
-		echo "正在推送同步到远端: $local_path -> $remote:$remote_path"
+		echo "姝ｅ湪鎺ㄩ€佸悓姝ュ埌杩滅: $local_path -> $remote:$remote_path"
 		source="$local_path"
 		destination="$remote:$remote_path"
 	fi
 
-	# 添加 SSH 连接通用参数
+	# 娣诲姞 SSH 杩炴帴閫氱敤鍙傛暟
 	local ssh_options="-p $port -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 	if [[ "$auth_method" == "password" ]]; then
 		if ! command -v sshpass &> /dev/null; then
-			echo "错误：未安装 sshpass，请先安�?sshpass�?
-			echo "安装方法�?
+			echo "閿欒锛氭湭瀹夎 sshpass锛岃鍏堝畨瑁?sshpass銆?
+			echo "瀹夎鏂规硶锛?
 			echo "  - Ubuntu/Debian: apt install sshpass"
 			echo "  - CentOS/RHEL: yum install sshpass"
 			return
 		fi
 		sshpass -p "$password_or_key" rsync $options -e "ssh $ssh_options" "$source" "$destination"
 	else
-		# 检查密钥文件是否存在和权限是否正确
+		# 妫€鏌ュ瘑閽ユ枃浠舵槸鍚﹀瓨鍦ㄥ拰鏉冮檺鏄惁姝ｇ‘
 		if [[ ! -f "$password_or_key" ]]; then
-			echo "错误：密钥文件不存在�?password_or_key"
+			echo "閿欒锛氬瘑閽ユ枃浠朵笉瀛樺湪锛?password_or_key"
 			return
 		fi
 
 		if [[ "$(stat -c %a "$password_or_key")" != "600" ]]; then
-			echo "警告：密钥文件权限不正确，正在修�?.."
+			echo "璀﹀憡锛氬瘑閽ユ枃浠舵潈闄愪笉姝ｇ‘锛屾鍦ㄤ慨澶?.."
 			chmod 600 "$password_or_key"
 		fi
 
@@ -7014,99 +7014,99 @@ run_task() {
 	fi
 
 	if [[ $? -eq 0 ]]; then
-		echo "同步完成!"
+		echo "鍚屾瀹屾垚!"
 	else
-		echo "同步失败! 请检查以下内容："
-		echo "1. 网络连接是否正常"
-		echo "2. 远程主机是否可访�?
-		echo "3. 认证信息是否正确"
-		echo "4. 本地和远程目录是否有正确的访问权�?
+		echo "鍚屾澶辫触! 璇锋鏌ヤ互涓嬪唴瀹癸細"
+		echo "1. 缃戠粶杩炴帴鏄惁姝ｅ父"
+		echo "2. 杩滅▼涓绘満鏄惁鍙闂?
+		echo "3. 璁よ瘉淇℃伅鏄惁姝ｇ‘"
+		echo "4. 鏈湴鍜岃繙绋嬬洰褰曟槸鍚︽湁姝ｇ‘鐨勮闂潈闄?
 	fi
 }
 
 
-# 创建定时任务
+# 鍒涘缓瀹氭椂浠诲姟
 schedule_task() {
-	send_stats "添加同步定时任务"
+	send_stats "娣诲姞鍚屾瀹氭椂浠诲姟"
 
-	read -e -p "请输入要定时同步的任务编�? " num
+	read -e -p "璇疯緭鍏ヨ瀹氭椂鍚屾鐨勪换鍔＄紪鍙? " num
 	if ! [[ "$num" =~ ^[0-9]+$ ]]; then
-		echo "错误: 请输入有效的任务编号�?
+		echo "閿欒: 璇疯緭鍏ユ湁鏁堢殑浠诲姟缂栧彿锛?
 		return
 	fi
 
-	echo "请选择定时执行间隔�?
-	echo "1) 每小时执行一�?
-	echo "2) 每天执行一�?
-	echo "3) 每周执行一�?
-	read -e -p "请输入选项 (1/2/3): " interval
+	echo "璇烽€夋嫨瀹氭椂鎵ц闂撮殧锛?
+	echo "1) 姣忓皬鏃舵墽琛屼竴娆?
+	echo "2) 姣忓ぉ鎵ц涓€娆?
+	echo "3) 姣忓懆鎵ц涓€娆?
+	read -e -p "璇疯緭鍏ラ€夐」 (1/2/3): " interval
 
-	local random_minute=$(shuf -i 0-59 -n 1)  # 生成 0-59 之间的随机分钟数
+	local random_minute=$(shuf -i 0-59 -n 1)  # 鐢熸垚 0-59 涔嬮棿鐨勯殢鏈哄垎閽熸暟
 	local cron_time=""
 	case "$interval" in
-		1) cron_time="$random_minute * * * *" ;;  # 每小时，随机分钟执行
-		2) cron_time="$random_minute 0 * * *" ;;  # 每天，随机分钟执�?
-		3) cron_time="$random_minute 0 * * 1" ;;  # 每周，随机分钟执�?
-		*) echo "错误: 请输入有效的选项�? ; return ;;
+		1) cron_time="$random_minute * * * *" ;;  # 姣忓皬鏃讹紝闅忔満鍒嗛挓鎵ц
+		2) cron_time="$random_minute 0 * * *" ;;  # 姣忓ぉ锛岄殢鏈哄垎閽熸墽琛?
+		3) cron_time="$random_minute 0 * * 1" ;;  # 姣忓懆锛岄殢鏈哄垎閽熸墽琛?
+		*) echo "閿欒: 璇疯緭鍏ユ湁鏁堢殑閫夐」锛? ; return ;;
 	esac
 
 	local cron_job="$cron_time k rsync_run $num"
 	local cron_job="$cron_time k rsync_run $num"
 
-	# 检查是否已存在相同任务
+	# 妫€鏌ユ槸鍚﹀凡瀛樺湪鐩稿悓浠诲姟
 	if crontab -l | grep -q "k rsync_run $num"; then
-		echo "错误: 该任务的定时同步已存在！"
+		echo "閿欒: 璇ヤ换鍔＄殑瀹氭椂鍚屾宸插瓨鍦紒"
 		return
 	fi
 
-	# 创建到用户的 crontab
+	# 鍒涘缓鍒扮敤鎴风殑 crontab
 	(crontab -l 2>/dev/null; echo "$cron_job") | crontab -
-	echo "定时任务已创�? $cron_job"
+	echo "瀹氭椂浠诲姟宸插垱寤? $cron_job"
 }
 
-# 查看定时任务
+# 鏌ョ湅瀹氭椂浠诲姟
 view_tasks() {
-	echo "当前的定时任�?"
+	echo "褰撳墠鐨勫畾鏃朵换鍔?"
 	echo "---------------------------------"
 	crontab -l | grep "k rsync_run"
 	echo "---------------------------------"
 }
 
-# 删除定时任务
+# 鍒犻櫎瀹氭椂浠诲姟
 delete_task_schedule() {
-	send_stats "删除同步定时任务"
-	read -e -p "请输入要删除的任务编�? " num
+	send_stats "鍒犻櫎鍚屾瀹氭椂浠诲姟"
+	read -e -p "璇疯緭鍏ヨ鍒犻櫎鐨勪换鍔＄紪鍙? " num
 	if ! [[ "$num" =~ ^[0-9]+$ ]]; then
-		echo "错误: 请输入有效的任务编号�?
+		echo "閿欒: 璇疯緭鍏ユ湁鏁堢殑浠诲姟缂栧彿锛?
 		return
 	fi
 
 	crontab -l | grep -v "k rsync_run $num" | crontab -
-	echo "已删除任务编�?$num 的定时任�?
+	echo "宸插垹闄や换鍔＄紪鍙?$num 鐨勫畾鏃朵换鍔?
 }
 
 
-# 任务管理主菜�?
+# 浠诲姟绠＄悊涓昏彍鍗?
 rsync_manager() {
 	CONFIG_FILE="$HOME/.rsync_tasks"
 	CRON_FILE="$HOME/.rsync_cron"
 
 	while true; do
 		clear
-		echo "Rsync 远程同步工具"
-		echo "远程目录之间同步，支持增量同步，高效稳定�?
+		echo "Rsync 杩滅▼鍚屾宸ュ叿"
+		echo "杩滅▼鐩綍涔嬮棿鍚屾锛屾敮鎸佸閲忓悓姝ワ紝楂樻晥绋冲畾銆?
 		echo "---------------------------------"
 		list_tasks
 		echo
 		view_tasks
 		echo
-		echo "1. 创建新任�?                2. 删除任务"
-		echo "3. 执行本地同步到远�?        4. 执行远端同步到本�?
-		echo "5. 创建定时任务               6. 删除定时任务"
+		echo "1. 鍒涘缓鏂颁换鍔?                2. 鍒犻櫎浠诲姟"
+		echo "3. 鎵ц鏈湴鍚屾鍒拌繙绔?        4. 鎵ц杩滅鍚屾鍒版湰鍦?
+		echo "5. 鍒涘缓瀹氭椂浠诲姟               6. 鍒犻櫎瀹氭椂浠诲姟"
 		echo "---------------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "---------------------------------"
-		read -e -p "请输入你的选择: " choice
+		read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " choice
 		case $choice in
 			1) add_task ;;
 			2) delete_task ;;
@@ -7115,9 +7115,9 @@ rsync_manager() {
 			5) schedule_task ;;
 			6) delete_task_schedule ;;
 			0) break ;;
-			*) echo "无效的选择，请重试�? ;;
+			*) echo "鏃犳晥鐨勯€夋嫨锛岃閲嶈瘯銆? ;;
 		esac
-		read -e -p "按回车键继续..."
+		read -e -p "鎸夊洖杞﹂敭缁х画..."
 	done
 }
 
@@ -7134,8 +7134,8 @@ linux_info() {
 
 
 	clear
-	echo -e "${gl_kjlan}正在查询系统信息…�?{gl_bai}"
-	send_stats "系统信息查询"
+	echo -e "${gl_kjlan}姝ｅ湪鏌ヨ绯荤粺淇℃伅鈥︹€?{gl_bai}"
+	send_stats "绯荤粺淇℃伅鏌ヨ"
 
 	ip_address
 
@@ -7179,7 +7179,7 @@ linux_info() {
 
 	local swap_info=$(free -m | awk 'NR==3{used=$3; total=$2; if (total == 0) {percentage=0} else {percentage=used*100/total}; printf "%dM/%dM (%d%%)", used, total, percentage}')
 
-	local runtime=$(cat /proc/uptime | awk -F. '{run_days=int($1 / 86400);run_hours=int(($1 % 86400) / 3600);run_minutes=int(($1 % 3600) / 60); if (run_days > 0) printf("%d�?", run_days); if (run_hours > 0) printf("%d�?", run_hours); printf("%d分\n", run_minutes)}')
+	local runtime=$(cat /proc/uptime | awk -F. '{run_days=int($1 / 86400);run_hours=int(($1 % 86400) / 3600);run_minutes=int(($1 % 3600) / 60); if (run_days > 0) printf("%d澶?", run_days); if (run_hours > 0) printf("%d鏃?", run_hours); printf("%d鍒哱n", run_minutes)}')
 
 	local timezone=$(current_timezone)
 
@@ -7187,42 +7187,42 @@ linux_info() {
 	local udp_count=$(ss -u | wc -l)
 
 	clear
-	echo -e "系统信息查询"
+	echo -e "绯荤粺淇℃伅鏌ヨ"
 	echo -e "${gl_kjlan}-------------"
-	echo -e "${gl_kjlan}主机�?         ${gl_bai}$hostname"
-	echo -e "${gl_kjlan}系统版本:       ${gl_bai}$os_info"
-	echo -e "${gl_kjlan}Linux版本:      ${gl_bai}$kernel_version"
+	echo -e "${gl_kjlan}涓绘満鍚?         ${gl_bai}$hostname"
+	echo -e "${gl_kjlan}绯荤粺鐗堟湰:       ${gl_bai}$os_info"
+	echo -e "${gl_kjlan}Linux鐗堟湰:      ${gl_bai}$kernel_version"
 	echo -e "${gl_kjlan}-------------"
-	echo -e "${gl_kjlan}CPU架构:        ${gl_bai}$cpu_arch"
-	echo -e "${gl_kjlan}CPU型号:        ${gl_bai}$cpu_info"
-	echo -e "${gl_kjlan}CPU核心�?      ${gl_bai}$cpu_cores"
-	echo -e "${gl_kjlan}CPU频率:        ${gl_bai}$cpu_freq"
+	echo -e "${gl_kjlan}CPU鏋舵瀯:        ${gl_bai}$cpu_arch"
+	echo -e "${gl_kjlan}CPU鍨嬪彿:        ${gl_bai}$cpu_info"
+	echo -e "${gl_kjlan}CPU鏍稿績鏁?      ${gl_bai}$cpu_cores"
+	echo -e "${gl_kjlan}CPU棰戠巼:        ${gl_bai}$cpu_freq"
 	echo -e "${gl_kjlan}-------------"
-	echo -e "${gl_kjlan}CPU占用:        ${gl_bai}$cpu_usage_percent%"
-	echo -e "${gl_kjlan}系统负载:       ${gl_bai}$load"
-	echo -e "${gl_kjlan}TCP|UDP连接�?  ${gl_bai}$tcp_count|$udp_count"
-	echo -e "${gl_kjlan}物理内存:       ${gl_bai}$mem_info"
-	echo -e "${gl_kjlan}虚拟内存:       ${gl_bai}$swap_info"
-	echo -e "${gl_kjlan}硬盘占用:       ${gl_bai}$disk_info"
+	echo -e "${gl_kjlan}CPU鍗犵敤:        ${gl_bai}$cpu_usage_percent%"
+	echo -e "${gl_kjlan}绯荤粺璐熻浇:       ${gl_bai}$load"
+	echo -e "${gl_kjlan}TCP|UDP杩炴帴鏁?  ${gl_bai}$tcp_count|$udp_count"
+	echo -e "${gl_kjlan}鐗╃悊鍐呭瓨:       ${gl_bai}$mem_info"
+	echo -e "${gl_kjlan}铏氭嫙鍐呭瓨:       ${gl_bai}$swap_info"
+	echo -e "${gl_kjlan}纭洏鍗犵敤:       ${gl_bai}$disk_info"
 	echo -e "${gl_kjlan}-------------"
-	echo -e "${gl_kjlan}总接�?         ${gl_bai}$rx"
-	echo -e "${gl_kjlan}总发�?         ${gl_bai}$tx"
+	echo -e "${gl_kjlan}鎬绘帴鏀?         ${gl_bai}$rx"
+	echo -e "${gl_kjlan}鎬诲彂閫?         ${gl_bai}$tx"
 	echo -e "${gl_kjlan}-------------"
-	echo -e "${gl_kjlan}网络算法:       ${gl_bai}$congestion_algorithm $queue_algorithm"
+	echo -e "${gl_kjlan}缃戠粶绠楁硶:       ${gl_bai}$congestion_algorithm $queue_algorithm"
 	echo -e "${gl_kjlan}-------------"
-	echo -e "${gl_kjlan}运营�?         ${gl_bai}$isp_info"
+	echo -e "${gl_kjlan}杩愯惀鍟?         ${gl_bai}$isp_info"
 	if [ -n "$ipv4_address" ]; then
-		echo -e "${gl_kjlan}IPv4地址:       ${gl_bai}$ipv4_address"
+		echo -e "${gl_kjlan}IPv4鍦板潃:       ${gl_bai}$ipv4_address"
 	fi
 
 	if [ -n "$ipv6_address" ]; then
-		echo -e "${gl_kjlan}IPv6地址:       ${gl_bai}$ipv6_address"
+		echo -e "${gl_kjlan}IPv6鍦板潃:       ${gl_bai}$ipv6_address"
 	fi
-	echo -e "${gl_kjlan}DNS地址:        ${gl_bai}$dns_addresses"
-	echo -e "${gl_kjlan}地理位置:       ${gl_bai}$country $city"
-	echo -e "${gl_kjlan}系统时间:       ${gl_bai}$timezone $current_time"
+	echo -e "${gl_kjlan}DNS鍦板潃:        ${gl_bai}$dns_addresses"
+	echo -e "${gl_kjlan}鍦扮悊浣嶇疆:       ${gl_bai}$country $city"
+	echo -e "${gl_kjlan}绯荤粺鏃堕棿:       ${gl_bai}$timezone $current_time"
 	echo -e "${gl_kjlan}-------------"
-	echo -e "${gl_kjlan}运行时长:       ${gl_bai}$runtime"
+	echo -e "${gl_kjlan}杩愯鏃堕暱:       ${gl_bai}$runtime"
 	echo
 
 
@@ -7235,8 +7235,8 @@ linux_tools() {
 
   while true; do
 	  clear
-	  # send_stats "基础工具"
-	  echo -e "基础工具"
+	  # send_stats "鍩虹宸ュ叿"
+	  echo -e "鍩虹宸ュ叿"
 
 	  tools=(
 		curl wget sudo socat htop iftop unzip tar tmux ffmpeg
@@ -7261,27 +7261,27 @@ linux_tools() {
 	  elif command -v pkg >/dev/null 2>&1; then
 		PM="pkg"
 	  else
-		echo "�?未识别的包管理器"
+		echo "鉂?鏈瘑鍒殑鍖呯鐞嗗櫒"
 		exit 1
 	  fi
 
-	  echo "📦 使用包管理器: $PM"
+	  echo "馃摝 浣跨敤鍖呯鐞嗗櫒: $PM"
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
 
 	  for ((i=0; i<${#tools[@]}; i+=2)); do
-		# 左列
+		# 宸﹀垪
 		if command -v "${tools[i]}" >/dev/null 2>&1; then
-		  left=$(printf "�?%-12s 已安�? "${tools[i]}")
+		  left=$(printf "鉁?%-12s 宸插畨瑁? "${tools[i]}")
 		else
-		  left=$(printf "�?%-12s 未安�? "${tools[i]}")
+		  left=$(printf "鉂?%-12s 鏈畨瑁? "${tools[i]}")
 		fi
 
-		# 右列（防止数组越界）
+		# 鍙冲垪锛堥槻姝㈡暟缁勮秺鐣岋級
 		if [[ -n "${tools[i+1]}" ]]; then
 		  if command -v "${tools[i+1]}" >/dev/null 2>&1; then
-			right=$(printf "�?%-12s 已安�? "${tools[i+1]}")
+			right=$(printf "鉁?%-12s 宸插畨瑁? "${tools[i+1]}")
 		  else
-			right=$(printf "�?%-12s 未安�? "${tools[i+1]}")
+			right=$(printf "鉂?%-12s 鏈畨瑁? "${tools[i+1]}")
 		  fi
 		  printf "%-42s %s\n" "$left" "$right"
 		else
@@ -7290,108 +7290,108 @@ linux_tools() {
 	  done
 
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}1.   ${gl_bai}curl 下载工具 ${gl_huang}�?{gl_bai}                   ${gl_kjlan}2.   ${gl_bai}wget 下载工具 ${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}3.   ${gl_bai}sudo 超级管理权限工具             ${gl_kjlan}4.   ${gl_bai}socat 通信连接工具"
-	  echo -e "${gl_kjlan}5.   ${gl_bai}htop 系统监控工具                 ${gl_kjlan}6.   ${gl_bai}iftop 网络流量监控工具"
-	  echo -e "${gl_kjlan}7.   ${gl_bai}unzip ZIP压缩解压工具             ${gl_kjlan}8.   ${gl_bai}tar GZ压缩解压工具"
-	  echo -e "${gl_kjlan}9.   ${gl_bai}tmux 多路后台运行工具             ${gl_kjlan}10.  ${gl_bai}ffmpeg 视频编码直播推流工具"
+	  echo -e "${gl_kjlan}1.   ${gl_bai}curl 涓嬭浇宸ュ叿 ${gl_huang}鈽?{gl_bai}                   ${gl_kjlan}2.   ${gl_bai}wget 涓嬭浇宸ュ叿 ${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}3.   ${gl_bai}sudo 瓒呯骇绠＄悊鏉冮檺宸ュ叿             ${gl_kjlan}4.   ${gl_bai}socat 閫氫俊杩炴帴宸ュ叿"
+	  echo -e "${gl_kjlan}5.   ${gl_bai}htop 绯荤粺鐩戞帶宸ュ叿                 ${gl_kjlan}6.   ${gl_bai}iftop 缃戠粶娴侀噺鐩戞帶宸ュ叿"
+	  echo -e "${gl_kjlan}7.   ${gl_bai}unzip ZIP鍘嬬缉瑙ｅ帇宸ュ叿             ${gl_kjlan}8.   ${gl_bai}tar GZ鍘嬬缉瑙ｅ帇宸ュ叿"
+	  echo -e "${gl_kjlan}9.   ${gl_bai}tmux 澶氳矾鍚庡彴杩愯宸ュ叿             ${gl_kjlan}10.  ${gl_bai}ffmpeg 瑙嗛缂栫爜鐩存挱鎺ㄦ祦宸ュ叿"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}11.  ${gl_bai}btop 现代化监控工�?${gl_huang}�?{gl_bai}             ${gl_kjlan}12.  ${gl_bai}ranger 文件管理工具"
-	  echo -e "${gl_kjlan}13.  ${gl_bai}ncdu 磁盘占用查看工具             ${gl_kjlan}14.  ${gl_bai}fzf 全局搜索工具"
-	  echo -e "${gl_kjlan}15.  ${gl_bai}vim 文本编辑�?                   ${gl_kjlan}16.  ${gl_bai}nano 文本编辑�?${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}17.  ${gl_bai}git 版本控制系统                  ${gl_kjlan}18.  ${gl_bai}opencode AI编程助手 ${gl_huang}�?{gl_bai}"
+	  echo -e "${gl_kjlan}11.  ${gl_bai}btop 鐜颁唬鍖栫洃鎺у伐鍏?${gl_huang}鈽?{gl_bai}             ${gl_kjlan}12.  ${gl_bai}ranger 鏂囦欢绠＄悊宸ュ叿"
+	  echo -e "${gl_kjlan}13.  ${gl_bai}ncdu 纾佺洏鍗犵敤鏌ョ湅宸ュ叿             ${gl_kjlan}14.  ${gl_bai}fzf 鍏ㄥ眬鎼滅储宸ュ叿"
+	  echo -e "${gl_kjlan}15.  ${gl_bai}vim 鏂囨湰缂栬緫鍣?                   ${gl_kjlan}16.  ${gl_bai}nano 鏂囨湰缂栬緫鍣?${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}17.  ${gl_bai}git 鐗堟湰鎺у埗绯荤粺                  ${gl_kjlan}18.  ${gl_bai}opencode AI缂栫▼鍔╂墜 ${gl_huang}鈽?{gl_bai}"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}21.  ${gl_bai}黑客帝国屏保                      ${gl_kjlan}22.  ${gl_bai}跑火车屏�?
-	  echo -e "${gl_kjlan}26.  ${gl_bai}俄罗斯方块小游戏                  ${gl_kjlan}27.  ${gl_bai}贪吃蛇小游戏"
-	  echo -e "${gl_kjlan}28.  ${gl_bai}太空入侵者小游戏"
+	  echo -e "${gl_kjlan}21.  ${gl_bai}榛戝甯濆浗灞忎繚                      ${gl_kjlan}22.  ${gl_bai}璺戠伀杞﹀睆淇?
+	  echo -e "${gl_kjlan}26.  ${gl_bai}淇勭綏鏂柟鍧楀皬娓告垙                  ${gl_kjlan}27.  ${gl_bai}璐悆铔囧皬娓告垙"
+	  echo -e "${gl_kjlan}28.  ${gl_bai}澶┖鍏ヤ镜鑰呭皬娓告垙"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}31.  ${gl_bai}全部安装                          ${gl_kjlan}32.  ${gl_bai}全部安装（不含屏保和游戏�?{gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}33.  ${gl_bai}全部卸载"
+	  echo -e "${gl_kjlan}31.  ${gl_bai}鍏ㄩ儴瀹夎                          ${gl_kjlan}32.  ${gl_bai}鍏ㄩ儴瀹夎锛堜笉鍚睆淇濆拰娓告垙锛?{gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}33.  ${gl_bai}鍏ㄩ儴鍗歌浇"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}41.  ${gl_bai}安装指定工具                      ${gl_kjlan}42.  ${gl_bai}卸载指定工具"
+	  echo -e "${gl_kjlan}41.  ${gl_bai}瀹夎鎸囧畾宸ュ叿                      ${gl_kjlan}42.  ${gl_bai}鍗歌浇鎸囧畾宸ュ叿"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主菜�?
+	  echo -e "${gl_kjlan}0.   ${gl_bai}杩斿洖涓昏彍鍗?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 	  case $sub_choice in
 		  1)
 			  clear
 			  install curl
 			  clear
-			  echo "工具已安装，使用方法如下�?
+			  echo "宸ュ叿宸插畨瑁咃紝浣跨敤鏂规硶濡備笅锛?
 			  curl --help
-			  send_stats "安装curl"
+			  send_stats "瀹夎curl"
 			  ;;
 		  2)
 			  clear
 			  install wget
 			  clear
-			  echo "工具已安装，使用方法如下�?
+			  echo "宸ュ叿宸插畨瑁咃紝浣跨敤鏂规硶濡備笅锛?
 			  wget --help
-			  send_stats "安装wget"
+			  send_stats "瀹夎wget"
 			  ;;
 			3)
 			  clear
 			  install sudo
 			  clear
-			  echo "工具已安装，使用方法如下�?
+			  echo "宸ュ叿宸插畨瑁咃紝浣跨敤鏂规硶濡備笅锛?
 			  sudo --help
-			  send_stats "安装sudo"
+			  send_stats "瀹夎sudo"
 			  ;;
 			4)
 			  clear
 			  install socat
 			  clear
-			  echo "工具已安装，使用方法如下�?
+			  echo "宸ュ叿宸插畨瑁咃紝浣跨敤鏂规硶濡備笅锛?
 			  socat -h
-			  send_stats "安装socat"
+			  send_stats "瀹夎socat"
 			  ;;
 			5)
 			  clear
 			  install htop
 			  clear
 			  htop
-			  send_stats "安装htop"
+			  send_stats "瀹夎htop"
 			  ;;
 			6)
 			  clear
 			  install iftop
 			  clear
 			  iftop
-			  send_stats "安装iftop"
+			  send_stats "瀹夎iftop"
 			  ;;
 			7)
 			  clear
 			  install unzip
 			  clear
-			  echo "工具已安装，使用方法如下�?
+			  echo "宸ュ叿宸插畨瑁咃紝浣跨敤鏂规硶濡備笅锛?
 			  unzip
-			  send_stats "安装unzip"
+			  send_stats "瀹夎unzip"
 			  ;;
 			8)
 			  clear
 			  install tar
 			  clear
-			  echo "工具已安装，使用方法如下�?
+			  echo "宸ュ叿宸插畨瑁咃紝浣跨敤鏂规硶濡備笅锛?
 			  tar --help
-			  send_stats "安装tar"
+			  send_stats "瀹夎tar"
 			  ;;
 			9)
 			  clear
 			  install tmux
 			  clear
-			  echo "工具已安装，使用方法如下�?
+			  echo "宸ュ叿宸插畨瑁咃紝浣跨敤鏂规硶濡備笅锛?
 			  tmux --help
-			  send_stats "安装tmux"
+			  send_stats "瀹夎tmux"
 			  ;;
 			10)
 			  clear
 			  install ffmpeg
 			  clear
-			  echo "工具已安装，使用方法如下�?
+			  echo "宸ュ叿宸插畨瑁咃紝浣跨敤鏂规硶濡備笅锛?
 			  ffmpeg --help
-			  send_stats "安装ffmpeg"
+			  send_stats "瀹夎ffmpeg"
 			  ;;
 
 			11)
@@ -7399,7 +7399,7 @@ linux_tools() {
 			  install btop
 			  clear
 			  btop
-			  send_stats "安装btop"
+			  send_stats "瀹夎btop"
 			  ;;
 			12)
 			  clear
@@ -7408,7 +7408,7 @@ linux_tools() {
 			  clear
 			  ranger
 			  cd ~
-			  send_stats "安装ranger"
+			  send_stats "瀹夎ranger"
 			  ;;
 			13)
 			  clear
@@ -7417,7 +7417,7 @@ linux_tools() {
 			  clear
 			  ncdu
 			  cd ~
-			  send_stats "安装ncdu"
+			  send_stats "瀹夎ncdu"
 			  ;;
 			14)
 			  clear
@@ -7426,7 +7426,7 @@ linux_tools() {
 			  clear
 			  fzf
 			  cd ~
-			  send_stats "安装fzf"
+			  send_stats "瀹夎fzf"
 			  ;;
 			15)
 			  clear
@@ -7435,7 +7435,7 @@ linux_tools() {
 			  clear
 			  vim -h
 			  cd ~
-			  send_stats "安装vim"
+			  send_stats "瀹夎vim"
 			  ;;
 			16)
 			  clear
@@ -7444,7 +7444,7 @@ linux_tools() {
 			  clear
 			  nano -h
 			  cd ~
-			  send_stats "安装nano"
+			  send_stats "瀹夎nano"
 			  ;;
 
 
@@ -7455,7 +7455,7 @@ linux_tools() {
 			  clear
 			  git --help
 			  cd ~
-			  send_stats "安装git"
+			  send_stats "瀹夎git"
 			  ;;
 
 			18)
@@ -7465,7 +7465,7 @@ linux_tools() {
 			  source ~/.bashrc
 			  source ~/.profile
 			  opencode
-			  send_stats "安装opencode"
+			  send_stats "瀹夎opencode"
 			  ;;
 
 
@@ -7474,28 +7474,28 @@ linux_tools() {
 			  install cmatrix
 			  clear
 			  cmatrix
-			  send_stats "安装cmatrix"
+			  send_stats "瀹夎cmatrix"
 			  ;;
 			22)
 			  clear
 			  install sl
 			  clear
 			  sl
-			  send_stats "安装sl"
+			  send_stats "瀹夎sl"
 			  ;;
 			26)
 			  clear
 			  install bastet
 			  clear
 			  bastet
-			  send_stats "安装bastet"
+			  send_stats "瀹夎bastet"
 			  ;;
 			27)
 			  clear
 			  install nsnake
 			  clear
 			  nsnake
-			  send_stats "安装nsnake"
+			  send_stats "瀹夎nsnake"
 			  ;;
 
 			28)
@@ -7503,25 +7503,25 @@ linux_tools() {
 			  install ninvaders
 			  clear
 			  ninvaders
-			  send_stats "安装ninvaders"
+			  send_stats "瀹夎ninvaders"
 			  ;;
 
 		  31)
 			  clear
-			  send_stats "全部安装"
+			  send_stats "鍏ㄩ儴瀹夎"
 			  install curl wget sudo socat htop iftop unzip tar tmux ffmpeg btop ranger ncdu fzf cmatrix sl bastet nsnake ninvaders vim nano git
 			  ;;
 
 		  32)
 			  clear
-			  send_stats "全部安装（不含游戏和屏保�?
+			  send_stats "鍏ㄩ儴瀹夎锛堜笉鍚父鎴忓拰灞忎繚锛?
 			  install curl wget sudo socat htop iftop unzip tar tmux ffmpeg btop ranger ncdu fzf vim nano git
 			  ;;
 
 
 		  33)
 			  clear
-			  send_stats "全部卸载"
+			  send_stats "鍏ㄩ儴鍗歌浇"
 			  remove htop iftop tmux ffmpeg btop ranger ncdu fzf cmatrix sl bastet nsnake ninvaders vim nano git
 			  opencode uninstall
 			  rm -rf ~/.opencode
@@ -7529,15 +7529,15 @@ linux_tools() {
 
 		  41)
 			  clear
-			  read -e -p "请输入安装的工具名（wget curl sudo htop�? " installname
+			  read -e -p "璇疯緭鍏ュ畨瑁呯殑宸ュ叿鍚嶏紙wget curl sudo htop锛? " installname
 			  install $installname
-			  send_stats "安装指定软件"
+			  send_stats "瀹夎鎸囧畾杞欢"
 			  ;;
 		  42)
 			  clear
-			  read -e -p "请输入卸载的工具名（htop ufw tmux cmatrix�? " removename
+			  read -e -p "璇疯緭鍏ュ嵏杞界殑宸ュ叿鍚嶏紙htop ufw tmux cmatrix锛? " removename
 			  remove $removename
-			  send_stats "卸载指定软件"
+			  send_stats "鍗歌浇鎸囧畾杞欢"
 			  ;;
 
 		  0)
@@ -7545,7 +7545,7 @@ linux_tools() {
 			  ;;
 
 		  *)
-			  echo "无效的输�?"
+			  echo "鏃犳晥鐨勮緭鍏?"
 			  ;;
 	  esac
 	  break_end
@@ -7559,27 +7559,27 @@ linux_tools() {
 
 linux_bbr() {
 	clear
-	send_stats "bbr管理"
+	send_stats "bbr绠＄悊"
 	if [ -f "/etc/alpine-release" ]; then
 		while true; do
 			  clear
 			  local congestion_algorithm=$(sysctl -n net.ipv4.tcp_congestion_control)
 			  local queue_algorithm=$(sysctl -n net.core.default_qdisc)
-			  echo "当前TCP阻塞算法: $congestion_algorithm $queue_algorithm"
+			  echo "褰撳墠TCP闃诲绠楁硶: $congestion_algorithm $queue_algorithm"
 
 			  echo ""
-			  echo "BBR管理"
+			  echo "BBR绠＄悊"
 			  echo "------------------------"
-			  echo "1. 开启BBRv3              2. 关闭BBRv3（会重启�?
+			  echo "1. 寮€鍚疊BRv3              2. 鍏抽棴BBRv3锛堜細閲嶅惎锛?
 			  echo "------------------------"
-			  echo "0. 返回上一级选单"
+			  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 			  echo "------------------------"
-			  read -e -p "请输入你的选择: " sub_choice
+			  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 			  case $sub_choice in
 				  1)
 					bbr_on
-					send_stats "alpine开启bbr3"
+					send_stats "alpine寮€鍚痓br3"
 					  ;;
 				  2)
 					sed -i '/net.ipv4.tcp_congestion_control=/d' /etc/sysctl.conf
@@ -7587,7 +7587,7 @@ linux_bbr() {
 					server_reboot
 					  ;;
 				  *)
-					  break  # 跳出循环，退出菜�?
+					  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 					  ;;
 
 			  esac
@@ -7615,21 +7615,21 @@ docker_ssh_migration() {
 
 	list_backups() {
 		local BACKUP_ROOT="/tmp"
-		echo -e "${gl_kjlan}当前备份列表:${gl_bai}"
-		ls -1dt ${BACKUP_ROOT}/docker_backup_* 2>/dev/null || echo "无备�?
+		echo -e "${gl_kjlan}褰撳墠澶囦唤鍒楄〃:${gl_bai}"
+		ls -1dt ${BACKUP_ROOT}/docker_backup_* 2>/dev/null || echo "鏃犲浠?
 	}
 
 
 
 	# ----------------------------
-	# 备份
+	# 澶囦唤
 	# ----------------------------
 	backup_docker() {
-		send_stats "Docker备份"
+		send_stats "Docker澶囦唤"
 
-		echo -e "${gl_kjlan}正在备份 Docker 容器...${gl_bai}"
+		echo -e "${gl_kjlan}姝ｅ湪澶囦唤 Docker 瀹瑰櫒...${gl_bai}"
 		docker ps --format '{{.Names}}'
-		read -e -p  "请输入要备份的容器名（多个空格分隔，回车备份全部运行中容器）: " containers
+		read -e -p  "璇疯緭鍏ヨ澶囦唤鐨勫鍣ㄥ悕锛堝涓┖鏍煎垎闅旓紝鍥炶溅澶囦唤鍏ㄩ儴杩愯涓鍣級: " containers
 
 		install tar jq gzip
 		install_docker
@@ -7642,7 +7642,7 @@ docker_ssh_migration() {
 		else
 			read -ra TARGET_CONTAINERS <<< "$containers"
 		fi
-		[[ ${#TARGET_CONTAINERS[@]} -eq 0 ]] && { echo -e "${gl_hong}没有找到容器${gl_bai}"; return; }
+		[[ ${#TARGET_CONTAINERS[@]} -eq 0 ]] && { echo -e "${gl_hong}娌℃湁鎵惧埌瀹瑰櫒${gl_bai}"; return; }
 
 		local BACKUP_DIR="${BACKUP_ROOT}/docker_backup_${DATE_STR}"
 		mkdir -p "$BACKUP_DIR"
@@ -7650,28 +7650,28 @@ docker_ssh_migration() {
 		local RESTORE_SCRIPT="${BACKUP_DIR}/docker_restore.sh"
 		echo "#!/bin/bash" > "$RESTORE_SCRIPT"
 		echo "set -e" >> "$RESTORE_SCRIPT"
-		echo "# 自动生成的还原脚�? >> "$RESTORE_SCRIPT"
+		echo "# 鑷姩鐢熸垚鐨勮繕鍘熻剼鏈? >> "$RESTORE_SCRIPT"
 
-		# 记录已打包过�?Compose 项目路径，避免重复打�?
+		# 璁板綍宸叉墦鍖呰繃鐨?Compose 椤圭洰璺緞锛岄伩鍏嶉噸澶嶆墦鍖?
 		declare -A PACKED_COMPOSE_PATHS=()
 
 		for c in "${TARGET_CONTAINERS[@]}"; do
-			echo -e "${gl_lv}备份容器: $c${gl_bai}"
+			echo -e "${gl_lv}澶囦唤瀹瑰櫒: $c${gl_bai}"
 			local inspect_file="${BACKUP_DIR}/${c}_inspect.json"
 			docker inspect "$c" > "$inspect_file"
 
 			if is_compose_container "$c"; then
-				echo -e "${gl_kjlan}检测到 $c �?docker-compose 容器${gl_bai}"
+				echo -e "${gl_kjlan}妫€娴嬪埌 $c 鏄?docker-compose 瀹瑰櫒${gl_bai}"
 				local project_dir=$(docker inspect "$c" | jq -r '.[0].Config.Labels["com.docker.compose.project.working_dir"] // empty')
 				local project_name=$(docker inspect "$c" | jq -r '.[0].Config.Labels["com.docker.compose.project"] // empty')
 
 				if [ -z "$project_dir" ]; then
-					read -e -p  "未检测到 compose 目录，请手动输入路径: " project_dir
+					read -e -p  "鏈娴嬪埌 compose 鐩綍锛岃鎵嬪姩杈撳叆璺緞: " project_dir
 				fi
 
-				# 如果�?Compose 项目已经打包过，跳过
+				# 濡傛灉璇?Compose 椤圭洰宸茬粡鎵撳寘杩囷紝璺宠繃
 				if [[ -n "${PACKED_COMPOSE_PATHS[$project_dir]}" ]]; then
-					echo -e "${gl_huang}Compose 项目 [$project_name] 已备份过，跳过重复打�?..${gl_bai}"
+					echo -e "${gl_huang}Compose 椤圭洰 [$project_name] 宸插浠借繃锛岃烦杩囬噸澶嶆墦鍖?..${gl_bai}"
 					continue
 				fi
 
@@ -7679,137 +7679,137 @@ docker_ssh_migration() {
 					echo "compose" > "${BACKUP_DIR}/backup_type_${project_name}"
 					echo "$project_dir" > "${BACKUP_DIR}/compose_path_${project_name}.txt"
 					tar -czf "${BACKUP_DIR}/compose_project_${project_name}.tar.gz" -C "$project_dir" .
-					echo "# docker-compose 恢复: $project_name" >> "$RESTORE_SCRIPT"
+					echo "# docker-compose 鎭㈠: $project_name" >> "$RESTORE_SCRIPT"
 					echo "cd \"$project_dir\" && docker compose up -d" >> "$RESTORE_SCRIPT"
 					PACKED_COMPOSE_PATHS["$project_dir"]=1
-					echo -e "${gl_lv}Compose 项目 [$project_name] 已打�? ${project_dir}${gl_bai}"
+					echo -e "${gl_lv}Compose 椤圭洰 [$project_name] 宸叉墦鍖? ${project_dir}${gl_bai}"
 				else
-					echo -e "${gl_hong}未找�?docker-compose.yml，跳过此容器...${gl_bai}"
+					echo -e "${gl_hong}鏈壘鍒?docker-compose.yml锛岃烦杩囨瀹瑰櫒...${gl_bai}"
 				fi
 			else
-				# 普通容器备份卷
+				# 鏅€氬鍣ㄥ浠藉嵎
 				local VOL_PATHS
 				VOL_PATHS=$(docker inspect "$c" --format '{{range .Mounts}}{{.Source}} {{end}}')
 				for path in $VOL_PATHS; do
-					echo "打包�? $path"
+					echo "鎵撳寘鍗? $path"
 					tar -czpf "${BACKUP_DIR}/${c}_$(basename $path).tar.gz" -C / "$(echo $path | sed 's/^\///')"
 				done
 
-				# 端口
+				# 绔彛
 				local PORT_ARGS=""
 				mapfile -t PORTS < <(jq -r '.[0].HostConfig.PortBindings | to_entries[] | "\(.value[0].HostPort):\(.key | split("/")[0])"' "$inspect_file" 2>/dev/null)
 				for p in "${PORTS[@]}"; do PORT_ARGS+="-p $p "; done
 
-				# 环境变量
+				# 鐜鍙橀噺
 				local ENV_VARS=""
 				mapfile -t ENVS < <(jq -r '.[0].Config.Env[] | @sh' "$inspect_file")
 				for e in "${ENVS[@]}"; do ENV_VARS+="-e $e "; done
 
-				# 卷映�?
+				# 鍗锋槧灏?
 				local VOL_ARGS=""
 				for path in $VOL_PATHS; do VOL_ARGS+="-v $path:$path "; done
 
-				# 镜像
+				# 闀滃儚
 				local IMAGE
 				IMAGE=$(jq -r '.[0].Config.Image' "$inspect_file")
 
-				echo -e "\n# 还原容器: $c" >> "$RESTORE_SCRIPT"
+				echo -e "\n# 杩樺師瀹瑰櫒: $c" >> "$RESTORE_SCRIPT"
 				echo "docker run -d --name $c $PORT_ARGS $VOL_ARGS $ENV_VARS $IMAGE" >> "$RESTORE_SCRIPT"
 			fi
 		done
 
 
-		# 备份 /home/docker 下的所有文件（不含子目录）
+		# 澶囦唤 /home/docker 涓嬬殑鎵€鏈夋枃浠讹紙涓嶅惈瀛愮洰褰曪級
 		if [ -d "/home/docker" ]; then
-			echo -e "${gl_kjlan}备份 /home/docker 下的文件...${gl_bai}"
+			echo -e "${gl_kjlan}澶囦唤 /home/docker 涓嬬殑鏂囦欢...${gl_bai}"
 			find /home/docker -maxdepth 1 -type f | tar -czf "${BACKUP_DIR}/home_docker_files.tar.gz" -T -
-			echo -e "${gl_lv}/home/docker 下的文件已打包到: ${BACKUP_DIR}/home_docker_files.tar.gz${gl_bai}"
+			echo -e "${gl_lv}/home/docker 涓嬬殑鏂囦欢宸叉墦鍖呭埌: ${BACKUP_DIR}/home_docker_files.tar.gz${gl_bai}"
 		fi
 
 		chmod +x "$RESTORE_SCRIPT"
-		echo -e "${gl_lv}备份完成: ${BACKUP_DIR}${gl_bai}"
-		echo -e "${gl_lv}可用还原脚本: ${RESTORE_SCRIPT}${gl_bai}"
+		echo -e "${gl_lv}澶囦唤瀹屾垚: ${BACKUP_DIR}${gl_bai}"
+		echo -e "${gl_lv}鍙敤杩樺師鑴氭湰: ${RESTORE_SCRIPT}${gl_bai}"
 
 
 	}
 
 	# ----------------------------
-	# 还原
+	# 杩樺師
 	# ----------------------------
 	restore_docker() {
 
-		send_stats "Docker还原"
-		read -e -p  "请输入要还原的备份目�? " BACKUP_DIR
-		[[ ! -d "$BACKUP_DIR" ]] && { echo -e "${gl_hong}备份目录不存�?{gl_bai}"; return; }
+		send_stats "Docker杩樺師"
+		read -e -p  "璇疯緭鍏ヨ杩樺師鐨勫浠界洰褰? " BACKUP_DIR
+		[[ ! -d "$BACKUP_DIR" ]] && { echo -e "${gl_hong}澶囦唤鐩綍涓嶅瓨鍦?{gl_bai}"; return; }
 
-		echo -e "${gl_kjlan}开始执行还原操�?..${gl_bai}"
+		echo -e "${gl_kjlan}寮€濮嬫墽琛岃繕鍘熸搷浣?..${gl_bai}"
 
 		install tar jq gzip
 		install_docker
 
-		# --------- 优先还原 Compose 项目 ---------
+		# --------- 浼樺厛杩樺師 Compose 椤圭洰 ---------
 		for f in "$BACKUP_DIR"/backup_type_*; do
 			[[ ! -f "$f" ]] && continue
 			if grep -q "compose" "$f"; then
 				project_name=$(basename "$f" | sed 's/backup_type_//')
 				path_file="$BACKUP_DIR/compose_path_${project_name}.txt"
 				[[ -f "$path_file" ]] && original_path=$(cat "$path_file") || original_path=""
-				[[ -z "$original_path" ]] && read -e -p  "未找到原始路径，请输入还原目录路�? " original_path
+				[[ -z "$original_path" ]] && read -e -p  "鏈壘鍒板師濮嬭矾寰勶紝璇疯緭鍏ヨ繕鍘熺洰褰曡矾寰? " original_path
 
-				# 检查该 compose 项目的容器是否已经在运行
+				# 妫€鏌ヨ compose 椤圭洰鐨勫鍣ㄦ槸鍚﹀凡缁忓湪杩愯
 				running_count=$(docker ps --filter "label=com.docker.compose.project=$project_name" --format '{{.Names}}' | wc -l)
 				if [[ "$running_count" -gt 0 ]]; then
-					echo -e "${gl_huang}Compose 项目 [$project_name] 已有容器在运行，跳过还原...${gl_bai}"
+					echo -e "${gl_huang}Compose 椤圭洰 [$project_name] 宸叉湁瀹瑰櫒鍦ㄨ繍琛岋紝璺宠繃杩樺師...${gl_bai}"
 					continue
 				fi
 
-				read -e -p  "确认还原 Compose 项目 [$project_name] 到路�?[$original_path] ? (y/n): " confirm
-				[[ "$confirm" != "y" ]] && read -e -p  "请输入新的还原路�? " original_path
+				read -e -p  "纭杩樺師 Compose 椤圭洰 [$project_name] 鍒拌矾寰?[$original_path] ? (y/n): " confirm
+				[[ "$confirm" != "y" ]] && read -e -p  "璇疯緭鍏ユ柊鐨勮繕鍘熻矾寰? " original_path
 
 				mkdir -p "$original_path"
 				tar -xzf "$BACKUP_DIR/compose_project_${project_name}.tar.gz" -C "$original_path"
-				echo -e "${gl_lv}Compose 项目 [$project_name] 已解压到: $original_path${gl_bai}"
+				echo -e "${gl_lv}Compose 椤圭洰 [$project_name] 宸茶В鍘嬪埌: $original_path${gl_bai}"
 
 				cd "$original_path" || return
 				docker compose down || true
 				docker compose up -d
-				echo -e "${gl_lv}Compose 项目 [$project_name] 还原完成�?{gl_bai}"
+				echo -e "${gl_lv}Compose 椤圭洰 [$project_name] 杩樺師瀹屾垚锛?{gl_bai}"
 			fi
 		done
 
-		# --------- 继续还原普通容�?---------
-		echo -e "${gl_kjlan}检查并还原普�?Docker 容器...${gl_bai}"
+		# --------- 缁х画杩樺師鏅€氬鍣?---------
+		echo -e "${gl_kjlan}妫€鏌ュ苟杩樺師鏅€?Docker 瀹瑰櫒...${gl_bai}"
 		local has_container=false
 		for json in "$BACKUP_DIR"/*_inspect.json; do
 			[[ ! -f "$json" ]] && continue
 			has_container=true
 			container=$(basename "$json" | sed 's/_inspect.json//')
-			echo -e "${gl_lv}处理容器: $container${gl_bai}"
+			echo -e "${gl_lv}澶勭悊瀹瑰櫒: $container${gl_bai}"
 
-			# 检查容器是否已经存在且正在运行
+			# 妫€鏌ュ鍣ㄦ槸鍚﹀凡缁忓瓨鍦ㄤ笖姝ｅ湪杩愯
 			if docker ps --format '{{.Names}}' | grep -q "^${container}$"; then
-				echo -e "${gl_huang}容器 [$container] 已在运行，跳过还�?..${gl_bai}"
+				echo -e "${gl_huang}瀹瑰櫒 [$container] 宸插湪杩愯锛岃烦杩囪繕鍘?..${gl_bai}"
 				continue
 			fi
 
 			IMAGE=$(jq -r '.[0].Config.Image' "$json")
-			[[ -z "$IMAGE" || "$IMAGE" == "null" ]] && { echo -e "${gl_hong}未找到镜像信息，跳过: $container${gl_bai}"; continue; }
+			[[ -z "$IMAGE" || "$IMAGE" == "null" ]] && { echo -e "${gl_hong}鏈壘鍒伴暅鍍忎俊鎭紝璺宠繃: $container${gl_bai}"; continue; }
 
-			# 端口映射
+			# 绔彛鏄犲皠
 			PORT_ARGS=""
 			mapfile -t PORTS < <(jq -r '.[0].HostConfig.PortBindings | to_entries[]? | "\(.value[0].HostPort):\(.key | split("/")[0])"' "$json")
 			for p in "${PORTS[@]}"; do
 				[[ -n "$p" ]] && PORT_ARGS="$PORT_ARGS -p $p"
 			done
 
-			# 环境变量
+			# 鐜鍙橀噺
 			ENV_ARGS=""
 			mapfile -t ENVS < <(jq -r '.[0].Config.Env[]' "$json")
 			for e in "${ENVS[@]}"; do
 				ENV_ARGS="$ENV_ARGS -e \"$e\""
 			done
 
-			# 卷映�?+ 卷数据恢�?
+			# 鍗锋槧灏?+ 鍗锋暟鎹仮澶?
 			VOL_ARGS=""
 			mapfile -t VOLS < <(jq -r '.[0].Mounts[] | "\(.Source):\(.Destination)"' "$json")
 			for v in "${VOLS[@]}"; do
@@ -7820,32 +7820,32 @@ docker_ssh_migration() {
 
 				VOL_FILE="$BACKUP_DIR/${container}_$(basename $VOL_SRC).tar.gz"
 				if [[ -f "$VOL_FILE" ]]; then
-					echo "恢复卷数�? $VOL_SRC"
+					echo "鎭㈠鍗锋暟鎹? $VOL_SRC"
 					tar -xzf "$VOL_FILE" -C /
 				fi
 			done
 
-			# 删除已存在但未运行的容器
+			# 鍒犻櫎宸插瓨鍦ㄤ絾鏈繍琛岀殑瀹瑰櫒
 			if docker ps -a --format '{{.Names}}' | grep -q "^${container}$"; then
-				echo -e "${gl_huang}容器 [$container] 存在但未运行，删除旧容器...${gl_bai}"
+				echo -e "${gl_huang}瀹瑰櫒 [$container] 瀛樺湪浣嗘湭杩愯锛屽垹闄ゆ棫瀹瑰櫒...${gl_bai}"
 				docker rm -f "$container"
 			fi
 
-			# 启动容器
-			echo "执行还原命令: docker run -d --name \"$container\" $PORT_ARGS $VOL_ARGS $ENV_ARGS \"$IMAGE\""
+			# 鍚姩瀹瑰櫒
+			echo "鎵ц杩樺師鍛戒护: docker run -d --name \"$container\" $PORT_ARGS $VOL_ARGS $ENV_ARGS \"$IMAGE\""
 			eval "docker run -d --name \"$container\" $PORT_ARGS $VOL_ARGS $ENV_ARGS \"$IMAGE\""
 		done
 
-		[[ "$has_container" == false ]] && echo -e "${gl_huang}未找到普通容器的备份信息${gl_bai}"
+		[[ "$has_container" == false ]] && echo -e "${gl_huang}鏈壘鍒版櫘閫氬鍣ㄧ殑澶囦唤淇℃伅${gl_bai}"
 
-		# 还原 /home/docker 下的文件
+		# 杩樺師 /home/docker 涓嬬殑鏂囦欢
 		if [ -f "$BACKUP_DIR/home_docker_files.tar.gz" ]; then
-			echo -e "${gl_kjlan}正在还原 /home/docker 下的文件...${gl_bai}"
+			echo -e "${gl_kjlan}姝ｅ湪杩樺師 /home/docker 涓嬬殑鏂囦欢...${gl_bai}"
 			mkdir -p /home/docker
 			tar -xzf "$BACKUP_DIR/home_docker_files.tar.gz" -C /
-			echo -e "${gl_lv}/home/docker 下的文件已还原完�?{gl_bai}"
+			echo -e "${gl_lv}/home/docker 涓嬬殑鏂囦欢宸茶繕鍘熷畬鎴?{gl_bai}"
 		else
-			echo -e "${gl_huang}未找�?/home/docker 下文件的备份，跳�?..${gl_bai}"
+			echo -e "${gl_huang}鏈壘鍒?/home/docker 涓嬫枃浠剁殑澶囦唤锛岃烦杩?..${gl_bai}"
 		fi
 
 
@@ -7853,68 +7853,68 @@ docker_ssh_migration() {
 
 
 	# ----------------------------
-	# 迁移
+	# 杩佺Щ
 	# ----------------------------
 	migrate_docker() {
-		send_stats "Docker迁移"
+		send_stats "Docker杩佺Щ"
 		install jq
-		read -e -p  "请输入要迁移的备份目�? " BACKUP_DIR
-		[[ ! -d "$BACKUP_DIR" ]] && { echo -e "${gl_hong}备份目录不存�?{gl_bai}"; return; }
+		read -e -p  "璇疯緭鍏ヨ杩佺Щ鐨勫浠界洰褰? " BACKUP_DIR
+		[[ ! -d "$BACKUP_DIR" ]] && { echo -e "${gl_hong}澶囦唤鐩綍涓嶅瓨鍦?{gl_bai}"; return; }
 
-		read -e -p  "目标服务器IP: " TARGET_IP
-		read -e -p  "目标服务器SSH用户�? " TARGET_USER
-		read -e -p "目标服务器SSH端口 [默认22]: " TARGET_PORT
+		read -e -p  "鐩爣鏈嶅姟鍣↖P: " TARGET_IP
+		read -e -p  "鐩爣鏈嶅姟鍣⊿SH鐢ㄦ埛鍚? " TARGET_USER
+		read -e -p "鐩爣鏈嶅姟鍣⊿SH绔彛 [榛樿22]: " TARGET_PORT
 		local TARGET_PORT=${TARGET_PORT:-22}
 
 		local LATEST_TAR="$BACKUP_DIR"
 
-		echo -e "${gl_huang}传输备份�?..${gl_bai}"
+		echo -e "${gl_huang}浼犺緭澶囦唤涓?..${gl_bai}"
 		if [[ -z "$TARGET_PASS" ]]; then
-			# 使用密钥登录
+			# 浣跨敤瀵嗛挜鐧诲綍
 			scp -P "$TARGET_PORT" -o StrictHostKeyChecking=no -r "$LATEST_TAR" "$TARGET_USER@$TARGET_IP:/tmp/"
 		fi
 
 	}
 
 	# ----------------------------
-	# 删除备份
+	# 鍒犻櫎澶囦唤
 	# ----------------------------
 	delete_backup() {
-		send_stats "Docker备份文件删除"
-		read -e -p  "请输入要删除的备份目�? " BACKUP_DIR
-		[[ ! -d "$BACKUP_DIR" ]] && { echo -e "${gl_hong}备份目录不存�?{gl_bai}"; return; }
+		send_stats "Docker澶囦唤鏂囦欢鍒犻櫎"
+		read -e -p  "璇疯緭鍏ヨ鍒犻櫎鐨勫浠界洰褰? " BACKUP_DIR
+		[[ ! -d "$BACKUP_DIR" ]] && { echo -e "${gl_hong}澶囦唤鐩綍涓嶅瓨鍦?{gl_bai}"; return; }
 		rm -rf "$BACKUP_DIR"
-		echo -e "${gl_lv}已删除备�? ${BACKUP_DIR}${gl_bai}"
+		echo -e "${gl_lv}宸插垹闄ゅ浠? ${BACKUP_DIR}${gl_bai}"
 	}
 
 	# ----------------------------
-	# 主菜�?
+	# 涓昏彍鍗?
 	# ----------------------------
 	main_menu() {
-		send_stats "Docker备份迁移还原"
+		send_stats "Docker澶囦唤杩佺Щ杩樺師"
 		while true; do
 			clear
 			echo "------------------------"
-			echo -e "Docker备份/迁移/还原工具"
+			echo -e "Docker澶囦唤/杩佺Щ/杩樺師宸ュ叿"
 			echo "------------------------"
 			list_backups
 			echo -e ""
 			echo "------------------------"
-			echo -e "1. 备份docker项目"
-			echo -e "2. 迁移docker项目"
-			echo -e "3. 还原docker项目"
-			echo -e "4. 删除docker项目的备份文�?
+			echo -e "1. 澶囦唤docker椤圭洰"
+			echo -e "2. 杩佺Щdocker椤圭洰"
+			echo -e "3. 杩樺師docker椤圭洰"
+			echo -e "4. 鍒犻櫎docker椤圭洰鐨勫浠芥枃浠?
 			echo "------------------------"
-			echo -e "0. 返回上一级选单"
+			echo -e "0. 杩斿洖涓婁竴绾ч€夊崟"
 			echo "------------------------"
-			read -e -p  "请选择: " choice
+			read -e -p  "璇烽€夋嫨: " choice
 			case $choice in
 				1) backup_docker ;;
 				2) migrate_docker ;;
 				3) restore_docker ;;
 				4) delete_backup ;;
 				0) return ;;
-				*) echo -e "${gl_hong}无效选项${gl_bai}" ;;
+				*) echo -e "${gl_hong}鏃犳晥閫夐」${gl_bai}" ;;
 			esac
 		break_end
 		done
@@ -7931,38 +7931,38 @@ linux_docker() {
 
 	while true; do
 	  clear
-	  # send_stats "docker管理"
-	  echo -e "Docker管理"
+	  # send_stats "docker绠＄悊"
+	  echo -e "Docker绠＄悊"
 	  docker_tato
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}1.   ${gl_bai}安装更新Docker环境 ${gl_huang}�?{gl_bai}"
+	  echo -e "${gl_kjlan}1.   ${gl_bai}瀹夎鏇存柊Docker鐜 ${gl_huang}鈽?{gl_bai}"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}2.   ${gl_bai}查看Docker全局状�?${gl_huang}�?{gl_bai}"
+	  echo -e "${gl_kjlan}2.   ${gl_bai}鏌ョ湅Docker鍏ㄥ眬鐘舵€?${gl_huang}鈽?{gl_bai}"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}3.   ${gl_bai}Docker容器管理 ${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}4.   ${gl_bai}Docker镜像管理"
-	  echo -e "${gl_kjlan}5.   ${gl_bai}Docker网络管理"
-	  echo -e "${gl_kjlan}6.   ${gl_bai}Docker卷管�?
+	  echo -e "${gl_kjlan}3.   ${gl_bai}Docker瀹瑰櫒绠＄悊 ${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}4.   ${gl_bai}Docker闀滃儚绠＄悊"
+	  echo -e "${gl_kjlan}5.   ${gl_bai}Docker缃戠粶绠＄悊"
+	  echo -e "${gl_kjlan}6.   ${gl_bai}Docker鍗风鐞?
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}7.   ${gl_bai}清理无用的docker容器和镜像网络数据卷"
+	  echo -e "${gl_kjlan}7.   ${gl_bai}娓呯悊鏃犵敤鐨刣ocker瀹瑰櫒鍜岄暅鍍忕綉缁滄暟鎹嵎"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}8.   ${gl_bai}更换Docker�?
-	  echo -e "${gl_kjlan}9.   ${gl_bai}编辑daemon.json文件"
+	  echo -e "${gl_kjlan}8.   ${gl_bai}鏇存崲Docker婧?
+	  echo -e "${gl_kjlan}9.   ${gl_bai}缂栬緫daemon.json鏂囦欢"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}11.  ${gl_bai}开启Docker-ipv6访问"
-	  echo -e "${gl_kjlan}12.  ${gl_bai}关闭Docker-ipv6访问"
+	  echo -e "${gl_kjlan}11.  ${gl_bai}寮€鍚疍ocker-ipv6璁块棶"
+	  echo -e "${gl_kjlan}12.  ${gl_bai}鍏抽棴Docker-ipv6璁块棶"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}19.  ${gl_bai}备份/迁移/还原Docker环境"
-	  echo -e "${gl_kjlan}20.  ${gl_bai}卸载Docker环境"
+	  echo -e "${gl_kjlan}19.  ${gl_bai}澶囦唤/杩佺Щ/杩樺師Docker鐜"
+	  echo -e "${gl_kjlan}20.  ${gl_bai}鍗歌浇Docker鐜"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主菜�?
+	  echo -e "${gl_kjlan}0.   ${gl_bai}杩斿洖涓昏彍鍗?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 	  case $sub_choice in
 		  1)
 			clear
-			send_stats "安装docker环境"
+			send_stats "瀹夎docker鐜"
 			install_add_docker
 
 			  ;;
@@ -7973,22 +7973,22 @@ linux_docker() {
 			  local network_count=$(docker network ls -q 2>/dev/null | wc -l)
 			  local volume_count=$(docker volume ls -q 2>/dev/null | wc -l)
 
-			  send_stats "docker全局状�?
-			  echo "Docker版本"
+			  send_stats "docker鍏ㄥ眬鐘舵€?
+			  echo "Docker鐗堟湰"
 			  docker -v
 			  docker compose version
 
 			  echo ""
-			  echo -e "Docker镜像: ${gl_lv}$image_count${gl_bai} "
+			  echo -e "Docker闀滃儚: ${gl_lv}$image_count${gl_bai} "
 			  docker image ls
 			  echo ""
-			  echo -e "Docker容器: ${gl_lv}$container_count${gl_bai}"
+			  echo -e "Docker瀹瑰櫒: ${gl_lv}$container_count${gl_bai}"
 			  docker ps -a
 			  echo ""
-			  echo -e "Docker�? ${gl_lv}$volume_count${gl_bai}"
+			  echo -e "Docker鍗? ${gl_lv}$volume_count${gl_bai}"
 			  docker volume ls
 			  echo ""
-			  echo -e "Docker网络: ${gl_lv}$network_count${gl_bai}"
+			  echo -e "Docker缃戠粶: ${gl_lv}$network_count${gl_bai}"
 			  docker network ls
 			  echo ""
 
@@ -8003,15 +8003,15 @@ linux_docker() {
 		  5)
 			  while true; do
 				  clear
-				  send_stats "Docker网络管理"
-				  echo "Docker网络列表"
+				  send_stats "Docker缃戠粶绠＄悊"
+				  echo "Docker缃戠粶鍒楄〃"
 				  echo "------------------------------------------------------------"
 				  docker network ls
 				  echo ""
 
 				  echo "------------------------------------------------------------"
 				  container_ids=$(docker ps -q)
-				  printf "%-25s %-25s %-25s\n" "容器名称" "网络名称" "IP地址"
+				  printf "%-25s %-25s %-25s\n" "瀹瑰櫒鍚嶇О" "缃戠粶鍚嶇О" "IP鍦板潃"
 
 				  for container_id in $container_ids; do
 					  local container_info=$(docker inspect --format '{{ .Name }}{{ range $network, $config := .NetworkSettings.Networks }} {{ $network }} {{ $config.IPAddress }}{{ end }}' "$container_id")
@@ -8028,36 +8028,36 @@ linux_docker() {
 				  done
 
 				  echo ""
-				  echo "网络操作"
+				  echo "缃戠粶鎿嶄綔"
 				  echo "------------------------"
-				  echo "1. 创建网络"
-				  echo "2. 加入网络"
-				  echo "3. 退出网�?
-				  echo "4. 删除网络"
+				  echo "1. 鍒涘缓缃戠粶"
+				  echo "2. 鍔犲叆缃戠粶"
+				  echo "3. 閫€鍑虹綉缁?
+				  echo "4. 鍒犻櫎缃戠粶"
 				  echo "------------------------"
-				  echo "0. 返回上一级选单"
+				  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				  echo "------------------------"
-				  read -e -p "请输入你的选择: " sub_choice
+				  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 				  case $sub_choice in
 					  1)
-						  send_stats "创建网络"
-						  read -e -p "设置新网络名: " dockernetwork
+						  send_stats "鍒涘缓缃戠粶"
+						  read -e -p "璁剧疆鏂扮綉缁滃悕: " dockernetwork
 						  docker network create $dockernetwork
 						  ;;
 					  2)
-						  send_stats "加入网络"
-						  read -e -p "加入网络�? " dockernetwork
-						  read -e -p "那些容器加入该网络（多个容器名请用空格分隔）: " dockernames
+						  send_stats "鍔犲叆缃戠粶"
+						  read -e -p "鍔犲叆缃戠粶鍚? " dockernetwork
+						  read -e -p "閭ｄ簺瀹瑰櫒鍔犲叆璇ョ綉缁滐紙澶氫釜瀹瑰櫒鍚嶈鐢ㄧ┖鏍煎垎闅旓級: " dockernames
 
 						  for dockername in $dockernames; do
 							  docker network connect $dockernetwork $dockername
 						  done
 						  ;;
 					  3)
-						  send_stats "加入网络"
-						  read -e -p "退出网络名: " dockernetwork
-						  read -e -p "那些容器退出该网络（多个容器名请用空格分隔�? " dockernames
+						  send_stats "鍔犲叆缃戠粶"
+						  read -e -p "閫€鍑虹綉缁滃悕: " dockernetwork
+						  read -e -p "閭ｄ簺瀹瑰櫒閫€鍑鸿缃戠粶锛堝涓鍣ㄥ悕璇风敤绌烘牸鍒嗛殧锛? " dockernames
 
 						  for dockername in $dockernames; do
 							  docker network disconnect $dockernetwork $dockername
@@ -8066,13 +8066,13 @@ linux_docker() {
 						  ;;
 
 					  4)
-						  send_stats "删除网络"
-						  read -e -p "请输入要删除的网络名: " dockernetwork
+						  send_stats "鍒犻櫎缃戠粶"
+						  read -e -p "璇疯緭鍏ヨ鍒犻櫎鐨勭綉缁滃悕: " dockernetwork
 						  docker network rm $dockernetwork
 						  ;;
 
 					  *)
-						  break  # 跳出循环，退出菜�?
+						  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 						  ;;
 				  esac
 			  done
@@ -8081,29 +8081,29 @@ linux_docker() {
 		  6)
 			  while true; do
 				  clear
-				  send_stats "Docker卷管�?
-				  echo "Docker卷列�?
+				  send_stats "Docker鍗风鐞?
+				  echo "Docker鍗峰垪琛?
 				  docker volume ls
 				  echo ""
-				  echo "卷操�?
+				  echo "鍗锋搷浣?
 				  echo "------------------------"
-				  echo "1. 创建新卷"
-				  echo "2. 删除指定�?
-				  echo "3. 删除所有卷"
+				  echo "1. 鍒涘缓鏂板嵎"
+				  echo "2. 鍒犻櫎鎸囧畾鍗?
+				  echo "3. 鍒犻櫎鎵€鏈夊嵎"
 				  echo "------------------------"
-				  echo "0. 返回上一级选单"
+				  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				  echo "------------------------"
-				  read -e -p "请输入你的选择: " sub_choice
+				  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 				  case $sub_choice in
 					  1)
-						  send_stats "新建�?
-						  read -e -p "设置新卷�? " dockerjuan
+						  send_stats "鏂板缓鍗?
+						  read -e -p "璁剧疆鏂板嵎鍚? " dockerjuan
 						  docker volume create $dockerjuan
 
 						  ;;
 					  2)
-						  read -e -p "输入删除卷名（多个卷名请用空格分隔）: " dockerjuans
+						  read -e -p "杈撳叆鍒犻櫎鍗峰悕锛堝涓嵎鍚嶈鐢ㄧ┖鏍煎垎闅旓級: " dockerjuans
 
 						  for dockerjuan in $dockerjuans; do
 							  docker volume rm $dockerjuan
@@ -8112,8 +8112,8 @@ linux_docker() {
 						  ;;
 
 					   3)
-						  send_stats "删除所有卷"
-						  read -e -p "$(echo -e "${gl_hong}注意: ${gl_bai}确定删除所有未使用的卷吗？(Y/N): ")" choice
+						  send_stats "鍒犻櫎鎵€鏈夊嵎"
+						  read -e -p "$(echo -e "${gl_hong}娉ㄦ剰: ${gl_bai}纭畾鍒犻櫎鎵€鏈夋湭浣跨敤鐨勫嵎鍚楋紵(Y/N): ")" choice
 						  case "$choice" in
 							[Yy])
 							  docker volume prune -f
@@ -8121,21 +8121,21 @@ linux_docker() {
 							[Nn])
 							  ;;
 							*)
-							  echo "无效的选择，请输入 Y �?N�?
+							  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 							  ;;
 						  esac
 						  ;;
 
 					  *)
-						  break  # 跳出循环，退出菜�?
+						  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 						  ;;
 				  esac
 			  done
 			  ;;
 		  7)
 			  clear
-			  send_stats "Docker清理"
-			  read -e -p "$(echo -e "${gl_huang}提示: ${gl_bai}将清理无用的镜像容器网络，包括停止的容器，确定清理吗�?Y/N): ")" choice
+			  send_stats "Docker娓呯悊"
+			  read -e -p "$(echo -e "${gl_huang}鎻愮ず: ${gl_bai}灏嗘竻鐞嗘棤鐢ㄧ殑闀滃儚瀹瑰櫒缃戠粶锛屽寘鎷仠姝㈢殑瀹瑰櫒锛岀‘瀹氭竻鐞嗗悧锛?Y/N): ")" choice
 			  case "$choice" in
 				[Yy])
 				  docker system prune -af --volumes
@@ -8143,13 +8143,13 @@ linux_docker() {
 				[Nn])
 				  ;;
 				*)
-				  echo "无效的选择，请输入 Y �?N�?
+				  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 				  ;;
 			  esac
 			  ;;
 		  8)
 			  clear
-			  send_stats "Docker�?
+			  send_stats "Docker婧?
 			  bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 			  ;;
 
@@ -8165,13 +8165,13 @@ linux_docker() {
 
 		  11)
 			  clear
-			  send_stats "Docker v6 开"
+			  send_stats "Docker v6 寮€"
 			  docker_ipv6_on
 			  ;;
 
 		  12)
 			  clear
-			  send_stats "Docker v6 �?
+			  send_stats "Docker v6 鍏?
 			  docker_ipv6_off
 			  ;;
 
@@ -8182,8 +8182,8 @@ linux_docker() {
 
 		  20)
 			  clear
-			  send_stats "Docker卸载"
-			  read -e -p "$(echo -e "${gl_hong}注意: ${gl_bai}确定卸载docker环境吗？(Y/N): ")" choice
+			  send_stats "Docker鍗歌浇"
+			  read -e -p "$(echo -e "${gl_hong}娉ㄦ剰: ${gl_bai}纭畾鍗歌浇docker鐜鍚楋紵(Y/N): ")" choice
 			  case "$choice" in
 				[Yy])
 				  docker ps -a -q | xargs -r docker rm -f && docker images -q | xargs -r docker rmi && docker network prune -f && docker volume prune -f
@@ -8194,7 +8194,7 @@ linux_docker() {
 				[Nn])
 				  ;;
 				*)
-				  echo "无效的选择，请输入 Y �?N�?
+				  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 				  ;;
 			  esac
 			  ;;
@@ -8203,7 +8203,7 @@ linux_docker() {
 			  kejilion
 			  ;;
 		  *)
-			  echo "无效的输�?"
+			  echo "鏃犳晥鐨勮緭鍏?"
 			  ;;
 	  esac
 	  break_end
@@ -8220,158 +8220,158 @@ linux_test() {
 
 	while true; do
 	  clear
-	  # send_stats "测试脚本合集"
-	  echo -e "测试脚本合集"
+	  # send_stats "娴嬭瘯鑴氭湰鍚堥泦"
+	  echo -e "娴嬭瘯鑴氭湰鍚堥泦"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}IP及解锁状态检�?
-	  echo -e "${gl_kjlan}1.   ${gl_bai}ChatGPT 解锁状态检�?
-	  echo -e "${gl_kjlan}2.   ${gl_bai}Region 流媒体解锁测�?
-	  echo -e "${gl_kjlan}3.   ${gl_bai}yeahwu 流媒体解锁检�?
-	  echo -e "${gl_kjlan}4.   ${gl_bai}xykt IP质量体检脚本 ${gl_huang}�?{gl_bai}"
+	  echo -e "${gl_kjlan}IP鍙婅В閿佺姸鎬佹娴?
+	  echo -e "${gl_kjlan}1.   ${gl_bai}ChatGPT 瑙ｉ攣鐘舵€佹娴?
+	  echo -e "${gl_kjlan}2.   ${gl_bai}Region 娴佸獟浣撹В閿佹祴璇?
+	  echo -e "${gl_kjlan}3.   ${gl_bai}yeahwu 娴佸獟浣撹В閿佹娴?
+	  echo -e "${gl_kjlan}4.   ${gl_bai}xykt IP璐ㄩ噺浣撴鑴氭湰 ${gl_huang}鈽?{gl_bai}"
 
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}网络线路测�?
-	  echo -e "${gl_kjlan}11.  ${gl_bai}besttrace 三网回程延迟路由测试"
-	  echo -e "${gl_kjlan}12.  ${gl_bai}mtr_trace 三网回程线路测试"
-	  echo -e "${gl_kjlan}13.  ${gl_bai}Superspeed 三网测�?
-	  echo -e "${gl_kjlan}14.  ${gl_bai}nxtrace 快速回程测试脚�?
-	  echo -e "${gl_kjlan}15.  ${gl_bai}nxtrace 指定IP回程测试脚本"
-	  echo -e "${gl_kjlan}16.  ${gl_bai}ludashi2020 三网线路测试"
-	  echo -e "${gl_kjlan}17.  ${gl_bai}i-abc 多功能测速脚�?
-	  echo -e "${gl_kjlan}18.  ${gl_bai}NetQuality 网络质量体检脚本 ${gl_huang}�?{gl_bai}"
+	  echo -e "${gl_kjlan}缃戠粶绾胯矾娴嬮€?
+	  echo -e "${gl_kjlan}11.  ${gl_bai}besttrace 涓夌綉鍥炵▼寤惰繜璺敱娴嬭瘯"
+	  echo -e "${gl_kjlan}12.  ${gl_bai}mtr_trace 涓夌綉鍥炵▼绾胯矾娴嬭瘯"
+	  echo -e "${gl_kjlan}13.  ${gl_bai}Superspeed 涓夌綉娴嬮€?
+	  echo -e "${gl_kjlan}14.  ${gl_bai}nxtrace 蹇€熷洖绋嬫祴璇曡剼鏈?
+	  echo -e "${gl_kjlan}15.  ${gl_bai}nxtrace 鎸囧畾IP鍥炵▼娴嬭瘯鑴氭湰"
+	  echo -e "${gl_kjlan}16.  ${gl_bai}ludashi2020 涓夌綉绾胯矾娴嬭瘯"
+	  echo -e "${gl_kjlan}17.  ${gl_bai}i-abc 澶氬姛鑳芥祴閫熻剼鏈?
+	  echo -e "${gl_kjlan}18.  ${gl_bai}NetQuality 缃戠粶璐ㄩ噺浣撴鑴氭湰 ${gl_huang}鈽?{gl_bai}"
 
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}硬件性能测试"
-	  echo -e "${gl_kjlan}21.  ${gl_bai}yabs 性能测试"
-	  echo -e "${gl_kjlan}22.  ${gl_bai}icu/gb5 CPU性能测试脚本"
+	  echo -e "${gl_kjlan}纭欢鎬ц兘娴嬭瘯"
+	  echo -e "${gl_kjlan}21.  ${gl_bai}yabs 鎬ц兘娴嬭瘯"
+	  echo -e "${gl_kjlan}22.  ${gl_bai}icu/gb5 CPU鎬ц兘娴嬭瘯鑴氭湰"
 
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}综合性测�?
-	  echo -e "${gl_kjlan}31.  ${gl_bai}bench 性能测试"
-	  echo -e "${gl_kjlan}32.  ${gl_bai}spiritysdx 融合怪测�?${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}33.  ${gl_bai}nodequality 融合怪测�?${gl_huang}�?{gl_bai}"
+	  echo -e "${gl_kjlan}缁煎悎鎬ф祴璇?
+	  echo -e "${gl_kjlan}31.  ${gl_bai}bench 鎬ц兘娴嬭瘯"
+	  echo -e "${gl_kjlan}32.  ${gl_bai}spiritysdx 铻嶅悎鎬祴璇?${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}33.  ${gl_bai}nodequality 铻嶅悎鎬祴璇?${gl_huang}鈽?{gl_bai}"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主菜�?
+	  echo -e "${gl_kjlan}0.   ${gl_bai}杩斿洖涓昏彍鍗?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 	  case $sub_choice in
 		  1)
 			  clear
-			  send_stats "ChatGPT解锁状态检�?
+			  send_stats "ChatGPT瑙ｉ攣鐘舵€佹娴?
 			  bash <(curl -Ls https://cdn.jsdelivr.net/gh/missuo/OpenAI-Checker/openai.sh)
 			  ;;
 		  2)
 			  clear
-			  send_stats "Region流媒体解锁测�?
+			  send_stats "Region娴佸獟浣撹В閿佹祴璇?
 			  bash <(curl -L -s check.unlock.media)
 			  ;;
 		  3)
 			  clear
-			  send_stats "yeahwu流媒体解锁检�?
+			  send_stats "yeahwu娴佸獟浣撹В閿佹娴?
 			  install wget
 			  wget -qO- ${gh_proxy}github.com/yeahwu/check/raw/main/check.sh | bash
 			  ;;
 		  4)
 			  clear
-			  send_stats "xykt_IP质量体检脚本"
+			  send_stats "xykt_IP璐ㄩ噺浣撴鑴氭湰"
 			  bash <(curl -Ls IP.Check.Place)
 			  ;;
 
 
 		  11)
 			  clear
-			  send_stats "besttrace三网回程延迟路由测试"
+			  send_stats "besttrace涓夌綉鍥炵▼寤惰繜璺敱娴嬭瘯"
 			  install wget
 			  wget -qO- git.io/besttrace | bash
 			  ;;
 		  12)
 			  clear
-			  send_stats "mtr_trace三网回程线路测试"
+			  send_stats "mtr_trace涓夌綉鍥炵▼绾胯矾娴嬭瘯"
 			  curl ${gh_proxy}raw.githubusercontent.com/zhucaidan/mtr_trace/main/mtr_trace.sh | bash
 			  ;;
 		  13)
 			  clear
-			  send_stats "Superspeed三网测�?
+			  send_stats "Superspeed涓夌綉娴嬮€?
 			  bash <(curl -Lso- https://git.io/superspeed_uxh)
 			  ;;
 		  14)
 			  clear
-			  send_stats "nxtrace快速回程测试脚�?
+			  send_stats "nxtrace蹇€熷洖绋嬫祴璇曡剼鏈?
 			  curl nxtrace.org/nt |bash
 			  nexttrace --fast-trace --tcp
 			  ;;
 		  15)
 			  clear
-			  send_stats "nxtrace指定IP回程测试脚本"
-			  echo "可参考的IP列表"
+			  send_stats "nxtrace鎸囧畾IP鍥炵▼娴嬭瘯鑴氭湰"
+			  echo "鍙弬鑰冪殑IP鍒楄〃"
 			  echo "------------------------"
-			  echo "北京电信: 219.141.136.12"
-			  echo "北京联�? 202.106.50.1"
-			  echo "北京移动: 221.179.155.161"
-			  echo "上海电信: 202.96.209.133"
-			  echo "上海联�? 210.22.97.1"
-			  echo "上海移动: 211.136.112.200"
-			  echo "广州电信: 58.60.188.222"
-			  echo "广州联�? 210.21.196.6"
-			  echo "广州移动: 120.196.165.24"
-			  echo "成都电信: 61.139.2.69"
-			  echo "成都联�? 119.6.6.6"
-			  echo "成都移动: 211.137.96.205"
-			  echo "湖南电信: 36.111.200.100"
-			  echo "湖南联�? 42.48.16.100"
-			  echo "湖南移动: 39.134.254.6"
+			  echo "鍖椾含鐢典俊: 219.141.136.12"
+			  echo "鍖椾含鑱旈€? 202.106.50.1"
+			  echo "鍖椾含绉诲姩: 221.179.155.161"
+			  echo "涓婃捣鐢典俊: 202.96.209.133"
+			  echo "涓婃捣鑱旈€? 210.22.97.1"
+			  echo "涓婃捣绉诲姩: 211.136.112.200"
+			  echo "骞垮窞鐢典俊: 58.60.188.222"
+			  echo "骞垮窞鑱旈€? 210.21.196.6"
+			  echo "骞垮窞绉诲姩: 120.196.165.24"
+			  echo "鎴愰兘鐢典俊: 61.139.2.69"
+			  echo "鎴愰兘鑱旈€? 119.6.6.6"
+			  echo "鎴愰兘绉诲姩: 211.137.96.205"
+			  echo "婀栧崡鐢典俊: 36.111.200.100"
+			  echo "婀栧崡鑱旈€? 42.48.16.100"
+			  echo "婀栧崡绉诲姩: 39.134.254.6"
 			  echo "------------------------"
 
-			  read -e -p "输入一个指定IP: " testip
+			  read -e -p "杈撳叆涓€涓寚瀹欼P: " testip
 			  curl nxtrace.org/nt |bash
 			  nexttrace $testip
 			  ;;
 
 		  16)
 			  clear
-			  send_stats "ludashi2020三网线路测试"
+			  send_stats "ludashi2020涓夌綉绾胯矾娴嬭瘯"
 			  curl ${gh_proxy}raw.githubusercontent.com/ludashi2020/backtrace/main/install.sh -sSf | sh
 			  ;;
 
 		  17)
 			  clear
-			  send_stats "i-abc多功能测速脚�?
+			  send_stats "i-abc澶氬姛鑳芥祴閫熻剼鏈?
 			  bash <(curl -sL ${gh_proxy}raw.githubusercontent.com/i-abc/Speedtest/main/speedtest.sh)
 			  ;;
 
 		  18)
 			  clear
-			  send_stats "网络质量测试脚本"
+			  send_stats "缃戠粶璐ㄩ噺娴嬭瘯鑴氭湰"
 			  bash <(curl -sL Net.Check.Place)
 			  ;;
 
 		  21)
 			  clear
-			  send_stats "yabs性能测试"
+			  send_stats "yabs鎬ц兘娴嬭瘯"
 			  check_swap
 			  curl -sL yabs.sh | bash -s -- -i -5
 			  ;;
 		  22)
 			  clear
-			  send_stats "icu/gb5 CPU性能测试脚本"
+			  send_stats "icu/gb5 CPU鎬ц兘娴嬭瘯鑴氭湰"
 			  check_swap
 			  bash <(curl -sL bash.icu/gb5)
 			  ;;
 
 		  31)
 			  clear
-			  send_stats "bench性能测试"
+			  send_stats "bench鎬ц兘娴嬭瘯"
 			  curl -Lso- bench.sh | bash
 			  ;;
 		  32)
-			  send_stats "spiritysdx融合怪测�?
+			  send_stats "spiritysdx铻嶅悎鎬祴璇?
 			  clear
 			  curl -L ${gh_proxy}gitlab.com/spiritysdx/za/-/raw/main/ecs.sh -o ecs.sh && chmod +x ecs.sh && bash ecs.sh
 			  ;;
 
 		  33)
-			  send_stats "nodequality融合怪测�?
+			  send_stats "nodequality铻嶅悎鎬祴璇?
 			  clear
 			  bash <(curl -sL https://run.NodeQuality.com)
 			  ;;
@@ -8383,7 +8383,7 @@ linux_test() {
 
 			  ;;
 		  *)
-			  echo "无效的输�?"
+			  echo "鏃犳晥鐨勮緭鍏?"
 			  ;;
 	  esac
 	  break_end
@@ -8399,51 +8399,51 @@ linux_Oracle() {
 
 	 while true; do
 	  clear
-	  send_stats "甲骨文云脚本合集"
-	  echo -e "甲骨文云脚本合集"
+	  send_stats "鐢查鏂囦簯鑴氭湰鍚堥泦"
+	  echo -e "鐢查鏂囦簯鑴氭湰鍚堥泦"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}1.   ${gl_bai}安装闲置机器活跃脚本"
-	  echo -e "${gl_kjlan}2.   ${gl_bai}卸载闲置机器活跃脚本"
+	  echo -e "${gl_kjlan}1.   ${gl_bai}瀹夎闂茬疆鏈哄櫒娲昏穬鑴氭湰"
+	  echo -e "${gl_kjlan}2.   ${gl_bai}鍗歌浇闂茬疆鏈哄櫒娲昏穬鑴氭湰"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}3.   ${gl_bai}DD重装系统脚本"
-	  echo -e "${gl_kjlan}4.   ${gl_bai}R探长开机脚�?
-	  echo -e "${gl_kjlan}5.   ${gl_bai}开启ROOT密码登录模式"
-	  echo -e "${gl_kjlan}6.   ${gl_bai}IPV6恢复工具"
+	  echo -e "${gl_kjlan}3.   ${gl_bai}DD閲嶈绯荤粺鑴氭湰"
+	  echo -e "${gl_kjlan}4.   ${gl_bai}R鎺㈤暱寮€鏈鸿剼鏈?
+	  echo -e "${gl_kjlan}5.   ${gl_bai}寮€鍚疪OOT瀵嗙爜鐧诲綍妯″紡"
+	  echo -e "${gl_kjlan}6.   ${gl_bai}IPV6鎭㈠宸ュ叿"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主菜�?
+	  echo -e "${gl_kjlan}0.   ${gl_bai}杩斿洖涓昏彍鍗?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 	  case $sub_choice in
 		  1)
 			  clear
-			  echo "活跃脚本: CPU占用10-20% 内存占用20% "
-			  read -e -p "确定安装吗？(Y/N): " choice
+			  echo "娲昏穬鑴氭湰: CPU鍗犵敤10-20% 鍐呭瓨鍗犵敤20% "
+			  read -e -p "纭畾瀹夎鍚楋紵(Y/N): " choice
 			  case "$choice" in
 				[Yy])
 
 				  install_docker
 
-				  # 设置默认�?
+				  # 璁剧疆榛樿鍊?
 				  local DEFAULT_CPU_CORE=1
 				  local DEFAULT_CPU_UTIL="10-20"
 				  local DEFAULT_MEM_UTIL=20
 				  local DEFAULT_SPEEDTEST_INTERVAL=120
 
-				  # 提示用户输入CPU核心数和占用百分比，如果回车则使用默认�?
-				  read -e -p "请输入CPU核心�?[默认: $DEFAULT_CPU_CORE]: " cpu_core
+				  # 鎻愮ず鐢ㄦ埛杈撳叆CPU鏍稿績鏁板拰鍗犵敤鐧惧垎姣旓紝濡傛灉鍥炶溅鍒欎娇鐢ㄩ粯璁ゅ€?
+				  read -e -p "璇疯緭鍏PU鏍稿績鏁?[榛樿: $DEFAULT_CPU_CORE]: " cpu_core
 				  local cpu_core=${cpu_core:-$DEFAULT_CPU_CORE}
 
-				  read -e -p "请输入CPU占用百分比范围（例如10-20�?[默认: $DEFAULT_CPU_UTIL]: " cpu_util
+				  read -e -p "璇疯緭鍏PU鍗犵敤鐧惧垎姣旇寖鍥达紙渚嬪10-20锛?[榛樿: $DEFAULT_CPU_UTIL]: " cpu_util
 				  local cpu_util=${cpu_util:-$DEFAULT_CPU_UTIL}
 
-				  read -e -p "请输入内存占用百分比 [默认: $DEFAULT_MEM_UTIL]: " mem_util
+				  read -e -p "璇疯緭鍏ュ唴瀛樺崰鐢ㄧ櫨鍒嗘瘮 [榛樿: $DEFAULT_MEM_UTIL]: " mem_util
 				  local mem_util=${mem_util:-$DEFAULT_MEM_UTIL}
 
-				  read -e -p "请输入Speedtest间隔时间（秒�?[默认: $DEFAULT_SPEEDTEST_INTERVAL]: " speedtest_interval
+				  read -e -p "璇疯緭鍏peedtest闂撮殧鏃堕棿锛堢锛?[榛樿: $DEFAULT_SPEEDTEST_INTERVAL]: " speedtest_interval
 				  local speedtest_interval=${speedtest_interval:-$DEFAULT_SPEEDTEST_INTERVAL}
 
-				  # 运行Docker容器
+				  # 杩愯Docker瀹瑰櫒
 				  docker run -d --name=lookbusy --restart=always \
 					  -e TZ=Asia/Shanghai \
 					  -e CPU_UTIL="$cpu_util" \
@@ -8451,14 +8451,14 @@ linux_Oracle() {
 					  -e MEM_UTIL="$mem_util" \
 					  -e SPEEDTEST_INTERVAL="$speedtest_interval" \
 					  fogforest/lookbusy
-				  send_stats "甲骨文云安装活跃脚本"
+				  send_stats "鐢查鏂囦簯瀹夎娲昏穬鑴氭湰"
 
 				  ;;
 				[Nn])
 
 				  ;;
 				*)
-				  echo "无效的选择，请输入 Y �?N�?
+				  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 				  ;;
 			  esac
 			  ;;
@@ -8466,53 +8466,53 @@ linux_Oracle() {
 			  clear
 			  docker rm -f lookbusy
 			  docker rmi fogforest/lookbusy
-			  send_stats "甲骨文云卸载活跃脚本"
+			  send_stats "鐢查鏂囦簯鍗歌浇娲昏穬鑴氭湰"
 			  ;;
 
 		  3)
 		  clear
-		  echo "重装系统"
+		  echo "閲嶈绯荤粺"
 		  echo "--------------------------------"
-		  echo -e "${gl_hong}注意: ${gl_bai}重装有风险失联，不放心者慎用。重装预计花�?5分钟，请提前备份数据�?
-		  read -e -p "确定继续吗？(Y/N): " choice
+		  echo -e "${gl_hong}娉ㄦ剰: ${gl_bai}閲嶈鏈夐闄╁け鑱旓紝涓嶆斁蹇冭€呮厧鐢ㄣ€傞噸瑁呴璁¤姳璐?5鍒嗛挓锛岃鎻愬墠澶囦唤鏁版嵁銆?
+		  read -e -p "纭畾缁х画鍚楋紵(Y/N): " choice
 
 		  case "$choice" in
 			[Yy])
 			  while true; do
-				read -e -p "请选择要重装的系统:  1. Debian12 | 2. Ubuntu20.04 : " sys_choice
+				read -e -p "璇烽€夋嫨瑕侀噸瑁呯殑绯荤粺:  1. Debian12 | 2. Ubuntu20.04 : " sys_choice
 
 				case "$sys_choice" in
 				  1)
 					local xitong="-d 12"
-					break  # 结束循环
+					break  # 缁撴潫寰幆
 					;;
 				  2)
 					local xitong="-u 20.04"
-					break  # 结束循环
+					break  # 缁撴潫寰幆
 					;;
 				  *)
-					echo "无效的选择，请重新输入�?
+					echo "鏃犳晥鐨勯€夋嫨锛岃閲嶆柊杈撳叆銆?
 					;;
 				esac
 			  done
 
-			  read -e -p "请输入你重装后的密码: " vpspasswd
+			  read -e -p "璇疯緭鍏ヤ綘閲嶈鍚庣殑瀵嗙爜: " vpspasswd
 			  install wget
 			  bash <(wget --no-check-certificate -qO- "${gh_proxy}raw.githubusercontent.com/MoeClub/Note/master/InstallNET.sh") $xitong -v 64 -p $vpspasswd -port 22
-			  send_stats "甲骨文云重装系统脚本"
+			  send_stats "鐢查鏂囦簯閲嶈绯荤粺鑴氭湰"
 			  ;;
 			[Nn])
-			  echo "已取�?
+			  echo "宸插彇娑?
 			  ;;
 			*)
-			  echo "无效的选择，请输入 Y �?N�?
+			  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 			  ;;
 		  esac
 			  ;;
 
 		  4)
 			  clear
-			  send_stats "R探长开机脚�?
+			  send_stats "R鎺㈤暱寮€鏈鸿剼鏈?
 			  bash <(wget -qO- ${gh_proxy}github.com/Yohann0617/oci-helper/releases/latest/download/sh_oci-helper_install.sh)
 			  ;;
 		  5)
@@ -8522,15 +8522,15 @@ linux_Oracle() {
 		  6)
 			  clear
 			  bash <(curl -L -s jhb.ovh/jb/v6.sh)
-			  echo "该功能由jhb大神提供，感谢他�?
-			  send_stats "ipv6修复"
+			  echo "璇ュ姛鑳界敱jhb澶х鎻愪緵锛屾劅璋粬锛?
+			  send_stats "ipv6淇"
 			  ;;
 		  0)
 			  kejilion
 
 			  ;;
 		  *)
-			  echo "无效的输�?"
+			  echo "鏃犳晥鐨勮緭鍏?"
 			  ;;
 	  esac
 	  break_end
@@ -8554,7 +8554,7 @@ docker_tato() {
 
 	if command -v docker &> /dev/null; then
 		echo -e "${gl_kjlan}------------------------"
-		echo -e "${gl_lv}环境已经安装${gl_bai}  容器: ${gl_lv}$container_count${gl_bai}  镜像: ${gl_lv}$image_count${gl_bai}  网络: ${gl_lv}$network_count${gl_bai}  �? ${gl_lv}$volume_count${gl_bai}"
+		echo -e "${gl_lv}鐜宸茬粡瀹夎${gl_bai}  瀹瑰櫒: ${gl_lv}$container_count${gl_bai}  闀滃儚: ${gl_lv}$image_count${gl_bai}  缃戠粶: ${gl_lv}$network_count${gl_bai}  鍗? ${gl_lv}$volume_count${gl_bai}"
 	fi
 }
 
@@ -8575,7 +8575,7 @@ local db_output="${gl_lv}${db_count}${gl_bai}"
 if command -v docker &>/dev/null; then
 	if docker ps --filter "name=nginx" --filter "status=running" | grep -q nginx; then
 		echo -e "${gl_huang}------------------------"
-		echo -e "${gl_lv}环境已安�?{gl_bai}  站点: $output  数据�? $db_output"
+		echo -e "${gl_lv}鐜宸插畨瑁?{gl_bai}  绔欑偣: $output  鏁版嵁搴? $db_output"
 	fi
 fi
 
@@ -8603,31 +8603,31 @@ linux_ldnmp() {
   while true; do
 
 	clear
-	# send_stats "LDNMP建站"
-	echo -e "${gl_huang}LDNMP建站"
+	# send_stats "LDNMP寤虹珯"
+	echo -e "${gl_huang}LDNMP寤虹珯"
 	ldnmp_tato
 	echo -e "${gl_huang}------------------------"
-	echo -e "${gl_huang}1.   ${gl_bai}安装LDNMP环境 ${gl_huang}�?{gl_bai}                   ${gl_huang}2.   ${gl_bai}安装WordPress ${gl_huang}�?{gl_bai}"
-	echo -e "${gl_huang}3.   ${gl_bai}安装Discuz论坛                    ${gl_huang}4.   ${gl_bai}安装可道云桌�?
-	echo -e "${gl_huang}5.   ${gl_bai}安装苹果CMS影视�?                ${gl_huang}6.   ${gl_bai}安装独角数发卡网"
-	echo -e "${gl_huang}7.   ${gl_bai}安装flarum论坛网站                ${gl_huang}8.   ${gl_bai}安装typecho轻量博客网站"
-	echo -e "${gl_huang}9.   ${gl_bai}安装LinkStack共享链接平台         ${gl_huang}20.  ${gl_bai}自定义动态站�?
+	echo -e "${gl_huang}1.   ${gl_bai}瀹夎LDNMP鐜 ${gl_huang}鈽?{gl_bai}                   ${gl_huang}2.   ${gl_bai}瀹夎WordPress ${gl_huang}鈽?{gl_bai}"
+	echo -e "${gl_huang}3.   ${gl_bai}瀹夎Discuz璁哄潧                    ${gl_huang}4.   ${gl_bai}瀹夎鍙亾浜戞闈?
+	echo -e "${gl_huang}5.   ${gl_bai}瀹夎鑻规灉CMS褰辫绔?                ${gl_huang}6.   ${gl_bai}瀹夎鐙鏁板彂鍗＄綉"
+	echo -e "${gl_huang}7.   ${gl_bai}瀹夎flarum璁哄潧缃戠珯                ${gl_huang}8.   ${gl_bai}瀹夎typecho杞婚噺鍗氬缃戠珯"
+	echo -e "${gl_huang}9.   ${gl_bai}瀹夎LinkStack鍏变韩閾炬帴骞冲彴         ${gl_huang}20.  ${gl_bai}鑷畾涔夊姩鎬佺珯鐐?
 	echo -e "${gl_huang}------------------------"
-	echo -e "${gl_huang}21.  ${gl_bai}仅安装nginx ${gl_huang}�?{gl_bai}                     ${gl_huang}22.  ${gl_bai}站点重定�?
-	echo -e "${gl_huang}23.  ${gl_bai}站点反向代理-IP+端口 ${gl_huang}�?{gl_bai}            ${gl_huang}24.  ${gl_bai}站点反向代理-域名"
-	echo -e "${gl_huang}25.  ${gl_bai}安装Bitwarden密码管理平台         ${gl_huang}26.  ${gl_bai}安装Halo博客网站"
-	echo -e "${gl_huang}27.  ${gl_bai}安装AI绘画提示词生成器            ${gl_huang}28.  ${gl_bai}站点反向代理-负载均衡"
-	echo -e "${gl_huang}29.  ${gl_bai}Stream四层代理转发                ${gl_huang}30.  ${gl_bai}自定义静态站�?
+	echo -e "${gl_huang}21.  ${gl_bai}浠呭畨瑁卬ginx ${gl_huang}鈽?{gl_bai}                     ${gl_huang}22.  ${gl_bai}绔欑偣閲嶅畾鍚?
+	echo -e "${gl_huang}23.  ${gl_bai}绔欑偣鍙嶅悜浠ｇ悊-IP+绔彛 ${gl_huang}鈽?{gl_bai}            ${gl_huang}24.  ${gl_bai}绔欑偣鍙嶅悜浠ｇ悊-鍩熷悕"
+	echo -e "${gl_huang}25.  ${gl_bai}瀹夎Bitwarden瀵嗙爜绠＄悊骞冲彴         ${gl_huang}26.  ${gl_bai}瀹夎Halo鍗氬缃戠珯"
+	echo -e "${gl_huang}27.  ${gl_bai}瀹夎AI缁樼敾鎻愮ず璇嶇敓鎴愬櫒            ${gl_huang}28.  ${gl_bai}绔欑偣鍙嶅悜浠ｇ悊-璐熻浇鍧囪　"
+	echo -e "${gl_huang}29.  ${gl_bai}Stream鍥涘眰浠ｇ悊杞彂                ${gl_huang}30.  ${gl_bai}鑷畾涔夐潤鎬佺珯鐐?
 	echo -e "${gl_huang}------------------------"
-	echo -e "${gl_huang}31.  ${gl_bai}站点数据管理 ${gl_huang}�?{gl_bai}                    ${gl_huang}32.  ${gl_bai}备份全站数据"
-	echo -e "${gl_huang}33.  ${gl_bai}定时远程备份                      ${gl_huang}34.  ${gl_bai}还原全站数据"
+	echo -e "${gl_huang}31.  ${gl_bai}绔欑偣鏁版嵁绠＄悊 ${gl_huang}鈽?{gl_bai}                    ${gl_huang}32.  ${gl_bai}澶囦唤鍏ㄧ珯鏁版嵁"
+	echo -e "${gl_huang}33.  ${gl_bai}瀹氭椂杩滅▼澶囦唤                      ${gl_huang}34.  ${gl_bai}杩樺師鍏ㄧ珯鏁版嵁"
 	echo -e "${gl_huang}------------------------"
-	echo -e "${gl_huang}35.  ${gl_bai}防护LDNMP环境                     ${gl_huang}36.  ${gl_bai}优化LDNMP环境"
-	echo -e "${gl_huang}37.  ${gl_bai}更新LDNMP环境                     ${gl_huang}38.  ${gl_bai}卸载LDNMP环境"
+	echo -e "${gl_huang}35.  ${gl_bai}闃叉姢LDNMP鐜                     ${gl_huang}36.  ${gl_bai}浼樺寲LDNMP鐜"
+	echo -e "${gl_huang}37.  ${gl_bai}鏇存柊LDNMP鐜                     ${gl_huang}38.  ${gl_bai}鍗歌浇LDNMP鐜"
 	echo -e "${gl_huang}------------------------"
-	echo -e "${gl_huang}0.   ${gl_bai}返回主菜�?
+	echo -e "${gl_huang}0.   ${gl_bai}杩斿洖涓昏彍鍗?
 	echo -e "${gl_huang}------------------------${gl_bai}"
-	read -e -p "请输入你的选择: " sub_choice
+	read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 
 	case $sub_choice in
@@ -8641,10 +8641,10 @@ linux_ldnmp() {
 
 	  3)
 	  clear
-	  # Discuz论坛
-	  webname="Discuz论坛"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  # Discuz璁哄潧
+	  webname="Discuz璁哄潧"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  repeat_add_yuming
 	  ldnmp_install_status
@@ -8672,21 +8672,21 @@ linux_ldnmp() {
 
 
 	  ldnmp_web_on
-	  echo "数据库地址: mysql"
-	  echo "数据库名: $dbname"
-	  echo "用户�? $dbuse"
-	  echo "密码: $dbusepasswd"
-	  echo "表前缀: discuz_"
+	  echo "鏁版嵁搴撳湴鍧€: mysql"
+	  echo "鏁版嵁搴撳悕: $dbname"
+	  echo "鐢ㄦ埛鍚? $dbuse"
+	  echo "瀵嗙爜: $dbusepasswd"
+	  echo "琛ㄥ墠缂€: discuz_"
 
 
 		;;
 
 	  4)
 	  clear
-	  # 可道云桌�?
-	  webname="可道云桌�?
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  # 鍙亾浜戞闈?
+	  webname="鍙亾浜戞闈?
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  repeat_add_yuming
 	  ldnmp_install_status
@@ -8711,20 +8711,20 @@ linux_ldnmp() {
 	  restart_ldnmp
 
 	  ldnmp_web_on
-	  echo "数据库地址: mysql"
-	  echo "用户�? $dbuse"
-	  echo "密码: $dbusepasswd"
-	  echo "数据库名: $dbname"
-	  echo "redis主机: redis"
+	  echo "鏁版嵁搴撳湴鍧€: mysql"
+	  echo "鐢ㄦ埛鍚? $dbuse"
+	  echo "瀵嗙爜: $dbusepasswd"
+	  echo "鏁版嵁搴撳悕: $dbname"
+	  echo "redis涓绘満: redis"
 
 		;;
 
 	  5)
 	  clear
-	  # 苹果CMS
-	  webname="苹果CMS"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  # 鑻规灉CMS
+	  webname="鑻规灉CMS"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  repeat_add_yuming
 	  ldnmp_install_status
@@ -8755,24 +8755,24 @@ linux_ldnmp() {
 
 
 	  ldnmp_web_on
-	  echo "数据库地址: mysql"
-	  echo "数据库端�? 3306"
-	  echo "数据库名: $dbname"
-	  echo "用户�? $dbuse"
-	  echo "密码: $dbusepasswd"
-	  echo "数据库前缀: mac_"
+	  echo "鏁版嵁搴撳湴鍧€: mysql"
+	  echo "鏁版嵁搴撶鍙? 3306"
+	  echo "鏁版嵁搴撳悕: $dbname"
+	  echo "鐢ㄦ埛鍚? $dbuse"
+	  echo "瀵嗙爜: $dbusepasswd"
+	  echo "鏁版嵁搴撳墠缂€: mac_"
 	  echo "------------------------"
-	  echo "安装成功后登录后台地址"
+	  echo "瀹夎鎴愬姛鍚庣櫥褰曞悗鍙板湴鍧€"
 	  echo "https://$yuming/vip.php"
 
 		;;
 
 	  6)
 	  clear
-	  # 独脚数卡
-	  webname="独脚数卡"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  # 鐙剼鏁板崱
+	  webname="鐙剼鏁板崱"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  repeat_add_yuming
 	  ldnmp_install_status
@@ -8799,34 +8799,34 @@ linux_ldnmp() {
 
 
 	  ldnmp_web_on
-	  echo "数据库地址: mysql"
-	  echo "数据库端�? 3306"
-	  echo "数据库名: $dbname"
-	  echo "用户�? $dbuse"
-	  echo "密码: $dbusepasswd"
+	  echo "鏁版嵁搴撳湴鍧€: mysql"
+	  echo "鏁版嵁搴撶鍙? 3306"
+	  echo "鏁版嵁搴撳悕: $dbname"
+	  echo "鐢ㄦ埛鍚? $dbuse"
+	  echo "瀵嗙爜: $dbusepasswd"
 	  echo ""
-	  echo "redis地址: redis"
-	  echo "redis密码: 默认不填�?
-	  echo "redis端口: 6379"
+	  echo "redis鍦板潃: redis"
+	  echo "redis瀵嗙爜: 榛樿涓嶅～鍐?
+	  echo "redis绔彛: 6379"
 	  echo ""
-	  echo "网站url: https://$yuming"
-	  echo "后台登录路径: /admin"
+	  echo "缃戠珯url: https://$yuming"
+	  echo "鍚庡彴鐧诲綍璺緞: /admin"
 	  echo "------------------------"
-	  echo "用户�? admin"
-	  echo "密码: admin"
+	  echo "鐢ㄦ埛鍚? admin"
+	  echo "瀵嗙爜: admin"
 	  echo "------------------------"
-	  echo "登录时右上角如果出现红色error0请使用如下命�? "
-	  echo "我也很气愤独角数卡为啥这么麻烦，会有这样的问题！"
+	  echo "鐧诲綍鏃跺彸涓婅濡傛灉鍑虹幇绾㈣壊error0璇蜂娇鐢ㄥ涓嬪懡浠? "
+	  echo "鎴戜篃寰堟皵鎰ょ嫭瑙掓暟鍗′负鍟ヨ繖涔堥夯鐑︼紝浼氭湁杩欐牱鐨勯棶棰橈紒"
 	  echo "sed -i 's/ADMIN_HTTPS=false/ADMIN_HTTPS=true/g' /home/web/html/$yuming/dujiaoka/.env"
 
 		;;
 
 	  7)
 	  clear
-	  # flarum论坛
-	  webname="flarum论坛"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  # flarum璁哄潧
+	  webname="flarum璁哄潧"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  repeat_add_yuming
 	  ldnmp_install_status
@@ -8873,12 +8873,12 @@ linux_ldnmp() {
 
 
 	  ldnmp_web_on
-	  echo "数据库地址: mysql"
-	  echo "数据库名: $dbname"
-	  echo "用户�? $dbuse"
-	  echo "密码: $dbusepasswd"
-	  echo "表前缀: flarum_"
-	  echo "管理员信息自行设�?
+	  echo "鏁版嵁搴撳湴鍧€: mysql"
+	  echo "鏁版嵁搴撳悕: $dbname"
+	  echo "鐢ㄦ埛鍚? $dbuse"
+	  echo "瀵嗙爜: $dbusepasswd"
+	  echo "琛ㄥ墠缂€: flarum_"
+	  echo "绠＄悊鍛樹俊鎭嚜琛岃缃?
 
 		;;
 
@@ -8886,8 +8886,8 @@ linux_ldnmp() {
 	  clear
 	  # typecho
 	  webname="typecho"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  repeat_add_yuming
 	  ldnmp_install_status
@@ -8917,11 +8917,11 @@ linux_ldnmp() {
 
 	  clear
 	  ldnmp_web_on
-	  echo "数据库前缀: typecho_"
-	  echo "数据库地址: mysql"
-	  echo "用户�? $dbuse"
-	  echo "密码: $dbusepasswd"
-	  echo "数据库名: $dbname"
+	  echo "鏁版嵁搴撳墠缂€: typecho_"
+	  echo "鏁版嵁搴撳湴鍧€: mysql"
+	  echo "鐢ㄦ埛鍚? $dbuse"
+	  echo "瀵嗙爜: $dbusepasswd"
+	  echo "鏁版嵁搴撳悕: $dbname"
 
 		;;
 
@@ -8930,8 +8930,8 @@ linux_ldnmp() {
 	  clear
 	  # LinkStack
 	  webname="LinkStack"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  repeat_add_yuming
 	  ldnmp_install_status
@@ -8960,18 +8960,18 @@ linux_ldnmp() {
 
 	  clear
 	  ldnmp_web_on
-	  echo "数据库地址: mysql"
-	  echo "数据库端�? 3306"
-	  echo "数据库名: $dbname"
-	  echo "用户�? $dbuse"
-	  echo "密码: $dbusepasswd"
+	  echo "鏁版嵁搴撳湴鍧€: mysql"
+	  echo "鏁版嵁搴撶鍙? 3306"
+	  echo "鏁版嵁搴撳悕: $dbname"
+	  echo "鐢ㄦ埛鍚? $dbuse"
+	  echo "瀵嗙爜: $dbusepasswd"
 		;;
 
 	  20)
 	  clear
-	  webname="PHP动态站�?
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  webname="PHP鍔ㄦ€佺珯鐐?
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  repeat_add_yuming
 	  ldnmp_install_status
@@ -8991,10 +8991,10 @@ linux_ldnmp() {
 	  cd $yuming
 
 	  clear
-	  echo -e "[${gl_huang}1/6${gl_bai}] 上传PHP源码"
+	  echo -e "[${gl_huang}1/6${gl_bai}] 涓婁紶PHP婧愮爜"
 	  echo "-------------"
-	  echo "目前只允许上传zip格式的源码包，请将源码包放到/home/web/html/${yuming}目录�?
-	  read -e -p "也可以输入下载链接，远程下载源码包，直接回车将跳过远程下载： " url_download
+	  echo "鐩墠鍙厑璁镐笂浼爖ip鏍煎紡鐨勬簮鐮佸寘锛岃灏嗘簮鐮佸寘鏀惧埌/home/web/html/${yuming}鐩綍涓?
+	  read -e -p "涔熷彲浠ヨ緭鍏ヤ笅杞介摼鎺ワ紝杩滅▼涓嬭浇婧愮爜鍖咃紝鐩存帴鍥炶溅灏嗚烦杩囪繙绋嬩笅杞斤細 " url_download
 
 	  if [ -n "$url_download" ]; then
 		  wget "$url_download"
@@ -9004,20 +9004,20 @@ linux_ldnmp() {
 	  rm -f $(ls -t *.zip | head -n 1)
 
 	  clear
-	  echo -e "[${gl_huang}2/6${gl_bai}] index.php所在路�?
+	  echo -e "[${gl_huang}2/6${gl_bai}] index.php鎵€鍦ㄨ矾寰?
 	  echo "-------------"
 	  # find "$(realpath .)" -name "index.php" -print
 	  find "$(realpath .)" -name "index.php" -print | xargs -I {} dirname {}
 
-	  read -e -p "请输入index.php的路径，类似�?home/web/html/$yuming/wordpress/）： " index_lujing
+	  read -e -p "璇疯緭鍏ndex.php鐨勮矾寰勶紝绫讳技锛?home/web/html/$yuming/wordpress/锛夛細 " index_lujing
 
 	  sed -i "s#root /var/www/html/$yuming/#root $index_lujing#g" /home/web/conf.d/$yuming.conf
 	  sed -i "s#/home/web/#/var/www/#g" /home/web/conf.d/$yuming.conf
 
 	  clear
-	  echo -e "[${gl_huang}3/6${gl_bai}] 请选择PHP版本"
+	  echo -e "[${gl_huang}3/6${gl_bai}] 璇烽€夋嫨PHP鐗堟湰"
 	  echo "-------------"
-	  read -e -p "1. php最新版 | 2. php7.4 : " pho_v
+	  read -e -p "1. php鏈€鏂扮増 | 2. php7.4 : " pho_v
 	  case "$pho_v" in
 		1)
 		  sed -i "s#php:9000#php:9000#g" /home/web/conf.d/$yuming.conf
@@ -9028,43 +9028,43 @@ linux_ldnmp() {
 		  local PHP_Version="php74"
 		  ;;
 		*)
-		  echo "无效的选择，请重新输入�?
+		  echo "鏃犳晥鐨勯€夋嫨锛岃閲嶆柊杈撳叆銆?
 		  ;;
 	  esac
 
 
 	  clear
-	  echo -e "[${gl_huang}4/6${gl_bai}] 安装指定扩展"
+	  echo -e "[${gl_huang}4/6${gl_bai}] 瀹夎鎸囧畾鎵╁睍"
 	  echo "-------------"
-	  echo "已经安装的扩�?
+	  echo "宸茬粡瀹夎鐨勬墿灞?
 	  docker exec php php -m
 
-	  read -e -p "$(echo -e "输入需要安装的扩展名称，如 ${gl_huang}SourceGuardian imap ftp${gl_bai} 等等。直接回车将跳过安装 �?")" php_extensions
+	  read -e -p "$(echo -e "杈撳叆闇€瑕佸畨瑁呯殑鎵╁睍鍚嶇О锛屽 ${gl_huang}SourceGuardian imap ftp${gl_bai} 绛夌瓑銆傜洿鎺ュ洖杞﹀皢璺宠繃瀹夎 锛?")" php_extensions
 	  if [ -n "$php_extensions" ]; then
 		  docker exec $PHP_Version install-php-extensions $php_extensions
 	  fi
 
 
 	  clear
-	  echo -e "[${gl_huang}5/6${gl_bai}] 编辑站点配置"
+	  echo -e "[${gl_huang}5/6${gl_bai}] 缂栬緫绔欑偣閰嶇疆"
 	  echo "-------------"
-	  echo "按任意键继续，可以详细设置站点配置，如伪静态等内容"
+	  echo "鎸変换鎰忛敭缁х画锛屽彲浠ヨ缁嗚缃珯鐐归厤缃紝濡備吉闈欐€佺瓑鍐呭"
 	  read -n 1 -s -r -p ""
 	  install nano
 	  nano /home/web/conf.d/$yuming.conf
 
 
 	  clear
-	  echo -e "[${gl_huang}6/6${gl_bai}] 数据库管�?
+	  echo -e "[${gl_huang}6/6${gl_bai}] 鏁版嵁搴撶鐞?
 	  echo "-------------"
-	  read -e -p "1. 我搭建新�?       2. 我搭建老站有数据库备份�?" use_db
+	  read -e -p "1. 鎴戞惌寤烘柊绔?       2. 鎴戞惌寤鸿€佺珯鏈夋暟鎹簱澶囦唤锛?" use_db
 	  case $use_db in
 		  1)
 			  echo
 			  ;;
 		  2)
-			  echo "数据库备份必须是.gz结尾的压缩包。请放到/home/目录下，支持宝塔/1panel备份数据导入�?
-			  read -e -p "也可以输入下载链接，远程下载备份数据，直接回车将跳过远程下载�?" url_download_db
+			  echo "鏁版嵁搴撳浠藉繀椤绘槸.gz缁撳熬鐨勫帇缂╁寘銆傝鏀惧埌/home/鐩綍涓嬶紝鏀寔瀹濆/1panel澶囦唤鏁版嵁瀵煎叆銆?
+			  read -e -p "涔熷彲浠ヨ緭鍏ヤ笅杞介摼鎺ワ紝杩滅▼涓嬭浇澶囦唤鏁版嵁锛岀洿鎺ュ洖杞﹀皢璺宠繃杩滅▼涓嬭浇锛?" url_download_db
 
 			  cd /home/
 			  if [ -n "$url_download_db" ]; then
@@ -9074,10 +9074,10 @@ linux_ldnmp() {
 			  latest_sql=$(ls -t *.sql | head -n 1)
 			  dbrootpasswd=$(grep -oP 'MYSQL_ROOT_PASSWORD:\s*\K.*' /home/web/docker-compose.yml | tr -d '[:space:]')
 			  docker exec -i mysql mysql -u root -p"$dbrootpasswd" $dbname < "/home/$latest_sql"
-			  echo "数据库导入的表数�?
+			  echo "鏁版嵁搴撳鍏ョ殑琛ㄦ暟鎹?
 			  docker exec -i mysql mysql -u root -p"$dbrootpasswd" -e "USE $dbname; SHOW TABLES;"
 			  rm -f *.sql
-			  echo "数据库导入完�?
+			  echo "鏁版嵁搴撳鍏ュ畬鎴?
 			  ;;
 		  *)
 			  echo
@@ -9089,12 +9089,12 @@ linux_ldnmp() {
 	  restart_ldnmp
 	  ldnmp_web_on
 	  prefix="web$(shuf -i 10-99 -n 1)_"
-	  echo "数据库地址: mysql"
-	  echo "数据库名: $dbname"
-	  echo "用户�? $dbuse"
-	  echo "密码: $dbusepasswd"
-	  echo "表前缀: $prefix"
-	  echo "管理员登录信息自行设�?
+	  echo "鏁版嵁搴撳湴鍧€: mysql"
+	  echo "鏁版嵁搴撳悕: $dbname"
+	  echo "鐢ㄦ埛鍚? $dbuse"
+	  echo "瀵嗙爜: $dbusepasswd"
+	  echo "琛ㄥ墠缂€: $prefix"
+	  echo "绠＄悊鍛樼櫥褰曚俊鎭嚜琛岃缃?
 
 		;;
 
@@ -9106,11 +9106,11 @@ linux_ldnmp() {
 
 	  22)
 	  clear
-	  webname="站点重定�?
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  webname="绔欑偣閲嶅畾鍚?
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
-	  read -e -p "请输入跳转域�? " reverseproxy
+	  read -e -p "璇疯緭鍏ヨ烦杞煙鍚? " reverseproxy
 	  nginx_install_status
 
 
@@ -9137,7 +9137,7 @@ linux_ldnmp() {
 	  find_container_by_host_port "$port"
 	  if [ -z "$docker_name" ]; then
 		close_port "$port"
-		echo "已阻止IP+端口访问该服�?
+		echo "宸查樆姝P+绔彛璁块棶璇ユ湇鍔?
 	  else
 	  	ip_address
 		close_port "$port"
@@ -9148,12 +9148,12 @@ linux_ldnmp() {
 
 	  24)
 	  clear
-	  webname="反向代理-域名"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  webname="鍙嶅悜浠ｇ悊-鍩熷悕"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
-	  echo -e "域名格式: ${gl_huang}google.com${gl_bai}"
-	  read -e -p "请输入你的反代域�? " fandai_yuming
+	  echo -e "鍩熷悕鏍煎紡: ${gl_huang}google.com${gl_bai}"
+	  read -e -p "璇疯緭鍏ヤ綘鐨勫弽浠ｅ煙鍚? " fandai_yuming
 	  nginx_install_status
 
 	  install_ssltls
@@ -9177,8 +9177,8 @@ linux_ldnmp() {
 	  25)
 	  clear
 	  webname="Bitwarden"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 
 	  docker run -d \
@@ -9197,8 +9197,8 @@ linux_ldnmp() {
 	  26)
 	  clear
 	  webname="halo"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 
 	  docker run -d --name halo --restart=always -p 8010:8090 -v /home/web/html/$yuming/.halo2:/root/.halo2 halohub/halo:2
@@ -9210,9 +9210,9 @@ linux_ldnmp() {
 
 	  27)
 	  clear
-	  webname="AI绘画提示词生成器"
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  webname="AI缁樼敾鎻愮ず璇嶇敓鎴愬櫒"
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  nginx_install_status
 
@@ -9251,9 +9251,9 @@ linux_ldnmp() {
 
 	  30)
 	  clear
-	  webname="静态站�?
-	  send_stats "安装$webname"
-	  echo "开始部�?$webname"
+	  webname="闈欐€佺珯鐐?
+	  send_stats "瀹夎$webname"
+	  echo "寮€濮嬮儴缃?$webname"
 	  add_yuming
 	  repeat_add_yuming
 	  nginx_install_status
@@ -9273,10 +9273,10 @@ linux_ldnmp() {
 
 
 	  clear
-	  echo -e "[${gl_huang}1/2${gl_bai}] 上传静态源�?
+	  echo -e "[${gl_huang}1/2${gl_bai}] 涓婁紶闈欐€佹簮鐮?
 	  echo "-------------"
-	  echo "目前只允许上传zip格式的源码包，请将源码包放到/home/web/html/${yuming}目录�?
-	  read -e -p "也可以输入下载链接，远程下载源码包，直接回车将跳过远程下载： " url_download
+	  echo "鐩墠鍙厑璁镐笂浼爖ip鏍煎紡鐨勬簮鐮佸寘锛岃灏嗘簮鐮佸寘鏀惧埌/home/web/html/${yuming}鐩綍涓?
+	  read -e -p "涔熷彲浠ヨ緭鍏ヤ笅杞介摼鎺ワ紝杩滅▼涓嬭浇婧愮爜鍖咃紝鐩存帴鍥炶溅灏嗚烦杩囪繙绋嬩笅杞斤細 " url_download
 
 	  if [ -n "$url_download" ]; then
 		  wget "$url_download"
@@ -9286,12 +9286,12 @@ linux_ldnmp() {
 	  rm -f $(ls -t *.zip | head -n 1)
 
 	  clear
-	  echo -e "[${gl_huang}2/2${gl_bai}] index.html所在路�?
+	  echo -e "[${gl_huang}2/2${gl_bai}] index.html鎵€鍦ㄨ矾寰?
 	  echo "-------------"
 	  # find "$(realpath .)" -name "index.html" -print
 	  find "$(realpath .)" -name "index.html" -print | xargs -I {} dirname {}
 
-	  read -e -p "请输入index.html的路径，类似�?home/web/html/$yuming/index/）： " index_lujing
+	  read -e -p "璇疯緭鍏ndex.html鐨勮矾寰勶紝绫讳技锛?home/web/html/$yuming/index/锛夛細 " index_lujing
 
 	  sed -i "s#root /var/www/html/$yuming/#root $index_lujing#g" /home/web/conf.d/$yuming.conf
 	  sed -i "s#/home/web/#/var/www/#g" /home/web/conf.d/$yuming.conf
@@ -9316,33 +9316,33 @@ linux_ldnmp() {
 
 	32)
 	  clear
-	  send_stats "LDNMP环境备份"
+	  send_stats "LDNMP鐜澶囦唤"
 
 	  local backup_filename="web_$(date +"%Y%m%d%H%M%S").tar.gz"
-	  echo -e "${gl_kjlan}正在备份 $backup_filename ...${gl_bai}"
+	  echo -e "${gl_kjlan}姝ｅ湪澶囦唤 $backup_filename ...${gl_bai}"
 	  cd /home/ && tar czvf "$backup_filename" web
 
 	  while true; do
 		clear
-		echo "备份文件已创�? /home/$backup_filename"
-		read -e -p "要传送备份数据到远程服务器吗�?Y/N): " choice
+		echo "澶囦唤鏂囦欢宸插垱寤? /home/$backup_filename"
+		read -e -p "瑕佷紶閫佸浠芥暟鎹埌杩滅▼鏈嶅姟鍣ㄥ悧锛?Y/N): " choice
 		case "$choice" in
 		  [Yy])
-			read -e -p "请输入远端服务器IP:  " remote_ip
-			read -e -p "目标服务器SSH端口 [默认22]: " TARGET_PORT
+			read -e -p "璇疯緭鍏ヨ繙绔湇鍔″櫒IP:  " remote_ip
+			read -e -p "鐩爣鏈嶅姟鍣⊿SH绔彛 [榛樿22]: " TARGET_PORT
 			local TARGET_PORT=${TARGET_PORT:-22}
 			if [ -z "$remote_ip" ]; then
-			  echo "错误: 请输入远端服务器IP�?
+			  echo "閿欒: 璇疯緭鍏ヨ繙绔湇鍔″櫒IP銆?
 			  continue
 			fi
 			local latest_tar=$(ls -t /home/*.tar.gz | head -1)
 			if [ -n "$latest_tar" ]; then
 			  ssh-keygen -f "/root/.ssh/known_hosts" -R "$remote_ip"
-			  sleep 2  # 添加等待时间
+			  sleep 2  # 娣诲姞绛夊緟鏃堕棿
 			  scp -P "$TARGET_PORT" -o StrictHostKeyChecking=no "$latest_tar" "root@$remote_ip:/home/"
-			  echo "文件已传送至远程服务器home目录�?
+			  echo "鏂囦欢宸蹭紶閫佽嚦杩滅▼鏈嶅姟鍣╤ome鐩綍銆?
 			else
-			  echo "未找到要传送的文件�?
+			  echo "鏈壘鍒拌浼犻€佺殑鏂囦欢銆?
 			fi
 			break
 			;;
@@ -9350,7 +9350,7 @@ linux_ldnmp() {
 			break
 			;;
 		  *)
-			echo "无效的选择，请输入 Y �?N�?
+			echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 			;;
 		esac
 	  done
@@ -9358,9 +9358,9 @@ linux_ldnmp() {
 
 	33)
 	  clear
-	  send_stats "定时远程备份"
-	  read -e -p "输入远程服务器IP: " useip
-	  read -e -p "输入远程服务器密�? " usepasswd
+	  send_stats "瀹氭椂杩滅▼澶囦唤"
+	  read -e -p "杈撳叆杩滅▼鏈嶅姟鍣↖P: " useip
+	  read -e -p "杈撳叆杩滅▼鏈嶅姟鍣ㄥ瘑鐮? " usepasswd
 
 	  cd ~
 	  wget -O ${useip}_beifen.sh ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/beifen.sh > /dev/null 2>&1
@@ -9370,22 +9370,22 @@ linux_ldnmp() {
 	  sed -i "s/123456/$usepasswd/g" ${useip}_beifen.sh
 
 	  echo "------------------------"
-	  echo "1. 每周备份                 2. 每天备份"
-	  read -e -p "请输入你的选择: " dingshi
+	  echo "1. 姣忓懆澶囦唤                 2. 姣忓ぉ澶囦唤"
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " dingshi
 
 	  case $dingshi in
 		  1)
 			  check_crontab_installed
-			  read -e -p "选择每周备份的星期几 (0-6�?代表星期�?: " weekday
+			  read -e -p "閫夋嫨姣忓懆澶囦唤鐨勬槦鏈熷嚑 (0-6锛?浠ｈ〃鏄熸湡鏃?: " weekday
 			  (crontab -l ; echo "0 0 * * $weekday ./${useip}_beifen.sh") | crontab - > /dev/null 2>&1
 			  ;;
 		  2)
 			  check_crontab_installed
-			  read -e -p "选择每天备份的时间（小时�?-23�? " hour
+			  read -e -p "閫夋嫨姣忓ぉ澶囦唤鐨勬椂闂达紙灏忔椂锛?-23锛? " hour
 			  (crontab -l ; echo "0 $hour * * * ./${useip}_beifen.sh") | crontab - > /dev/null 2>&1
 			  ;;
 		  *)
-			  break  # 跳出
+			  break  # 璺冲嚭
 			  ;;
 	  esac
 
@@ -9395,19 +9395,19 @@ linux_ldnmp() {
 
 	34)
 	  root_use
-	  send_stats "LDNMP环境还原"
-	  echo "可用的站点备�?
+	  send_stats "LDNMP鐜杩樺師"
+	  echo "鍙敤鐨勭珯鐐瑰浠?
 	  echo "-------------------------"
 	  ls -lt /home/*.gz | awk '{print $NF}'
 	  echo ""
-	  read -e -p  "回车键还原最新的备份，输入备份文件名还原指定的备份，输入0退出：" filename
+	  read -e -p  "鍥炶溅閿繕鍘熸渶鏂扮殑澶囦唤锛岃緭鍏ュ浠芥枃浠跺悕杩樺師鎸囧畾鐨勫浠斤紝杈撳叆0閫€鍑猴細" filename
 
 	  if [ "$filename" == "0" ]; then
 		  break_end
 		  linux_ldnmp
 	  fi
 
-	  # 如果用户没有输入文件名，使用最新的压缩�?
+	  # 濡傛灉鐢ㄦ埛娌℃湁杈撳叆鏂囦欢鍚嶏紝浣跨敤鏈€鏂扮殑鍘嬬缉鍖?
 	  if [ -z "$filename" ]; then
 		  local filename=$(ls -t /home/*.tar.gz | head -1)
 	  fi
@@ -9417,7 +9417,7 @@ linux_ldnmp() {
 		  docker compose down > /dev/null 2>&1
 		  rm -rf /home/web > /dev/null 2>&1
 
-		  echo -e "${gl_kjlan}正在解压 $filename ...${gl_bai}"
+		  echo -e "${gl_kjlan}姝ｅ湪瑙ｅ帇 $filename ...${gl_bai}"
 		  cd /home/ && tar -xzf "$filename"
 
 		  install_dependency
@@ -9425,7 +9425,7 @@ linux_ldnmp() {
 		  install_certbot
 		  install_ldnmp
 	  else
-		  echo "没有找到压缩包�?
+		  echo "娌℃湁鎵惧埌鍘嬬缉鍖呫€?
 	  fi
 
 	  ;;
@@ -9443,11 +9443,11 @@ linux_ldnmp() {
 	  root_use
 	  while true; do
 		  clear
-		  send_stats "更新LDNMP环境"
-		  echo "更新LDNMP环境"
+		  send_stats "鏇存柊LDNMP鐜"
+		  echo "鏇存柊LDNMP鐜"
 		  echo "------------------------"
 		  ldnmp_v
-		  echo "发现新版本的组件"
+		  echo "鍙戠幇鏂扮増鏈殑缁勪欢"
 		  echo "------------------------"
 		  check_docker_image_update nginx
 		  if [ -n "$update_status" ]; then
@@ -9467,13 +9467,13 @@ linux_ldnmp() {
 		  fi
 		  echo "------------------------"
 		  echo
-		  echo "1. 更新nginx               2. 更新mysql              3. 更新php              4. 更新redis"
+		  echo "1. 鏇存柊nginx               2. 鏇存柊mysql              3. 鏇存柊php              4. 鏇存柊redis"
 		  echo "------------------------"
-		  echo "5. 更新完整环境"
+		  echo "5. 鏇存柊瀹屾暣鐜"
 		  echo "------------------------"
-		  echo "0. 返回上一级选单"
+		  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		  echo "------------------------"
-		  read -e -p "请输入你的选择: " sub_choice
+		  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 		  case $sub_choice in
 			  1)
 			  nginx_upgrade
@@ -9482,7 +9482,7 @@ linux_ldnmp() {
 
 			  2)
 			  local ldnmp_pods="mysql"
-			  read -e -p "请输�?{ldnmp_pods}版本�?（如: 8.0 8.3 8.4 9.0）（回车获取最新版�? " version
+			  read -e -p "璇疯緭鍏?{ldnmp_pods}鐗堟湰鍙?锛堝: 8.0 8.3 8.4 9.0锛夛紙鍥炶溅鑾峰彇鏈€鏂扮増锛? " version
 			  local version=${version:-latest}
 
 			  cd /home/web/
@@ -9493,13 +9493,13 @@ linux_ldnmp() {
 			  docker compose up -d --force-recreate $ldnmp_pods
 			  docker restart $ldnmp_pods
 			  cp /home/web/docker-compose1.yml /home/web/docker-compose.yml
-			  send_stats "更新$ldnmp_pods"
-			  echo "更新${ldnmp_pods}完成"
+			  send_stats "鏇存柊$ldnmp_pods"
+			  echo "鏇存柊${ldnmp_pods}瀹屾垚"
 
 				  ;;
 			  3)
 			  local ldnmp_pods="php"
-			  read -e -p "请输�?{ldnmp_pods}版本�?（如: 7.4 8.0 8.1 8.2 8.3）（回车获取最新版�? " version
+			  read -e -p "璇疯緭鍏?{ldnmp_pods}鐗堟湰鍙?锛堝: 7.4 8.0 8.1 8.2 8.3锛夛紙鍥炶溅鑾峰彇鏈€鏂扮増锛? " version
 			  local version=${version:-8.3}
 			  cd /home/web/
 			  cp /home/web/docker-compose.yml /home/web/docker-compose1.yml
@@ -9532,8 +9532,8 @@ linux_ldnmp() {
 
 			  docker restart $ldnmp_pods > /dev/null 2>&1
 			  cp /home/web/docker-compose1.yml /home/web/docker-compose.yml
-			  send_stats "更新$ldnmp_pods"
-			  echo "更新${ldnmp_pods}完成"
+			  send_stats "鏇存柊$ldnmp_pods"
+			  echo "鏇存柊${ldnmp_pods}瀹屾垚"
 
 				  ;;
 			  4)
@@ -9543,15 +9543,15 @@ linux_ldnmp() {
 			  docker images --filter=reference="$ldnmp_pods*" -q | xargs docker rmi > /dev/null 2>&1
 			  docker compose up -d --force-recreate $ldnmp_pods
 			  docker restart $ldnmp_pods > /dev/null 2>&1
-			  send_stats "更新$ldnmp_pods"
-			  echo "更新${ldnmp_pods}完成"
+			  send_stats "鏇存柊$ldnmp_pods"
+			  echo "鏇存柊${ldnmp_pods}瀹屾垚"
 
 				  ;;
 			  5)
-				read -e -p "$(echo -e "${gl_huang}提示: ${gl_bai}长时间不更新环境的用户，请慎重更新LDNMP环境，会有数据库更新失败的风险。确定更新LDNMP环境吗？(Y/N): ")" choice
+				read -e -p "$(echo -e "${gl_huang}鎻愮ず: ${gl_bai}闀挎椂闂翠笉鏇存柊鐜鐨勭敤鎴凤紝璇锋厧閲嶆洿鏂癓DNMP鐜锛屼細鏈夋暟鎹簱鏇存柊澶辫触鐨勯闄┿€傜‘瀹氭洿鏂癓DNMP鐜鍚楋紵(Y/N): ")" choice
 				case "$choice" in
 				  [Yy])
-					send_stats "完整更新LDNMP环境"
+					send_stats "瀹屾暣鏇存柊LDNMP鐜"
 					cd /home/web/
 					docker compose down --rmi all
 
@@ -9576,8 +9576,8 @@ linux_ldnmp() {
 
 	38)
 		root_use
-		send_stats "卸载LDNMP环境"
-		read -e -p "$(echo -e "${gl_hong}强烈建议�?{gl_bai}先备份全部网站数据，再卸载LDNMP环境。确定删除所有网站数据吗�?Y/N): ")" choice
+		send_stats "鍗歌浇LDNMP鐜"
+		read -e -p "$(echo -e "${gl_hong}寮虹儓寤鸿锛?{gl_bai}鍏堝浠藉叏閮ㄧ綉绔欐暟鎹紝鍐嶅嵏杞絃DNMP鐜銆傜‘瀹氬垹闄ゆ墍鏈夌綉绔欐暟鎹悧锛?Y/N): ")" choice
 		case "$choice" in
 		  [Yy])
 			cd /home/web/
@@ -9590,7 +9590,7 @@ linux_ldnmp() {
 
 			;;
 		  *)
-			echo "无效的选择，请输入 Y �?N�?
+			echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 			;;
 		esac
 		;;
@@ -9600,7 +9600,7 @@ linux_ldnmp() {
 	  ;;
 
 	*)
-		echo "无效的输�?"
+		echo "鏃犳晥鐨勮緭鍏?"
 	esac
 	break_end
 
@@ -9616,14 +9616,14 @@ linux_ldnmp() {
 moltbot_menu() {
 	local app_id="114"
 
-	send_stats "clawdbot/moltbot管理"
+	send_stats "clawdbot/moltbot绠＄悊"
 
 	check_openclaw_update() {
 		if ! command -v npm >/dev/null 2>&1; then
 			return 1
 		fi
 
-		# 加上 --no-update-notifier，并确保错误重定向位置正�?
+		# 鍔犱笂 --no-update-notifier锛屽苟纭繚閿欒閲嶅畾鍚戜綅缃纭?
 		local_version=$(npm list -g openclaw --depth=0 --no-update-notifier 2>/dev/null | grep openclaw | awk '{print $NF}' | sed 's/^.*@//')
 
 		if [ -z "$local_version" ]; then
@@ -9637,26 +9637,26 @@ moltbot_menu() {
 		fi
 
 		if [ "$local_version" != "$remote_version" ]; then
-			echo "${gl_huang}检测到新版�?$remote_version${gl_bai}"
+			echo "${gl_huang}妫€娴嬪埌鏂扮増鏈?$remote_version${gl_bai}"
 		else
-			echo "${gl_lv}当前版本已是最�?$local_version${gl_bai}"
+			echo "${gl_lv}褰撳墠鐗堟湰宸叉槸鏈€鏂?$local_version${gl_bai}"
 		fi
 	}
 
 
 	get_install_status() {
 		if command -v openclaw >/dev/null 2>&1; then
-			echo "${gl_lv}已安�?{gl_bai}"
+			echo "${gl_lv}宸插畨瑁?{gl_bai}"
 		else
-			echo "${gl_hui}未安�?{gl_bai}"
+			echo "${gl_hui}鏈畨瑁?{gl_bai}"
 		fi
 	}
 
 	get_running_status() {
 		if pgrep -f "openclaw-gatewa" >/dev/null 2>&1; then
-			echo "${gl_lv}运行�?{gl_bai}"
+			echo "${gl_lv}杩愯涓?{gl_bai}"
 		else
-			echo "${gl_hui}未运�?{gl_bai}"
+			echo "${gl_hui}鏈繍琛?{gl_bai}"
 		fi
 	}
 
@@ -9671,30 +9671,30 @@ moltbot_menu() {
 		local update_message=$(check_openclaw_update)
 
 		echo "======================================="
-		echo -e "ClawdBot > MoltBot > OpenClaw 管理"
+		echo -e "ClawdBot > MoltBot > OpenClaw 绠＄悊"
 		echo -e "$install_status $running_status $update_message"
 		echo "======================================="
-		echo "1.  安装"
-		echo "2.  启动"
-		echo "3.  停止"
+		echo "1.  瀹夎"
+		echo "2.  鍚姩"
+		echo "3.  鍋滄"
 		echo "--------------------"
-		echo "4.  状态日志查�?
-		echo "5.  换模�?
-		echo "6.  加新模型API"
-		echo "7.  TG输入连接�?
-		echo "8.  安装插件（如：飞书）"
-		echo "9.  安装技能（skills�?
-		echo "10. 编辑主配置文�?
-		echo "11. 配置向导"
-		echo "12. 健康检测与修复"
-		echo "13. WebUI访问与设�?
+		echo "4.  鐘舵€佹棩蹇楁煡鐪?
+		echo "5.  鎹㈡ā鍨?
+		echo "6.  鍔犳柊妯″瀷API"
+		echo "7.  TG杈撳叆杩炴帴鐮?
+		echo "8.  瀹夎鎻掍欢锛堝锛氶涔︼級"
+		echo "9.  瀹夎鎶€鑳斤紙skills锛?
+		echo "10. 缂栬緫涓婚厤缃枃浠?
+		echo "11. 閰嶇疆鍚戝"
+		echo "12. 鍋ュ悍妫€娴嬩笌淇"
+		echo "13. WebUI璁块棶涓庤缃?
 		echo "--------------------"
-		echo "14. 更新"
-		echo "15. 卸载"
+		echo "14. 鏇存柊"
+		echo "15. 鍗歌浇"
 		echo "--------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "--------------------"
-		printf "请输入选项并回�? "
+		printf "璇疯緭鍏ラ€夐」骞跺洖杞? "
 	}
 
 
@@ -9721,8 +9721,8 @@ moltbot_menu() {
 	}
 
 	install_moltbot() {
-		echo "开始安�?OpenClaw..."
-		send_stats "开始安�?OpenClaw..."
+		echo "寮€濮嬪畨瑁?OpenClaw..."
+		send_stats "寮€濮嬪畨瑁?OpenClaw..."
 
 		install_node_and_tools
 
@@ -9740,23 +9740,23 @@ moltbot_menu() {
 
 
 	start_bot() {
-		echo "启动 OpenClaw..."
-		send_stats "启动 OpenClaw..."
+		echo "鍚姩 OpenClaw..."
+		send_stats "鍚姩 OpenClaw..."
 		start_gateway
 		break_end
 	}
 
 	stop_bot() {
-		echo "停止 OpenClaw..."
-		send_stats "停止 OpenClaw..."
+		echo "鍋滄 OpenClaw..."
+		send_stats "鍋滄 OpenClaw..."
 		tmux kill-session -t gateway > /dev/null 2>&1
 		openclaw gateway stop
 		break_end
 	}
 
 	view_logs() {
-		echo "查看 OpenClaw 状态日�?
-		send_stats "查看 OpenClaw 日志"
+		echo "鏌ョ湅 OpenClaw 鐘舵€佹棩蹇?
+		send_stats "鏌ョ湅 OpenClaw 鏃ュ織"
 		openclaw status
 		openclaw gateway status
 		openclaw logs
@@ -9767,37 +9767,37 @@ moltbot_menu() {
 
 
 
-	# 核心函数：获取并添加所有模�?
+	# 鏍稿績鍑芥暟锛氳幏鍙栧苟娣诲姞鎵€鏈夋ā鍨?
 	add-all-models-from-provider() {
 		local provider_name="$1"
 		local base_url="$2"
 		local api_key="$3"
 		local config_file="${HOME}/.openclaw/openclaw.json"
 
-		echo "🔍 正在获取 $provider_name 的所有可用模�?.."
+		echo "馃攳 姝ｅ湪鑾峰彇 $provider_name 鐨勬墍鏈夊彲鐢ㄦā鍨?.."
 
-		# 获取模型列表
+		# 鑾峰彇妯″瀷鍒楄〃
 		local models_json=$(curl -s -m 10 \
 			-H "Authorization: Bearer $api_key" \
 			"${base_url}/models")
 
 		if [[ -z "$models_json" ]]; then
-			echo "�?无法获取模型列表"
+			echo "鉂?鏃犳硶鑾峰彇妯″瀷鍒楄〃"
 			return 1
 		fi
 
-		# 提取所有模型ID
+		# 鎻愬彇鎵€鏈夋ā鍨婭D
 		local model_ids=$(echo "$models_json" | grep -oP '"id":\s*"\K[^"]+')
 
 		if [[ -z "$model_ids" ]]; then
-			echo "�?未找到任何模�?
+			echo "鉂?鏈壘鍒颁换浣曟ā鍨?
 			return 1
 		fi
 
 		local model_count=$(echo "$model_ids" | wc -l)
-		echo "�?发现 $model_count 个模�?
+		echo "鉁?鍙戠幇 $model_count 涓ā鍨?
 
-		# 智能推断模型参数
+		# 鏅鸿兘鎺ㄦ柇妯″瀷鍙傛暟
 		local models_array="["
 		local first=true
 
@@ -9805,7 +9805,7 @@ moltbot_menu() {
 			[[ $first == false ]] && models_array+=","
 			first=false
 
-			# 根据模型名称推断上下文窗�?
+			# 鏍规嵁妯″瀷鍚嶇О鎺ㄦ柇涓婁笅鏂囩獥鍙?
 			local context_window=131072
 			local max_tokens=8192
 			local input_cost=0.14
@@ -9852,10 +9852,10 @@ EOF
 
 		models_array+="]"
 
-		# 备份配置
+		# 澶囦唤閰嶇疆
 		[[ -f "$config_file" ]] && cp "$config_file" "${config_file}.bak.$(date +%s)"
 
-		# 使用jq注入所有模�?
+		# 浣跨敤jq娉ㄥ叆鎵€鏈夋ā鍨?
 		jq --arg prov "$provider_name" \
 		   --arg url "$base_url" \
 		   --arg key "$api_key" \
@@ -9874,45 +9874,45 @@ EOF
 		' "$config_file" > "${config_file}.tmp" && mv "${config_file}.tmp" "$config_file"
 
 		if [[ $? -eq 0 ]]; then
-			echo "�?成功添加 $model_count 个模型到 $provider_name"
-			echo "📦 模型引用格式: $provider_name/<model-id>"
+			echo "鉁?鎴愬姛娣诲姞 $model_count 涓ā鍨嬪埌 $provider_name"
+			echo "馃摝 妯″瀷寮曠敤鏍煎紡: $provider_name/<model-id>"
 			return 0
 		else
-			echo "�?配置注入失败"
+			echo "鉂?閰嶇疆娉ㄥ叆澶辫触"
 			return 1
 		fi
 	}
 
 	add-openclaw-provider-interactive() {
-		send_stats "添加API"
-		echo "=== 交互式添�?OpenClaw Provider (全量模型) ==="
+		send_stats "娣诲姞API"
+		echo "=== 浜や簰寮忔坊鍔?OpenClaw Provider (鍏ㄩ噺妯″瀷) ==="
 
-		# 1. Provider 名称
-		read -erp "请输�?Provider 名称 (�? deepseek): " provider_name
+		# 1. Provider 鍚嶇О
+		read -erp "璇疯緭鍏?Provider 鍚嶇О (濡? deepseek): " provider_name
 		while [[ -z "$provider_name" ]]; do
-			echo "�?Provider 名称不能为空"
-			read -erp "请输�?Provider 名称: " provider_name
+			echo "鉂?Provider 鍚嶇О涓嶈兘涓虹┖"
+			read -erp "璇疯緭鍏?Provider 鍚嶇О: " provider_name
 		done
 
 		# 2. Base URL
-		read -erp "请输�?Base URL (�? https://api.xxx.com/v1): " base_url
+		read -erp "璇疯緭鍏?Base URL (濡? https://api.xxx.com/v1): " base_url
 		while [[ -z "$base_url" ]]; do
-			echo "�?Base URL 不能为空"
-			read -erp "请输�?Base URL: " base_url
+			echo "鉂?Base URL 涓嶈兘涓虹┖"
+			read -erp "璇疯緭鍏?Base URL: " base_url
 		done
 		base_url="${base_url%/}"
 
 		# 3. API Key
-		read -rsp "请输�?API Key (输入不显�?: " api_key
+		read -rsp "璇疯緭鍏?API Key (杈撳叆涓嶆樉绀?: " api_key
 		echo
 		while [[ -z "$api_key" ]]; do
-			echo "�?API Key 不能为空"
-			read -rsp "请输�?API Key: " api_key
+			echo "鉂?API Key 涓嶈兘涓虹┖"
+			read -rsp "璇疯緭鍏?API Key: " api_key
 			echo
 		done
 
-		# 4. 获取模型列表
-		echo "🔍 正在获取可用模型列表..."
+		# 4. 鑾峰彇妯″瀷鍒楄〃
+		echo "馃攳 姝ｅ湪鑾峰彇鍙敤妯″瀷鍒楄〃..."
 		models_json=$(curl -s -m 10 \
 			-H "Authorization: Bearer $api_key" \
 			"${base_url}/models")
@@ -9922,9 +9922,9 @@ EOF
 
 			if [[ -n "$available_models" ]]; then
 				model_count=$(echo "$available_models" | wc -l)
-				echo "�?发现 $model_count 个可用模型："
+				echo "鉁?鍙戠幇 $model_count 涓彲鐢ㄦā鍨嬶細"
 				echo "--------------------------------"
-				# 全部显示，带序号
+				# 鍏ㄩ儴鏄剧ず锛屽甫搴忓彿
 				i=1
 				declare -A model_map
 				while read -r model; do
@@ -9936,33 +9936,33 @@ EOF
 			fi
 		fi
 
-		# 5. 选择默认模型
+		# 5. 閫夋嫨榛樿妯″瀷
 		echo
-		read -erp "请输入默�?Model ID (或序号，留空则使用第一�?: " input_model
+		read -erp "璇疯緭鍏ラ粯璁?Model ID (鎴栧簭鍙凤紝鐣欑┖鍒欎娇鐢ㄧ涓€涓?: " input_model
 
 		if [[ -z "$input_model" && -n "$available_models" ]]; then
 			default_model=$(echo "$available_models" | head -1)
-			echo "🎯 使用第一个模�? $default_model"
+			echo "馃幆 浣跨敤绗竴涓ā鍨? $default_model"
 		elif [[ -n "${model_map[$input_model]}" ]]; then
 			default_model="${model_map[$input_model]}"
-			echo "🎯 已选择模型: $default_model"
+			echo "馃幆 宸查€夋嫨妯″瀷: $default_model"
 		else
 			default_model="$input_model"
 		fi
 
-		# 6. 确认信息
+		# 6. 纭淇℃伅
 		echo
-		echo "====== 确认信息 ======"
+		echo "====== 纭淇℃伅 ======"
 		echo "Provider    : $provider_name"
 		echo "Base URL    : $base_url"
 		echo "API Key     : ${api_key:0:8}****"
-		echo "默认模型    : $default_model"
-		echo "模型总数    : $model_count"
+		echo "榛樿妯″瀷    : $default_model"
+		echo "妯″瀷鎬绘暟    : $model_count"
 		echo "======================"
 
-		read -erp "确认添加所�?$model_count 个模型？(y/N): " confirm
+		read -erp "纭娣诲姞鎵€鏈?$model_count 涓ā鍨嬶紵(y/N): " confirm
 		if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-			echo "�?已取�?
+			echo "鉂?宸插彇娑?
 			return 1
 		fi
 
@@ -9971,10 +9971,10 @@ EOF
 
 		if [[ $? -eq 0 ]]; then
 			echo
-			echo "🔄 设置默认模型并重启网�?.."
+			echo "馃攧 璁剧疆榛樿妯″瀷骞堕噸鍚綉鍏?.."
 			openclaw models set "$provider_name/$default_model"
 			start_gateway
-			echo "�?完成！所�?$model_count 个模型已加载"
+			echo "鉁?瀹屾垚锛佹墍鏈?$model_count 涓ā鍨嬪凡鍔犺浇"
 		fi
 
 		break_end
@@ -9983,35 +9983,35 @@ EOF
 
 
 	change_model() {
-		send_stats "换模�?
+		send_stats "鎹㈡ā鍨?
 
 		while true; do
 			clear
-			echo "--- 模型管理 ---"
-			echo "所有模�?"
+			echo "--- 妯″瀷绠＄悊 ---"
+			echo "鎵€鏈夋ā鍨?"
 			openclaw models list --all
 			echo "----------------"
-			echo "当前模型:"
+			echo "褰撳墠妯″瀷:"
 			openclaw models list
 			echo "----------------"
-			read -e -p "请输入要设置的模型名�?(例如 openrouter/openai/gpt-4o)（输�?0 退出）�?" model
+			read -e -p "璇疯緭鍏ヨ璁剧疆鐨勬ā鍨嬪悕绉?(渚嬪 openrouter/openai/gpt-4o)锛堣緭鍏?0 閫€鍑猴級锛?" model
 
-			# 1. 检查是否输�?0 以退�?
+			# 1. 妫€鏌ユ槸鍚﹁緭鍏?0 浠ラ€€鍑?
 			if [ "$model" = "0" ]; then
-				echo "操作已取消，正在退�?.."
-				break  # 跳出 while 循环
+				echo "鎿嶄綔宸插彇娑堬紝姝ｅ湪閫€鍑?.."
+				break  # 璺冲嚭 while 寰幆
 
 			fi
 
-			# 2. 验证输入是否为空
+			# 2. 楠岃瘉杈撳叆鏄惁涓虹┖
 			if [ -z "$model" ]; then
-				echo "错误：模型名称不能为空。请重试�?
-				echo "" # 换行美化
-				continue # 跳过本次循环，重新开�?
+				echo "閿欒锛氭ā鍨嬪悕绉颁笉鑳戒负绌恒€傝閲嶈瘯銆?
+				echo "" # 鎹㈣缇庡寲
+				continue # 璺宠繃鏈寰幆锛岄噸鏂板紑濮?
 			fi
 
-			# 3. 执行切换逻辑
-			echo "正在切换模型�? $model ..."
+			# 3. 鎵ц鍒囨崲閫昏緫
+			echo "姝ｅ湪鍒囨崲妯″瀷涓? $model ..."
 			openclaw models set "$model"
 
 			break_end
@@ -10024,67 +10024,67 @@ EOF
 
 	install_plugin() {
 
-		send_stats "安装插件"
+		send_stats "瀹夎鎻掍欢"
 		while true; do
 			clear
 			echo "========================================"
-			echo "            插件管理 (安装)            "
+			echo "            鎻掍欢绠＄悊 (瀹夎)            "
 			echo "========================================"
-			echo "当前已安装插�?"
+			echo "褰撳墠宸插畨瑁呮彃浠?"
 			openclaw plugins list
 			echo "----------------------------------------"
 
-			# 输出推荐的实用插件列表，便于用户复制
-			echo "推荐的实用插件（可直接复制名称输入）�?
-			echo "feishu                # 飞书/Lark 集成 (当前已加�?�?"
-			echo "telegram              # Telegram 机器人集�?(当前已加�?�?"
-			echo "memory-core           # 核心记忆增强：基于文件的上下文搜�?(当前已加�?�?"
-			echo "@openclaw/slack       # Slack 频道�?DMs 深度连接"
-			echo "@openclaw/bluebubbles # iMessage 桥接 (macOS 用户首�?"
-			echo "@openclaw/msteams     # Microsoft Teams 企业通讯集成"
-			echo "@openclaw/voice-call  # 语音通话插件 (基于 Twilio 等后�?"
-			echo "@openclaw/discord     # Discord 频道自动化管�?
-			echo "@openclaw/nostr       # Nostr 协议：隐私安全加密聊�?
-			echo "lobster               # 审批工作流：带有人工干预的自动任�?
-			echo "memory-lancedb        # 长期记忆增强：基于向量数据库的精准召�?
-			echo "copilot-proxy         # GitHub Copilot 代理接入增强"
+			# 杈撳嚭鎺ㄨ崘鐨勫疄鐢ㄦ彃浠跺垪琛紝渚夸簬鐢ㄦ埛澶嶅埗
+			echo "鎺ㄨ崘鐨勫疄鐢ㄦ彃浠讹紙鍙洿鎺ュ鍒跺悕绉拌緭鍏ワ級锛?
+			echo "feishu                # 椋炰功/Lark 闆嗘垚 (褰撳墠宸插姞杞?鉁?"
+			echo "telegram              # Telegram 鏈哄櫒浜洪泦鎴?(褰撳墠宸插姞杞?鉁?"
+			echo "memory-core           # 鏍稿績璁板繂澧炲己锛氬熀浜庢枃浠剁殑涓婁笅鏂囨悳绱?(褰撳墠宸插姞杞?鉁?"
+			echo "@openclaw/slack       # Slack 棰戦亾涓?DMs 娣卞害杩炴帴"
+			echo "@openclaw/bluebubbles # iMessage 妗ユ帴 (macOS 鐢ㄦ埛棣栭€?"
+			echo "@openclaw/msteams     # Microsoft Teams 浼佷笟閫氳闆嗘垚"
+			echo "@openclaw/voice-call  # 璇煶閫氳瘽鎻掍欢 (鍩轰簬 Twilio 绛夊悗绔?"
+			echo "@openclaw/discord     # Discord 棰戦亾鑷姩鍖栫鐞?
+			echo "@openclaw/nostr       # Nostr 鍗忚锛氶殣绉佸畨鍏ㄥ姞瀵嗚亰澶?
+			echo "lobster               # 瀹℃壒宸ヤ綔娴侊細甯︽湁浜哄伐骞查鐨勮嚜鍔ㄤ换鍔?
+			echo "memory-lancedb        # 闀挎湡璁板繂澧炲己锛氬熀浜庡悜閲忔暟鎹簱鐨勭簿鍑嗗彫鍥?
+			echo "copilot-proxy         # GitHub Copilot 浠ｇ悊鎺ュ叆澧炲己"
 			echo "----------------------------------------"
 
-			# 提示用户输入插件名称
-			read -e -p "请输入要安装的插件名称（输入 0 退出）�?" plugin_name
+			# 鎻愮ず鐢ㄦ埛杈撳叆鎻掍欢鍚嶇О
+			read -e -p "璇疯緭鍏ヨ瀹夎鐨勬彃浠跺悕绉帮紙杈撳叆 0 閫€鍑猴級锛?" plugin_name
 
-			# 1. 检查是否输�?0 以退�?
+			# 1. 妫€鏌ユ槸鍚﹁緭鍏?0 浠ラ€€鍑?
 			if [ "$plugin_name" = "0" ]; then
-				echo "操作已取消，退出插件安装�?
+				echo "鎿嶄綔宸插彇娑堬紝閫€鍑烘彃浠跺畨瑁呫€?
 				break
 			fi
 
-			# 2. 验证输入是否为空
+			# 2. 楠岃瘉杈撳叆鏄惁涓虹┖
 			if [ -z "$plugin_name" ]; then
-				echo "错误：插件名称不能为空，请重新输入�?
+				echo "閿欒锛氭彃浠跺悕绉颁笉鑳戒负绌猴紝璇烽噸鏂拌緭鍏ャ€?
 				echo ""
 				continue
 			fi
 
-			# 1. 彻底清理之前失败的残留（用户目录�?
+			# 1. 褰诲簳娓呯悊涔嬪墠澶辫触鐨勬畫鐣欙紙鐢ㄦ埛鐩綍锛?
 			rm -rf "/root/.openclaw/extensions/$plugin_name"
 
-			# 2. 检查系统是否已经预装（防止 duplicate id 冲突�?
+			# 2. 妫€鏌ョ郴缁熸槸鍚﹀凡缁忛瑁咃紙闃叉 duplicate id 鍐茬獊锛?
 			if [ -d "/usr/lib/node_modules/openclaw/extensions/$plugin_name" ]; then
-				echo "💡 检测到系统目录已存在该插件，正在直接激�?.."
+				echo "馃挕 妫€娴嬪埌绯荤粺鐩綍宸插瓨鍦ㄨ鎻掍欢锛屾鍦ㄧ洿鎺ユ縺娲?.."
 				openclaw plugins enable "$plugin_name"
 			else
-				echo "📥 正在通过官方渠道下载安装插件..."
-				# 使用 openclaw 自己�?install 命令，它会自动处�?package.json 的规范检�?
+				echo "馃摜 姝ｅ湪閫氳繃瀹樻柟娓犻亾涓嬭浇瀹夎鎻掍欢..."
+				# 浣跨敤 openclaw 鑷繁鐨?install 鍛戒护锛屽畠浼氳嚜鍔ㄥ鐞?package.json 鐨勮鑼冩鏌?
 				openclaw plugins install "$plugin_name"
 
-				# 3. 如果 openclaw install 报错，再尝试作为普�?npm 包安装（最后的备选）
+				# 3. 濡傛灉 openclaw install 鎶ラ敊锛屽啀灏濊瘯浣滀负鏅€?npm 鍖呭畨瑁咃紙鏈€鍚庣殑澶囬€夛級
 				if [ $? -ne 0 ]; then
-					echo "⚠️ 官方安装失败，尝试通过 npm 全局强制安装..."
+					echo "鈿狅笍 瀹樻柟瀹夎澶辫触锛屽皾璇曢€氳繃 npm 鍏ㄥ眬寮哄埗瀹夎..."
 					npm install -g "$plugin_name" --unsafe-perm
 				fi
 
-				# 4. 最后统一执行启用
+				# 4. 鏈€鍚庣粺涓€鎵ц鍚敤
 				openclaw plugins enable "$plugin_name"
 			fi
 
@@ -10094,84 +10094,84 @@ EOF
 	}
 
 	install_plugin() {
-		send_stats "安装插件"
+		send_stats "瀹夎鎻掍欢"
 		while true; do
 			clear
 			echo "========================================"
-			echo "            插件管理 (安装)            "
+			echo "            鎻掍欢绠＄悊 (瀹夎)            "
 			echo "========================================"
-			echo "当前插件列表:"
+			echo "褰撳墠鎻掍欢鍒楄〃:"
 			openclaw plugins list
 			echo "--------------------------------------------------------"
-			echo "推荐的常用插�?ID (直接复制括号内的 ID 即可):"
+			echo "鎺ㄨ崘鐨勫父鐢ㄦ彃浠?ID (鐩存帴澶嶅埗鎷彿鍐呯殑 ID 鍗冲彲):"
 			echo "--------------------------------------------------------"
-			echo "📱 通讯渠道:"
-			echo "  - [feishu]       	# 飞书/Lark 集成"
-			echo "  - [telegram]     	# Telegram 机器�?
-			echo "  - [slack]        	# Slack 企业通讯"
+			echo "馃摫 閫氳娓犻亾:"
+			echo "  - [feishu]       	# 椋炰功/Lark 闆嗘垚"
+			echo "  - [telegram]     	# Telegram 鏈哄櫒浜?
+			echo "  - [slack]        	# Slack 浼佷笟閫氳"
 			echo "  - [msteams]      	# Microsoft Teams"
-			echo "  - [discord]      	# Discord 社区管理"
-			echo "  - [whatsapp]     	# WhatsApp 自动�?
+			echo "  - [discord]      	# Discord 绀惧尯绠＄悊"
+			echo "  - [whatsapp]     	# WhatsApp 鑷姩鍖?
 			echo ""
-			echo "🧠 记忆�?AI:"
-			echo "  - [memory-core]  	# 基础记忆 (文件检�?"
-			echo "  - [memory-lancedb]	# 增强记忆 (向量数据�?"
-			echo "  - [copilot-proxy]	# Copilot 接口转发"
+			echo "馃 璁板繂涓?AI:"
+			echo "  - [memory-core]  	# 鍩虹璁板繂 (鏂囦欢妫€绱?"
+			echo "  - [memory-lancedb]	# 澧炲己璁板繂 (鍚戦噺鏁版嵁搴?"
+			echo "  - [copilot-proxy]	# Copilot 鎺ュ彛杞彂"
 			echo ""
-			echo "⚙️ 功能扩展:"
-			echo "  - [lobster]      	# 审批�?(带人工确�?"
-			echo "  - [voice-call]   	# 语音通话能力"
-			echo "  - [nostr]        	# 加密隐私聊天"
+			echo "鈿欙笍 鍔熻兘鎵╁睍:"
+			echo "  - [lobster]      	# 瀹℃壒娴?(甯︿汉宸ョ‘璁?"
+			echo "  - [voice-call]   	# 璇煶閫氳瘽鑳藉姏"
+			echo "  - [nostr]        	# 鍔犲瘑闅愮鑱婂ぉ"
 			echo "--------------------------------------------------------"
 
-			read -e -p "请输入插�?ID（输�?0 退出）�?" raw_input
+			read -e -p "璇疯緭鍏ユ彃浠?ID锛堣緭鍏?0 閫€鍑猴級锛?" raw_input
 
 			[ "$raw_input" = "0" ] && break
 			[ -z "$raw_input" ] && continue
 
-			# 1. 自动处理：如果用户输入带 @openclaw/，提取纯 ID 方便路径检�?
+			# 1. 鑷姩澶勭悊锛氬鏋滅敤鎴疯緭鍏ュ甫 @openclaw/锛屾彁鍙栫函 ID 鏂逛究璺緞妫€鏌?
 			local plugin_id=$(echo "$raw_input" | sed 's|^@openclaw/||')
 			local plugin_full="$raw_input"
 
-			echo "🔍 正在检查插件状�?.."
+			echo "馃攳 姝ｅ湪妫€鏌ユ彃浠剁姸鎬?.."
 
-			# 2. 检查是否已经在 list 中且�?disabled (最常见的情�?
+			# 2. 妫€鏌ユ槸鍚﹀凡缁忓湪 list 涓笖涓?disabled (鏈€甯歌鐨勬儏鍐?
 			if echo "$plugin_list" | grep -qw "$plugin_id" && echo "$plugin_list" | grep "$plugin_id" | grep -q "disabled"; then
-				echo "💡 插件 [$plugin_id] 已预装，正在激�?.."
-				openclaw plugins enable "$plugin_id" && echo "�?激活成�? || echo "�?激活失�?
+				echo "馃挕 鎻掍欢 [$plugin_id] 宸查瑁咃紝姝ｅ湪婵€娲?.."
+				openclaw plugins enable "$plugin_id" && echo "鉁?婵€娲绘垚鍔? || echo "鉂?婵€娲诲け璐?
 
-			# 3. 检查系统物理目录是否存�?
+			# 3. 妫€鏌ョ郴缁熺墿鐞嗙洰褰曟槸鍚﹀瓨鍦?
 			elif [ -d "/usr/lib/node_modules/openclaw/extensions/$plugin_id" ]; then
-				echo "💡 发现系统内置目录存在该插件，尝试直接启用..."
+				echo "馃挕 鍙戠幇绯荤粺鍐呯疆鐩綍瀛樺湪璇ユ彃浠讹紝灏濊瘯鐩存帴鍚敤..."
 				openclaw plugins enable "$plugin_id"
 
 			else
-				# 4. 远程安装逻辑
-				echo "📥 本地未发现，尝试下载安装..."
+				# 4. 杩滅▼瀹夎閫昏緫
+				echo "馃摜 鏈湴鏈彂鐜帮紝灏濊瘯涓嬭浇瀹夎..."
 
-				# 清理旧的失败残留
+				# 娓呯悊鏃х殑澶辫触娈嬬暀
 				rm -rf "/root/.openclaw/extensions/$plugin_id"
 
-				# 执行安装，并捕获结果
+				# 鎵ц瀹夎锛屽苟鎹曡幏缁撴灉
 				if openclaw plugins install "$plugin_full"; then
-					echo "�?下载成功，正在启�?.."
+					echo "鉁?涓嬭浇鎴愬姛锛屾鍦ㄥ惎鐢?.."
 					openclaw plugins enable "$plugin_id"
 				else
-					echo "⚠️ 官方渠道下载失败，尝试备选方�?.."
-					# 备�?npm 安装
+					echo "鈿狅笍 瀹樻柟娓犻亾涓嬭浇澶辫触锛屽皾璇曞閫夋柟妗?.."
+					# 澶囬€?npm 瀹夎
 					if npm install -g "$plugin_full" --unsafe-perm; then
-						echo "�?npm 安装成功，尝试启�?.."
+						echo "鉁?npm 瀹夎鎴愬姛锛屽皾璇曞惎鐢?.."
 						openclaw plugins enable "$plugin_id"
 					else
-						echo "�?严重错误：无法获取该插件。请检�?ID 是否正确或网络是否可用�?
-						# 关键：这里直�?return �?continue，不走下面的 start_gateway，防止写死配�?
+						echo "鉂?涓ラ噸閿欒锛氭棤娉曡幏鍙栬鎻掍欢銆傝妫€鏌?ID 鏄惁姝ｇ‘鎴栫綉缁滄槸鍚﹀彲鐢ㄣ€?
+						# 鍏抽敭锛氳繖閲岀洿鎺?return 鎴?continue锛屼笉璧颁笅闈㈢殑 start_gateway锛岄槻姝㈠啓姝婚厤缃?
 						break_end
 						continue
 					fi
 				fi
 			fi
 
-			echo "🔄 正在重启 OpenClaw 服务以加载新插件..."
+			echo "馃攧 姝ｅ湪閲嶅惎 OpenClaw 鏈嶅姟浠ュ姞杞芥柊鎻掍欢..."
 			start_gateway
 			break_end
 		done
@@ -10184,61 +10184,61 @@ EOF
 
 
 	install_skill() {
-		send_stats "安装技�?
+		send_stats "瀹夎鎶€鑳?
 		while true; do
 			clear
 			echo "========================================"
-			echo "            技能管�?(安装)            "
+			echo "            鎶€鑳界鐞?(瀹夎)            "
 			echo "========================================"
-			echo "当前已安装技�?"
+			echo "褰撳墠宸插畨瑁呮妧鑳?"
 			openclaw skills list
 			echo "----------------------------------------"
 
-			# 输出推荐的实用技能列�?
-			echo "推荐的实用技能（可直接复制名称输入）�?
-			echo "github             # 管理 GitHub Issues/PR/CI (gh CLI)"
-			echo "notion             # 操作 Notion 页面、数据库和块"
-			echo "apple-notes        # macOS 原生笔记管理 (创建/编辑/搜索)"
-			echo "apple-reminders    # macOS 提醒事项管理 (待办清单)"
-			echo "1password          # 自动化读取和注入 1Password 密钥"
-			echo "gog                # Google Workspace (Gmail/云盘/文档) 全能助手"
-			echo "things-mac         # 深度整合 Things 3 任务管理"
-			echo "bluebubbles        # 通过 BlueBubbles 完美收发 iMessage"
-			echo "himalaya           # 终端邮件管理 (IMAP/SMTP 强力工具)"
-			echo "summarize          # 网页/播客/YouTube 视频内容一键总结"
-			echo "openhue            # 控制 Philips Hue 智能灯光场景"
-			echo "video-frames       # 视频抽帧与短片剪�?(ffmpeg 驱动)"
-			echo "openai-whisper     # 本地音频转文�?(离线隐私保护)"
-			echo "coding-agent       # 自动运行 Claude Code/Codex 等编程助�?
+			# 杈撳嚭鎺ㄨ崘鐨勫疄鐢ㄦ妧鑳藉垪琛?
+			echo "鎺ㄨ崘鐨勫疄鐢ㄦ妧鑳斤紙鍙洿鎺ュ鍒跺悕绉拌緭鍏ワ級锛?
+			echo "github             # 绠＄悊 GitHub Issues/PR/CI (gh CLI)"
+			echo "notion             # 鎿嶄綔 Notion 椤甸潰銆佹暟鎹簱鍜屽潡"
+			echo "apple-notes        # macOS 鍘熺敓绗旇绠＄悊 (鍒涘缓/缂栬緫/鎼滅储)"
+			echo "apple-reminders    # macOS 鎻愰啋浜嬮」绠＄悊 (寰呭姙娓呭崟)"
+			echo "1password          # 鑷姩鍖栬鍙栧拰娉ㄥ叆 1Password 瀵嗛挜"
+			echo "gog                # Google Workspace (Gmail/浜戠洏/鏂囨。) 鍏ㄨ兘鍔╂墜"
+			echo "things-mac         # 娣卞害鏁村悎 Things 3 浠诲姟绠＄悊"
+			echo "bluebubbles        # 閫氳繃 BlueBubbles 瀹岀編鏀跺彂 iMessage"
+			echo "himalaya           # 缁堢閭欢绠＄悊 (IMAP/SMTP 寮哄姏宸ュ叿)"
+			echo "summarize          # 缃戦〉/鎾/YouTube 瑙嗛鍐呭涓€閿€荤粨"
+			echo "openhue            # 鎺у埗 Philips Hue 鏅鸿兘鐏厜鍦烘櫙"
+			echo "video-frames       # 瑙嗛鎶藉抚涓庣煭鐗囧壀杈?(ffmpeg 椹卞姩)"
+			echo "openai-whisper     # 鏈湴闊抽杞枃瀛?(绂荤嚎闅愮淇濇姢)"
+			echo "coding-agent       # 鑷姩杩愯 Claude Code/Codex 绛夌紪绋嬪姪鎵?
 			echo "----------------------------------------"
 
-			# 提示用户输入技能名�?
-			read -e -p "请输入要安装的技能名称（输入 0 退出）�?" skill_name
+			# 鎻愮ず鐢ㄦ埛杈撳叆鎶€鑳藉悕绉?
+			read -e -p "璇疯緭鍏ヨ瀹夎鐨勬妧鑳藉悕绉帮紙杈撳叆 0 閫€鍑猴級锛?" skill_name
 
-			# 1. 检查是否输�?0 以退�?
+			# 1. 妫€鏌ユ槸鍚﹁緭鍏?0 浠ラ€€鍑?
 			if [ "$skill_name" = "0" ]; then
-				echo "操作已取消，退出技能安装�?
+				echo "鎿嶄綔宸插彇娑堬紝閫€鍑烘妧鑳藉畨瑁呫€?
 				break
 			fi
 
-			# 2. 验证输入是否为空
+			# 2. 楠岃瘉杈撳叆鏄惁涓虹┖
 			if [ -z "$skill_name" ]; then
-				echo "错误：技能名称不能为空。请重试�?
+				echo "閿欒锛氭妧鑳藉悕绉颁笉鑳戒负绌恒€傝閲嶈瘯銆?
 				echo ""
 				continue
 			fi
 
-			# 3. 执行安装命令
-			echo "正在安装技能：$skill_name ..."
+			# 3. 鎵ц瀹夎鍛戒护
+			echo "姝ｅ湪瀹夎鎶€鑳斤細$skill_name ..."
 			npx clawhub install "$skill_name"
 
-			# 获取上一条命令的退出状�?
+			# 鑾峰彇涓婁竴鏉″懡浠ょ殑閫€鍑虹姸鎬?
 			if [ $? -eq 0 ]; then
-				echo "�?技�?$skill_name 安装成功�?
-				# 执行重启/启动服务逻辑
+				echo "鉁?鎶€鑳?$skill_name 瀹夎鎴愬姛銆?
+				# 鎵ц閲嶅惎/鍚姩鏈嶅姟閫昏緫
 				start_gateway
 			else
-				echo "�?安装失败。请检查技能名称是否正确，或参考文档排查�?
+				echo "鉂?瀹夎澶辫触銆傝妫€鏌ユ妧鑳藉悕绉版槸鍚︽纭紝鎴栧弬鑰冩枃妗ｆ帓鏌ャ€?
 			fi
 
 			break_end
@@ -10249,18 +10249,18 @@ EOF
 
 
 	change_tg_bot_code() {
-		send_stats "机器人对�?
-		read -e -p "请输入TG机器人收到的连接�?(例如 Pairing code: NYA99R2F)（输�?0 退出）�?" code
+		send_stats "鏈哄櫒浜哄鎺?
+		read -e -p "璇疯緭鍏G鏈哄櫒浜烘敹鍒扮殑杩炴帴鐮?(渚嬪 Pairing code: NYA99R2F)锛堣緭鍏?0 閫€鍑猴級锛?" code
 
-		# 检查是否输�?0 以退�?
+		# 妫€鏌ユ槸鍚﹁緭鍏?0 浠ラ€€鍑?
 		if [ "$code" = "0" ]; then
-			echo "操作已取消�?
-			return 0  # 正常退出函�?
+			echo "鎿嶄綔宸插彇娑堛€?
+			return 0  # 姝ｅ父閫€鍑哄嚱鏁?
 		fi
 
-		# 验证输入是否为空
+		# 楠岃瘉杈撳叆鏄惁涓虹┖
 		if [ -z "$code" ]; then
-			echo "错误：连接码不能为空。请重试�?
+			echo "閿欒锛氳繛鎺ョ爜涓嶈兘涓虹┖銆傝閲嶈瘯銆?
 			return 1
 		fi
 
@@ -10270,32 +10270,32 @@ EOF
 
 
 	update_moltbot() {
-		echo "更新 OpenClaw..."
-		send_stats "更新 OpenClaw..."
+		echo "鏇存柊 OpenClaw..."
+		send_stats "鏇存柊 OpenClaw..."
 		install_node_and_tools
 		npm install -g openclaw@latest
 		start_gateway
 		hash -r
 		add_app_id
-		echo "更新完成"
+		echo "鏇存柊瀹屾垚"
 		break_end
 	}
 
 
 	uninstall_moltbot() {
-		echo "卸载 OpenClaw..."
-		send_stats "卸载 OpenClaw..."
+		echo "鍗歌浇 OpenClaw..."
+		send_stats "鍗歌浇 OpenClaw..."
 		openclaw uninstall
 		npm uninstall -g openclaw
 		crontab -l 2>/dev/null | grep -v "s gateway" | crontab -
 		hash -r
 		sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-		echo "卸载完成"
+		echo "鍗歌浇瀹屾垚"
 		break_end
 	}
 
 	nano_openclaw_json() {
-		send_stats "编辑 OpenClaw 配置文件"
+		send_stats "缂栬緫 OpenClaw 閰嶇疆鏂囦欢"
 		install nano
 		nano ~/.openclaw/openclaw.json
 		start_gateway
@@ -10329,7 +10329,7 @@ EOF
 		local local_ip token domains
 
 		echo "=================================="
-		echo "OpenClaw WebUI 访问地址"
+		echo "OpenClaw WebUI 璁块棶鍦板潃"
 		local_ip="127.0.0.1"
 
 		token=$(
@@ -10338,12 +10338,12 @@ EOF
 			| head -n 1
 		)
 		echo
-		echo "本机地址�?
+		echo "鏈満鍦板潃锛?
 		echo "http://${local_ip}:18789/#token=${token}"
 
 		domains=$(openclaw_find_webui_domain)
 		if [ -n "$domains" ]; then
-			echo "域名地址�?
+			echo "鍩熷悕鍦板潃锛?
 			echo "$domains" | while read d; do
 				echo "https://${d}/#token=${token}"
 			done
@@ -10354,7 +10354,7 @@ EOF
 
 
 
-	# 添加域名（调用你给的函数�?
+	# 娣诲姞鍩熷悕锛堣皟鐢ㄤ綘缁欑殑鍑芥暟锛?
 	openclaw_domain_webui() {
 		add_yuming
 		ldnmp_Proxy ${yuming} 127.0.0.1 18789
@@ -10366,17 +10366,17 @@ EOF
 		)
 
 		clear
-		echo "访问地址:"
+		echo "璁块棶鍦板潃:"
 		echo "https://${yuming}/#token=$token"
-		echo "先访问URL触发设备ID，然后回车下一步进行配对�?
+		echo "鍏堣闂甎RL瑙﹀彂璁惧ID锛岀劧鍚庡洖杞︿笅涓€姝ヨ繘琛岄厤瀵广€?
 		read
-		echo -e "${gl_kjlan}正在加载设备列表…�?{gl_bai}"
+		echo -e "${gl_kjlan}姝ｅ湪鍔犺浇璁惧鍒楄〃鈥︹€?{gl_bai}"
 		openclaw devices list
 
-		read -e -p "请输�?Request_Key: " Request_Key
+		read -e -p "璇疯緭鍏?Request_Key: " Request_Key
 
 		[ -z "$Request_Key" ] && {
-			echo "Request_Key 不能为空"
+			echo "Request_Key 涓嶈兘涓虹┖"
 			return 1
 		}
 
@@ -10384,41 +10384,41 @@ EOF
 
 	}
 
-	# 删除域名
+	# 鍒犻櫎鍩熷悕
 	openclaw_remove_domain() {
-		echo "域名格式 example.com 不带https://"
+		echo "鍩熷悕鏍煎紡 example.com 涓嶅甫https://"
 		web_del
 	}
 
-	# 主菜�?
+	# 涓昏彍鍗?
 	openclaw_webui_menu() {
 
-		send_stats "WebUI访问与设�?
+		send_stats "WebUI璁块棶涓庤缃?
 		while true; do
 			clear
 			openclaw_show_webui_addr
 			echo
-			echo "1. 添加域名访问"
-			echo "2. 删除域名访问"
-			echo "0. 退�?
+			echo "1. 娣诲姞鍩熷悕璁块棶"
+			echo "2. 鍒犻櫎鍩熷悕璁块棶"
+			echo "0. 閫€鍑?
 			echo
-			read -e -p "请选择: " choice
+			read -e -p "璇烽€夋嫨: " choice
 
 			case "$choice" in
 				1)
 					openclaw_domain_webui
 					echo
-					read -p "按回车返回菜�?.."
+					read -p "鎸夊洖杞﹁繑鍥炶彍鍗?.."
 					;;
 				2)
 					openclaw_remove_domain
-					read -p "按回车返回菜�?.."
+					read -p "鎸夊洖杞﹁繑鍥炶彍鍗?.."
 					;;
 				0)
 					break
 					;;
 				*)
-					echo "无效选项"
+					echo "鏃犳晥閫夐」"
 					sleep 1
 					;;
 			esac
@@ -10427,7 +10427,7 @@ EOF
 
 
 
-	# 主循�?
+	# 涓诲惊鐜?
 	while true; do
 		show_menu
 		read choice
@@ -10442,11 +10442,11 @@ EOF
 			8) install_plugin ;;
 			9) install_skill ;;
 			10) nano_openclaw_json ;;
-			11) send_stats "初始化配置向�?
+			11) send_stats "鍒濆鍖栭厤缃悜瀵?
 				openclaw onboard --install-daemon
 				break_end
 				;;
-			12) send_stats "健康检测与修复"
+			12) send_stats "鍋ュ悍妫€娴嬩笌淇"
 				openclaw doctor --fix
 				break_end
 			 	;;
@@ -10469,7 +10469,7 @@ local sub_choice="$1"
 clear
 cd ~
 install git
-echo -e "${gl_kjlan}正在更新应用列表请稍等…�?{gl_bai}"
+echo -e "${gl_kjlan}姝ｅ湪鏇存柊搴旂敤鍒楄〃璇风◢绛夆€︹€?{gl_bai}"
 if [ ! -d apps/.git ]; then
 	timeout 10s git clone ${gh_proxy}github.com/xiaowoniu928/apps.git
 else
@@ -10482,12 +10482,12 @@ while true; do
 
 	if [ -z "$sub_choice" ]; then
 	  clear
-	  echo -e "应用市场"
+	  echo -e "搴旂敤甯傚満"
 	  echo -e "${gl_kjlan}-------------------------"
 
 	  local app_numbers=$([ -f /home/docker/appno.txt ] && cat /home/docker/appno.txt || echo "")
 
-	  # 用循环设置颜�?
+	  # 鐢ㄥ惊鐜缃鑹?
 	  for i in {1..150}; do
 		  if echo "$app_numbers" | grep -q "^$i$"; then
 			  declare "color$i=${gl_lv}"
@@ -10496,91 +10496,91 @@ while true; do
 		  fi
 	  done
 
-	  echo -e "${gl_kjlan}1.   ${color1}宝塔面板官方�?                     ${gl_kjlan}2.   ${color2}aaPanel宝塔国际�?
-	  echo -e "${gl_kjlan}3.   ${color3}1Panel新一代管理面�?               ${gl_kjlan}4.   ${color4}NginxProxyManager可视化面�?
-	  echo -e "${gl_kjlan}5.   ${color5}OpenList多存储文件列表程�?         ${gl_kjlan}6.   ${color6}Ubuntu远程桌面网页�?
-	  echo -e "${gl_kjlan}7.   ${color7}哪吒探针VPS监控面板                 ${gl_kjlan}8.   ${color8}QB离线BT磁力下载面板"
-	  echo -e "${gl_kjlan}9.   ${color9}Poste.io邮件服务器程�?             ${gl_kjlan}10.  ${color10}RocketChat多人在线聊天系统"
+	  echo -e "${gl_kjlan}1.   ${color1}瀹濆闈㈡澘瀹樻柟鐗?                     ${gl_kjlan}2.   ${color2}aaPanel瀹濆鍥介檯鐗?
+	  echo -e "${gl_kjlan}3.   ${color3}1Panel鏂颁竴浠ｇ鐞嗛潰鏉?               ${gl_kjlan}4.   ${color4}NginxProxyManager鍙鍖栭潰鏉?
+	  echo -e "${gl_kjlan}5.   ${color5}OpenList澶氬瓨鍌ㄦ枃浠跺垪琛ㄧ▼搴?         ${gl_kjlan}6.   ${color6}Ubuntu杩滅▼妗岄潰缃戦〉鐗?
+	  echo -e "${gl_kjlan}7.   ${color7}鍝悞鎺㈤拡VPS鐩戞帶闈㈡澘                 ${gl_kjlan}8.   ${color8}QB绂荤嚎BT纾佸姏涓嬭浇闈㈡澘"
+	  echo -e "${gl_kjlan}9.   ${color9}Poste.io閭欢鏈嶅姟鍣ㄧ▼搴?             ${gl_kjlan}10.  ${color10}RocketChat澶氫汉鍦ㄧ嚎鑱婂ぉ绯荤粺"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}11.  ${color11}禅道项目管理软件                    ${gl_kjlan}12.  ${color12}青龙面板定时任务管理平台"
-	  echo -e "${gl_kjlan}13.  ${color13}Cloudreve网盘 ${gl_huang}�?{gl_bai}                     ${gl_kjlan}14.  ${color14}简单图床图片管理程�?
-	  echo -e "${gl_kjlan}15.  ${color15}emby多媒体管理系�?                 ${gl_kjlan}16.  ${color16}Speedtest测速面�?
-	  echo -e "${gl_kjlan}17.  ${color17}AdGuardHome去广告软�?              ${gl_kjlan}18.  ${color18}onlyoffice在线办公OFFICE"
-	  echo -e "${gl_kjlan}19.  ${color19}雷池WAF防火墙面�?                  ${gl_kjlan}20.  ${color20}portainer容器管理面板"
+	  echo -e "${gl_kjlan}11.  ${color11}绂呴亾椤圭洰绠＄悊杞欢                    ${gl_kjlan}12.  ${color12}闈掗緳闈㈡澘瀹氭椂浠诲姟绠＄悊骞冲彴"
+	  echo -e "${gl_kjlan}13.  ${color13}Cloudreve缃戠洏 ${gl_huang}鈽?{gl_bai}                     ${gl_kjlan}14.  ${color14}绠€鍗曞浘搴婂浘鐗囩鐞嗙▼搴?
+	  echo -e "${gl_kjlan}15.  ${color15}emby澶氬獟浣撶鐞嗙郴缁?                 ${gl_kjlan}16.  ${color16}Speedtest娴嬮€熼潰鏉?
+	  echo -e "${gl_kjlan}17.  ${color17}AdGuardHome鍘诲箍鍛婅蒋浠?              ${gl_kjlan}18.  ${color18}onlyoffice鍦ㄧ嚎鍔炲叕OFFICE"
+	  echo -e "${gl_kjlan}19.  ${color19}闆锋睜WAF闃茬伀澧欓潰鏉?                  ${gl_kjlan}20.  ${color20}portainer瀹瑰櫒绠＄悊闈㈡澘"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}21.  ${color21}VScode网页�?                       ${gl_kjlan}22.  ${color22}UptimeKuma监控工具"
-	  echo -e "${gl_kjlan}23.  ${color23}Memos网页备忘�?                    ${gl_kjlan}24.  ${color24}Webtop远程桌面网页�?${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}25.  ${color25}Nextcloud网盘                       ${gl_kjlan}26.  ${color26}QD-Today定时任务管理框架"
-	  echo -e "${gl_kjlan}27.  ${color27}Dockge容器堆栈管理面板              ${gl_kjlan}28.  ${color28}LibreSpeed测速工�?
-	  echo -e "${gl_kjlan}29.  ${color29}searxng聚合搜索�?${gl_huang}�?{gl_bai}                 ${gl_kjlan}30.  ${color30}PhotoPrism私有相册系统"
+	  echo -e "${gl_kjlan}21.  ${color21}VScode缃戦〉鐗?                       ${gl_kjlan}22.  ${color22}UptimeKuma鐩戞帶宸ュ叿"
+	  echo -e "${gl_kjlan}23.  ${color23}Memos缃戦〉澶囧繕褰?                    ${gl_kjlan}24.  ${color24}Webtop杩滅▼妗岄潰缃戦〉鐗?${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}25.  ${color25}Nextcloud缃戠洏                       ${gl_kjlan}26.  ${color26}QD-Today瀹氭椂浠诲姟绠＄悊妗嗘灦"
+	  echo -e "${gl_kjlan}27.  ${color27}Dockge瀹瑰櫒鍫嗘爤绠＄悊闈㈡澘              ${gl_kjlan}28.  ${color28}LibreSpeed娴嬮€熷伐鍏?
+	  echo -e "${gl_kjlan}29.  ${color29}searxng鑱氬悎鎼滅储绔?${gl_huang}鈽?{gl_bai}                 ${gl_kjlan}30.  ${color30}PhotoPrism绉佹湁鐩稿唽绯荤粺"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}31.  ${color31}StirlingPDF工具大全                 ${gl_kjlan}32.  ${color32}drawio免费的在线图表软�?${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}33.  ${color33}Sun-Panel导航面板                   ${gl_kjlan}34.  ${color34}Pingvin-Share文件分享平台"
-	  echo -e "${gl_kjlan}35.  ${color35}极简朋友�?                         ${gl_kjlan}36.  ${color36}LobeChatAI聊天聚合网站"
-	  echo -e "${gl_kjlan}37.  ${color37}MyIP工具�?${gl_huang}�?{gl_bai}                        ${gl_kjlan}38.  ${color38}小雅alist全家�?
-	  echo -e "${gl_kjlan}39.  ${color39}Bililive直播录制工具                ${gl_kjlan}40.  ${color40}webssh网页版SSH连接工具"
+	  echo -e "${gl_kjlan}31.  ${color31}StirlingPDF宸ュ叿澶у叏                 ${gl_kjlan}32.  ${color32}drawio鍏嶈垂鐨勫湪绾垮浘琛ㄨ蒋浠?${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}33.  ${color33}Sun-Panel瀵艰埅闈㈡澘                   ${gl_kjlan}34.  ${color34}Pingvin-Share鏂囦欢鍒嗕韩骞冲彴"
+	  echo -e "${gl_kjlan}35.  ${color35}鏋佺畝鏈嬪弸鍦?                         ${gl_kjlan}36.  ${color36}LobeChatAI鑱婂ぉ鑱氬悎缃戠珯"
+	  echo -e "${gl_kjlan}37.  ${color37}MyIP宸ュ叿绠?${gl_huang}鈽?{gl_bai}                        ${gl_kjlan}38.  ${color38}灏忛泤alist鍏ㄥ妗?
+	  echo -e "${gl_kjlan}39.  ${color39}Bililive鐩存挱褰曞埗宸ュ叿                ${gl_kjlan}40.  ${color40}webssh缃戦〉鐗圫SH杩炴帴宸ュ叿"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}41.  ${color41}耗子管理面板                	 ${gl_kjlan}42.  ${color42}Nexterm远程连接工具"
-	  echo -e "${gl_kjlan}43.  ${color43}RustDesk远程桌面(服务�? ${gl_huang}�?{gl_bai}          ${gl_kjlan}44.  ${color44}RustDesk远程桌面(中继�? ${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}45.  ${color45}Docker加速站            		 ${gl_kjlan}46.  ${color46}GitHub加速站 ${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}47.  ${color47}普罗米修斯监�?		 ${gl_kjlan}48.  ${color48}普罗米修�?主机监控)"
-	  echo -e "${gl_kjlan}49.  ${color49}普罗米修�?容器监控)		 ${gl_kjlan}50.  ${color50}补货监控工具"
+	  echo -e "${gl_kjlan}41.  ${color41}鑰楀瓙绠＄悊闈㈡澘                	 ${gl_kjlan}42.  ${color42}Nexterm杩滅▼杩炴帴宸ュ叿"
+	  echo -e "${gl_kjlan}43.  ${color43}RustDesk杩滅▼妗岄潰(鏈嶅姟绔? ${gl_huang}鈽?{gl_bai}          ${gl_kjlan}44.  ${color44}RustDesk杩滅▼妗岄潰(涓户绔? ${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}45.  ${color45}Docker鍔犻€熺珯            		 ${gl_kjlan}46.  ${color46}GitHub鍔犻€熺珯 ${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}47.  ${color47}鏅綏绫充慨鏂洃鎺?		 ${gl_kjlan}48.  ${color48}鏅綏绫充慨鏂?涓绘満鐩戞帶)"
+	  echo -e "${gl_kjlan}49.  ${color49}鏅綏绫充慨鏂?瀹瑰櫒鐩戞帶)		 ${gl_kjlan}50.  ${color50}琛ヨ揣鐩戞帶宸ュ叿"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}51.  ${color51}PVE开小鸡面板			 ${gl_kjlan}52.  ${color52}DPanel容器管理面板"
-	  echo -e "${gl_kjlan}53.  ${color53}llama3聊天AI大模�?                 ${gl_kjlan}54.  ${color54}AMH主机建站管理面板"
-	  echo -e "${gl_kjlan}55.  ${color55}FRP内网穿�?服务�? ${gl_huang}�?{gl_bai}	         ${gl_kjlan}56.  ${color56}FRP内网穿�?客户�? ${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}57.  ${color57}Deepseek聊天AI大模�?               ${gl_kjlan}58.  ${color58}Dify大模型知识库 ${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}59.  ${color59}NewAPI大模型资产管�?               ${gl_kjlan}60.  ${color60}JumpServer开源堡垒机"
+	  echo -e "${gl_kjlan}51.  ${color51}PVE寮€灏忛浮闈㈡澘			 ${gl_kjlan}52.  ${color52}DPanel瀹瑰櫒绠＄悊闈㈡澘"
+	  echo -e "${gl_kjlan}53.  ${color53}llama3鑱婂ぉAI澶фā鍨?                 ${gl_kjlan}54.  ${color54}AMH涓绘満寤虹珯绠＄悊闈㈡澘"
+	  echo -e "${gl_kjlan}55.  ${color55}FRP鍐呯綉绌块€?鏈嶅姟绔? ${gl_huang}鈽?{gl_bai}	         ${gl_kjlan}56.  ${color56}FRP鍐呯綉绌块€?瀹㈡埛绔? ${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}57.  ${color57}Deepseek鑱婂ぉAI澶фā鍨?               ${gl_kjlan}58.  ${color58}Dify澶фā鍨嬬煡璇嗗簱 ${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}59.  ${color59}NewAPI澶фā鍨嬭祫浜х鐞?               ${gl_kjlan}60.  ${color60}JumpServer寮€婧愬牎鍨掓満"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}61.  ${color61}在线翻译服务�?		 ${gl_kjlan}62.  ${color62}RAGFlow大模型知识库"
-	  echo -e "${gl_kjlan}63.  ${color63}OpenWebUI自托管AI平台 ${gl_huang}�?{gl_bai}             ${gl_kjlan}64.  ${color64}it-tools工具�?
-	  echo -e "${gl_kjlan}65.  ${color65}n8n自动化工作流平台 ${gl_huang}�?{gl_bai}               ${gl_kjlan}66.  ${color66}yt-dlp视频下载工具"
-	  echo -e "${gl_kjlan}67.  ${color67}ddns-go动态DNS管理工具 ${gl_huang}�?{gl_bai}            ${gl_kjlan}68.  ${color68}AllinSSL证书管理平台"
-	  echo -e "${gl_kjlan}69.  ${color69}SFTPGo文件传输工具                  ${gl_kjlan}70.  ${color70}AstrBot聊天机器人框�?
+	  echo -e "${gl_kjlan}61.  ${color61}鍦ㄧ嚎缈昏瘧鏈嶅姟鍣?		 ${gl_kjlan}62.  ${color62}RAGFlow澶фā鍨嬬煡璇嗗簱"
+	  echo -e "${gl_kjlan}63.  ${color63}OpenWebUI鑷墭绠I骞冲彴 ${gl_huang}鈽?{gl_bai}             ${gl_kjlan}64.  ${color64}it-tools宸ュ叿绠?
+	  echo -e "${gl_kjlan}65.  ${color65}n8n鑷姩鍖栧伐浣滄祦骞冲彴 ${gl_huang}鈽?{gl_bai}               ${gl_kjlan}66.  ${color66}yt-dlp瑙嗛涓嬭浇宸ュ叿"
+	  echo -e "${gl_kjlan}67.  ${color67}ddns-go鍔ㄦ€丏NS绠＄悊宸ュ叿 ${gl_huang}鈽?{gl_bai}            ${gl_kjlan}68.  ${color68}AllinSSL璇佷功绠＄悊骞冲彴"
+	  echo -e "${gl_kjlan}69.  ${color69}SFTPGo鏂囦欢浼犺緭宸ュ叿                  ${gl_kjlan}70.  ${color70}AstrBot鑱婂ぉ鏈哄櫒浜烘鏋?
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}71.  ${color71}Navidrome私有音乐服务�?            ${gl_kjlan}72.  ${color72}bitwarden密码管理�?${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}73.  ${color73}LibreTV私有影视                     ${gl_kjlan}74.  ${color74}MoonTV私有影视"
-	  echo -e "${gl_kjlan}75.  ${color75}Melody音乐精灵                      ${gl_kjlan}76.  ${color76}在线DOS老游�?
-	  echo -e "${gl_kjlan}77.  ${color77}迅雷离线下载工具                    ${gl_kjlan}78.  ${color78}PandaWiki智能文档管理系统"
-	  echo -e "${gl_kjlan}79.  ${color79}Beszel服务器监�?                   ${gl_kjlan}80.  ${color80}linkwarden书签管理"
+	  echo -e "${gl_kjlan}71.  ${color71}Navidrome绉佹湁闊充箰鏈嶅姟鍣?            ${gl_kjlan}72.  ${color72}bitwarden瀵嗙爜绠＄悊鍣?${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}73.  ${color73}LibreTV绉佹湁褰辫                     ${gl_kjlan}74.  ${color74}MoonTV绉佹湁褰辫"
+	  echo -e "${gl_kjlan}75.  ${color75}Melody闊充箰绮剧伒                      ${gl_kjlan}76.  ${color76}鍦ㄧ嚎DOS鑰佹父鎴?
+	  echo -e "${gl_kjlan}77.  ${color77}杩呴浄绂荤嚎涓嬭浇宸ュ叿                    ${gl_kjlan}78.  ${color78}PandaWiki鏅鸿兘鏂囨。绠＄悊绯荤粺"
+	  echo -e "${gl_kjlan}79.  ${color79}Beszel鏈嶅姟鍣ㄧ洃鎺?                   ${gl_kjlan}80.  ${color80}linkwarden涔︾绠＄悊"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}81.  ${color81}JitsiMeet视频会议                   ${gl_kjlan}82.  ${color82}gpt-load高性能AI透明代理"
-	  echo -e "${gl_kjlan}83.  ${color83}komari服务器监控工�?               ${gl_kjlan}84.  ${color84}Wallos个人财务管理工具"
-	  echo -e "${gl_kjlan}85.  ${color85}immich图片视频管理�?               ${gl_kjlan}86.  ${color86}jellyfin媒体管理系统"
-	  echo -e "${gl_kjlan}87.  ${color87}SyncTV一起看片神�?                 ${gl_kjlan}88.  ${color88}Owncast自托管直播平�?
-	  echo -e "${gl_kjlan}89.  ${color89}FileCodeBox文件快�?                ${gl_kjlan}90.  ${color90}matrix去中心化聊天协议"
+	  echo -e "${gl_kjlan}81.  ${color81}JitsiMeet瑙嗛浼氳                   ${gl_kjlan}82.  ${color82}gpt-load楂樻€ц兘AI閫忔槑浠ｇ悊"
+	  echo -e "${gl_kjlan}83.  ${color83}komari鏈嶅姟鍣ㄧ洃鎺у伐鍏?               ${gl_kjlan}84.  ${color84}Wallos涓汉璐㈠姟绠＄悊宸ュ叿"
+	  echo -e "${gl_kjlan}85.  ${color85}immich鍥剧墖瑙嗛绠＄悊鍣?               ${gl_kjlan}86.  ${color86}jellyfin濯掍綋绠＄悊绯荤粺"
+	  echo -e "${gl_kjlan}87.  ${color87}SyncTV涓€璧风湅鐗囩鍣?                 ${gl_kjlan}88.  ${color88}Owncast鑷墭绠＄洿鎾钩鍙?
+	  echo -e "${gl_kjlan}89.  ${color89}FileCodeBox鏂囦欢蹇€?                ${gl_kjlan}90.  ${color90}matrix鍘讳腑蹇冨寲鑱婂ぉ鍗忚"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}91.  ${color91}gitea私有代码仓库                   ${gl_kjlan}92.  ${color92}FileBrowser文件管理�?
-	  echo -e "${gl_kjlan}93.  ${color93}Dufs极简静态文件服务器              ${gl_kjlan}94.  ${color94}Gopeed高速下载工�?
-	  echo -e "${gl_kjlan}95.  ${color95}paperless文档管理平台               ${gl_kjlan}96.  ${color96}2FAuth自托管二步验证器"
-	  echo -e "${gl_kjlan}97.  ${color97}WireGuard组网(服务�?               ${gl_kjlan}98.  ${color98}WireGuard组网(客户�?"
-	  echo -e "${gl_kjlan}99.  ${color99}DSM群晖虚拟�?                      ${gl_kjlan}100. ${color100}Syncthing点对点文件同步工�?
+	  echo -e "${gl_kjlan}91.  ${color91}gitea绉佹湁浠ｇ爜浠撳簱                   ${gl_kjlan}92.  ${color92}FileBrowser鏂囦欢绠＄悊鍣?
+	  echo -e "${gl_kjlan}93.  ${color93}Dufs鏋佺畝闈欐€佹枃浠舵湇鍔″櫒              ${gl_kjlan}94.  ${color94}Gopeed楂橀€熶笅杞藉伐鍏?
+	  echo -e "${gl_kjlan}95.  ${color95}paperless鏂囨。绠＄悊骞冲彴               ${gl_kjlan}96.  ${color96}2FAuth鑷墭绠′簩姝ラ獙璇佸櫒"
+	  echo -e "${gl_kjlan}97.  ${color97}WireGuard缁勭綉(鏈嶅姟绔?               ${gl_kjlan}98.  ${color98}WireGuard缁勭綉(瀹㈡埛绔?"
+	  echo -e "${gl_kjlan}99.  ${color99}DSM缇ゆ櫀铏氭嫙鏈?                      ${gl_kjlan}100. ${color100}Syncthing鐐瑰鐐规枃浠跺悓姝ュ伐鍏?
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}101. ${color101}AI视频生成工具                      ${gl_kjlan}102. ${color102}VoceChat多人在线聊天系统"
-	  echo -e "${gl_kjlan}103. ${color103}Umami网站统计工具                   ${gl_kjlan}104. ${color104}Stream四层代理转发工具"
-	  echo -e "${gl_kjlan}105. ${color105}思源笔记                            ${gl_kjlan}106. ${color106}Drawnix开源白板工�?
-	  echo -e "${gl_kjlan}107. ${color107}PanSou网盘搜索                      ${gl_kjlan}108. ${color108}LangBot聊天机器�?
-	  echo -e "${gl_kjlan}109. ${color109}ZFile在线网盘                       ${gl_kjlan}110. ${color110}Karakeep书签管理"
+	  echo -e "${gl_kjlan}101. ${color101}AI瑙嗛鐢熸垚宸ュ叿                      ${gl_kjlan}102. ${color102}VoceChat澶氫汉鍦ㄧ嚎鑱婂ぉ绯荤粺"
+	  echo -e "${gl_kjlan}103. ${color103}Umami缃戠珯缁熻宸ュ叿                   ${gl_kjlan}104. ${color104}Stream鍥涘眰浠ｇ悊杞彂宸ュ叿"
+	  echo -e "${gl_kjlan}105. ${color105}鎬濇簮绗旇                            ${gl_kjlan}106. ${color106}Drawnix寮€婧愮櫧鏉垮伐鍏?
+	  echo -e "${gl_kjlan}107. ${color107}PanSou缃戠洏鎼滅储                      ${gl_kjlan}108. ${color108}LangBot鑱婂ぉ鏈哄櫒浜?
+	  echo -e "${gl_kjlan}109. ${color109}ZFile鍦ㄧ嚎缃戠洏                       ${gl_kjlan}110. ${color110}Karakeep涔︾绠＄悊"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}111. ${color111}多格式文件转换工�?                 ${gl_kjlan}112. ${color112}Lucky大内网穿透工�?
-	  echo -e "${gl_kjlan}113. ${color113}Firefox浏览�?                      ${gl_kjlan}114. ${color114}ClawdBot/Moltbot机器�?{gl_huang}�?{gl_bai}"
+	  echo -e "${gl_kjlan}111. ${color111}澶氭牸寮忔枃浠惰浆鎹㈠伐鍏?                 ${gl_kjlan}112. ${color112}Lucky澶у唴缃戠┛閫忓伐鍏?
+	  echo -e "${gl_kjlan}113. ${color113}Firefox娴忚鍣?                      ${gl_kjlan}114. ${color114}ClawdBot/Moltbot鏈哄櫒浜?{gl_huang}鈽?{gl_bai}"
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}第三方应用列�?
-  	  echo -e "${gl_kjlan}想要让你的应用出现在这里？查看开发者指�? ${gl_huang}https://dev.kejilion.sh/${gl_bai}"
+	  echo -e "${gl_kjlan}绗笁鏂瑰簲鐢ㄥ垪琛?
+  	  echo -e "${gl_kjlan}鎯宠璁╀綘鐨勫簲鐢ㄥ嚭鐜板湪杩欓噷锛熸煡鐪嬪紑鍙戣€呮寚鍗? ${gl_huang}https://dev.kejilion.sh/${gl_bai}"
 
 	  for f in "$HOME"/apps/*.conf; do
 		  [ -e "$f" ] || continue
 		  local base_name=$(basename "$f" .conf)
-		  # 获取应用描述
+		  # 鑾峰彇搴旂敤鎻忚堪
 		  local app_text=$(grep "app_text=" "$f" | cut -d'=' -f2 | tr -d '"' | tr -d "'")
 
-		  # 检查安装状�?(匹配 appno.txt 中的 ID)
-		  # 这里假设 appno.txt 中记录的�?base_name (即文件名)
+		  # 妫€鏌ュ畨瑁呯姸鎬?(鍖归厤 appno.txt 涓殑 ID)
+		  # 杩欓噷鍋囪 appno.txt 涓褰曠殑鏄?base_name (鍗虫枃浠跺悕)
 		  if echo "$app_numbers" | grep -q "^$base_name$"; then
-			  # 如果已安装：显示 base_name - 描述 [已安装] (绿色)
-			  echo -e "${gl_kjlan}$base_name${gl_bai} - ${gl_lv}$app_text [已安装]${gl_bai}"
+			  # 濡傛灉宸插畨瑁咃細鏄剧ず base_name - 鎻忚堪 [宸插畨瑁匽 (缁胯壊)
+			  echo -e "${gl_kjlan}$base_name${gl_bai} - ${gl_lv}$app_text [宸插畨瑁匽${gl_bai}"
 		  else
-			  # 如果未安装：正常显示
+			  # 濡傛灉鏈畨瑁咃細姝ｅ父鏄剧ず
 			  echo -e "${gl_kjlan}$base_name${gl_bai} - $app_text"
 		  fi
 	  done
@@ -10588,18 +10588,18 @@ while true; do
 
 
 	  echo -e "${gl_kjlan}-------------------------"
-	  echo -e "${gl_kjlan}b.   ${gl_bai}备份全部应用数据                    ${gl_kjlan}r.   ${gl_bai}还原全部应用数据"
+	  echo -e "${gl_kjlan}b.   ${gl_bai}澶囦唤鍏ㄩ儴搴旂敤鏁版嵁                    ${gl_kjlan}r.   ${gl_bai}杩樺師鍏ㄩ儴搴旂敤鏁版嵁"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主菜�?
+	  echo -e "${gl_kjlan}0.   ${gl_bai}杩斿洖涓昏彍鍗?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 	fi
 
 	case $sub_choice in
 	  1|bt|baota)
 		local app_id="1"
 		local lujing="[ -d "/www/server/panel" ]"
-		local panelname="宝塔面板"
+		local panelname="瀹濆闈㈡澘"
 		local panelurl="https://www.bt.cn/new/index.html"
 
 		panel_app_install() {
@@ -10692,10 +10692,10 @@ while true; do
 
 		}
 
-		local docker_describe="一个Nginx反向代理工具面板，不支持添加域名访问�?
-		local docker_url="官网介绍: https://nginxproxymanager.com/"
-		local docker_use="echo \"初始用户�? admin@example.com\""
-		local docker_passwd="echo \"初始密码: changeme\""
+		local docker_describe="涓€涓狽ginx鍙嶅悜浠ｇ悊宸ュ叿闈㈡澘锛屼笉鏀寔娣诲姞鍩熷悕璁块棶銆?
+		local docker_url="瀹樼綉浠嬬粛: https://nginxproxymanager.com/"
+		local docker_use="echo \"鍒濆鐢ㄦ埛鍚? admin@example.com\""
+		local docker_passwd="echo \"鍒濆瀵嗙爜: changeme\""
 		local app_size="1"
 
 		docker_app
@@ -10727,8 +10727,8 @@ while true; do
 		}
 
 
-		local docker_describe="一个支持多种存储，支持网页浏览�?WebDAV 的文件列表程序，�?gin �?Solidjs 驱动"
-		local docker_url="官网介绍: ${gh_https_url}github.com/OpenListTeam/OpenList"
+		local docker_describe="涓€涓敮鎸佸绉嶅瓨鍌紝鏀寔缃戦〉娴忚鍜?WebDAV 鐨勬枃浠跺垪琛ㄧ▼搴忥紝鐢?gin 鍜?Solidjs 椹卞姩"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/OpenListTeam/OpenList"
 		local docker_use="docker exec openlist ./openlist admin random"
 		local docker_passwd=""
 		local app_size="1"
@@ -10745,8 +10745,8 @@ while true; do
 
 		docker_rum() {
 
-			read -e -p "设置登录用户�? " admin
-			read -e -p "设置登录用户密码: " admin_password
+			read -e -p "璁剧疆鐧诲綍鐢ㄦ埛鍚? " admin
+			read -e -p "璁剧疆鐧诲綍鐢ㄦ埛瀵嗙爜: " admin_password
 			docker run -d \
 			  --name=webtop-ubuntu \
 			  --security-opt seccomp=unconfined \
@@ -10768,8 +10768,8 @@ while true; do
 		}
 
 
-		local docker_describe="webtop基于Ubuntu的容器。若IP无法访问，请添加域名访问�?
-		local docker_url="官网介绍: https://docs.linuxserver.io/images/docker-webtop/"
+		local docker_describe="webtop鍩轰簬Ubuntu鐨勫鍣ㄣ€傝嫢IP鏃犳硶璁块棶锛岃娣诲姞鍩熷悕璁块棶銆?
+		local docker_url="瀹樼綉浠嬬粛: https://docs.linuxserver.io/images/docker-webtop/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="2"
@@ -10779,7 +10779,7 @@ while true; do
 		  ;;
 	  7|nezha)
 		clear
-		send_stats "搭建哪吒"
+		send_stats "鎼缓鍝悞"
 
 		local app_id="7"
 		local docker_name="nezha-dashboard"
@@ -10788,20 +10788,20 @@ while true; do
 			check_docker_app
 			check_docker_image_update $docker_name
 			clear
-			echo -e "哪吒监控 $check_docker $update_status"
-			echo "开源、轻量、易用的服务器监控与运维工具"
-			echo "官网搭建文档: https://nezha.wiki/guide/dashboard.html"
+			echo -e "鍝悞鐩戞帶 $check_docker $update_status"
+			echo "寮€婧愩€佽交閲忋€佹槗鐢ㄧ殑鏈嶅姟鍣ㄧ洃鎺т笌杩愮淮宸ュ叿"
+			echo "瀹樼綉鎼缓鏂囨。: https://nezha.wiki/guide/dashboard.html"
 			if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -q "$docker_name"; then
 				local docker_port=$(docker port $docker_name | awk -F'[:]' '/->/ {print $NF}' | uniq)
 				check_docker_app_ip
 			fi
 			echo ""
 			echo "------------------------"
-			echo "1. 使用"
+			echo "1. 浣跨敤"
 			echo "------------------------"
-			echo "0. 返回上一级选单"
+			echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 			echo "------------------------"
-			read -e -p "输入你的选择: " choice
+			read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 
 			case $choice in
 				1)
@@ -10848,8 +10848,8 @@ while true; do
 
 		}
 
-		local docker_describe="qbittorrent离线BT磁力下载服务"
-		local docker_url="官网介绍: https://hub.docker.com/r/linuxserver/qbittorrent"
+		local docker_describe="qbittorrent绂荤嚎BT纾佸姏涓嬭浇鏈嶅姟"
+		local docker_url="瀹樼綉浠嬬粛: https://hub.docker.com/r/linuxserver/qbittorrent"
 		local docker_use="sleep 3"
 		local docker_passwd="docker logs qbittorrent"
 		local app_size="1"
@@ -10858,54 +10858,54 @@ while true; do
 		  ;;
 
 	  9|mail)
-		send_stats "搭建邮局"
+		send_stats "鎼缓閭眬"
 		clear
 		install telnet
 		local app_id="9"
-		local docker_name=“mailserver�?
+		local docker_name=鈥渕ailserver鈥?
 		while true; do
 			check_docker_app
 			check_docker_image_update $docker_name
 
 			clear
-			echo -e "邮局服务 $check_docker $update_status"
-			echo "poste.io 是一个开源的邮件服务器解决方案，"
-			echo "视频介绍: https://www.bilibili.com/video/BV1wv421C71t?t=0.1"
+			echo -e "閭眬鏈嶅姟 $check_docker $update_status"
+			echo "poste.io 鏄竴涓紑婧愮殑閭欢鏈嶅姟鍣ㄨВ鍐虫柟妗堬紝"
+			echo "瑙嗛浠嬬粛: https://www.bilibili.com/video/BV1wv421C71t?t=0.1"
 
 			echo ""
-			echo "端口检�?
+			echo "绔彛妫€娴?
 			port=25
 			timeout=3
 			if echo "quit" | timeout $timeout telnet smtp.qq.com $port | grep 'Connected'; then
-			  echo -e "${gl_lv}端口 $port 当前可用${gl_bai}"
+			  echo -e "${gl_lv}绔彛 $port 褰撳墠鍙敤${gl_bai}"
 			else
-			  echo -e "${gl_hong}端口 $port 当前不可�?{gl_bai}"
+			  echo -e "${gl_hong}绔彛 $port 褰撳墠涓嶅彲鐢?{gl_bai}"
 			fi
 			echo ""
 
 			if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -q "$docker_name"; then
 				yuming=$(cat /home/docker/mail.txt)
-				echo "访问地址: "
+				echo "璁块棶鍦板潃: "
 				echo "https://$yuming"
 			fi
 
 			echo "------------------------"
-			echo "1. 安装           2. 更新           3. 卸载"
+			echo "1. 瀹夎           2. 鏇存柊           3. 鍗歌浇"
 			echo "------------------------"
-			echo "0. 返回上一级选单"
+			echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 			echo "------------------------"
-			read -e -p "输入你的选择: " choice
+			read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 
 			case $choice in
 				1)
 					setup_docker_dir
 					check_disk_space 2 /home/docker
-					read -e -p "请设置邮箱域�?例如 mail.yuming.com : " yuming
+					read -e -p "璇疯缃偖绠卞煙鍚?渚嬪 mail.yuming.com : " yuming
 					mkdir -p /home/docker
 					echo "$yuming" > /home/docker/mail.txt
 					echo "------------------------"
 					ip_address
-					echo "先解析这些DNS记录"
+					echo "鍏堣В鏋愯繖浜汥NS璁板綍"
 					echo "A           mail            $ipv4_address"
 					echo "CNAME       imap            $yuming"
 					echo "CNAME       pop             $yuming"
@@ -10915,7 +10915,7 @@ while true; do
 					echo "TXT         ?               ?"
 					echo ""
 					echo "------------------------"
-					echo "按任意键继续..."
+					echo "鎸変换鎰忛敭缁х画..."
 					read -n 1 -s -r -p ""
 
 					install jq
@@ -10934,9 +10934,9 @@ while true; do
 					add_app_id
 
 					clear
-					echo "poste.io已经安装完成"
+					echo "poste.io宸茬粡瀹夎瀹屾垚"
 					echo "------------------------"
-					echo "您可以使用以下地址访问poste.io:"
+					echo "鎮ㄥ彲浠ヤ娇鐢ㄤ互涓嬪湴鍧€璁块棶poste.io:"
 					echo "https://$yuming"
 					echo ""
 
@@ -10959,9 +10959,9 @@ while true; do
 					add_app_id
 
 					clear
-					echo "poste.io已经安装完成"
+					echo "poste.io宸茬粡瀹夎瀹屾垚"
 					echo "------------------------"
-					echo "您可以使用以下地址访问poste.io:"
+					echo "鎮ㄥ彲浠ヤ娇鐢ㄤ互涓嬪湴鍧€璁块棶poste.io:"
 					echo "https://$yuming"
 					echo ""
 					;;
@@ -10972,7 +10972,7 @@ while true; do
 					rm -rf /home/docker/mail
 
 					sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-					echo "应用已卸�?
+					echo "搴旂敤宸插嵏杞?
 					;;
 
 				*)
@@ -10988,9 +10988,9 @@ while true; do
 	  10|rocketchat)
 
 		local app_id="10"
-		local app_name="Rocket.Chat聊天系统"
-		local app_text="Rocket.Chat 是一个开源的团队通讯平台，支持实时聊天、音视频通话、文件共享等多种功能�?
-		local app_url="官方介绍: https://www.rocket.chat/"
+		local app_name="Rocket.Chat鑱婂ぉ绯荤粺"
+		local app_text="Rocket.Chat 鏄竴涓紑婧愮殑鍥㈤槦閫氳骞冲彴锛屾敮鎸佸疄鏃惰亰澶┿€侀煶瑙嗛閫氳瘽銆佹枃浠跺叡浜瓑澶氱鍔熻兘锛?
+		local app_url="瀹樻柟浠嬬粛: https://www.rocket.chat/"
 		local docker_name="rocketchat"
 		local docker_port="3897"
 		local app_size="2"
@@ -11006,7 +11006,7 @@ while true; do
 
 			clear
 			ip_address
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -11016,7 +11016,7 @@ while true; do
 			docker run --name rocketchat --restart=always -p ${docker_port}:3000 --link db --env ROOT_URL=http://localhost --env MONGO_OPLOG_URL=mongodb://db:27017/rs5 -d rocket.chat
 			clear
 			ip_address
-			echo "rocket.chat已经安装完成"
+			echo "rocket.chat宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -11026,7 +11026,7 @@ while true; do
 			docker rm -f db
 			docker rmi -f mongo:latest
 			rm -rf /home/docker/mongo
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -11056,10 +11056,10 @@ while true; do
 
 		}
 
-		local docker_describe="禅道是通用的项目管理软�?
-		local docker_url="官网介绍: https://www.zentao.net/"
-		local docker_use="echo \"初始用户�? admin\""
-		local docker_passwd="echo \"初始密码: 123456\""
+		local docker_describe="绂呴亾鏄€氱敤鐨勯」鐩鐞嗚蒋浠?
+		local docker_url="瀹樼綉浠嬬粛: https://www.zentao.net/"
+		local docker_use="echo \"鍒濆鐢ㄦ埛鍚? admin\""
+		local docker_passwd="echo \"鍒濆瀵嗙爜: 123456\""
 		local app_size="2"
 		docker_app
 
@@ -11085,8 +11085,8 @@ while true; do
 
 		}
 
-		local docker_describe="青龙面板是一个定时任务管理平�?
-		local docker_url="官网介绍: ${gh_proxy}github.com/whyour/qinglong"
+		local docker_describe="闈掗緳闈㈡澘鏄竴涓畾鏃朵换鍔＄鐞嗗钩鍙?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/whyour/qinglong"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11096,9 +11096,9 @@ while true; do
 	  13|cloudreve)
 
 		local app_id="13"
-		local app_name="cloudreve网盘"
-		local app_text="cloudreve是一个支持多家云存储的网盘系�?
-		local app_url="视频介绍: https://www.bilibili.com/video/BV13F4m1c7h7?t=0.1"
+		local app_name="cloudreve缃戠洏"
+		local app_text="cloudreve鏄竴涓敮鎸佸瀹朵簯瀛樺偍鐨勭綉鐩樼郴缁?
+		local app_url="瑙嗛浠嬬粛: https://www.bilibili.com/video/BV13F4m1c7h7?t=0.1"
 		local docker_name="cloudreve"
 		local docker_port="5212"
 		local app_size="2"
@@ -11110,7 +11110,7 @@ while true; do
 			cd /home/docker/cloud/
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -11124,7 +11124,7 @@ while true; do
 		docker_app_uninstall() {
 			cd /home/docker/cloud/ && docker compose down --rmi all
 			rm -rf /home/docker/cloud
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -11150,8 +11150,8 @@ while true; do
 
 		}
 
-		local docker_describe="简单图床是一个简单的图床程序"
-		local docker_url="官网介绍: ${gh_proxy}github.com/icret/EasyImages2.0"
+		local docker_describe="绠€鍗曞浘搴婃槸涓€涓畝鍗曠殑鍥惧簥绋嬪簭"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/icret/EasyImages2.0"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11178,8 +11178,8 @@ while true; do
 		}
 
 
-		local docker_describe="emby是一个主从式架构的媒体服务器软件，可以用来整理服务器上的视频和音频，并将音频和视频流式传输到客户端设�?
-		local docker_url="官网介绍: https://emby.media/"
+		local docker_describe="emby鏄竴涓富浠庡紡鏋舵瀯鐨勫獟浣撴湇鍔″櫒杞欢锛屽彲浠ョ敤鏉ユ暣鐞嗘湇鍔″櫒涓婄殑瑙嗛鍜岄煶棰戯紝骞跺皢闊抽鍜岃棰戞祦寮忎紶杈撳埌瀹㈡埛绔澶?
+		local docker_url="瀹樼綉浠嬬粛: https://emby.media/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11199,8 +11199,8 @@ while true; do
 
 		}
 
-		local docker_describe="Speedtest测速面板是一个VPS网速测试工具，多项测试功能，还可以实时监控VPS进出站流�?
-		local docker_url="官网介绍: ${gh_proxy}github.com/wikihost-opensource/als"
+		local docker_describe="Speedtest娴嬮€熼潰鏉挎槸涓€涓猇PS缃戦€熸祴璇曞伐鍏凤紝澶氶」娴嬭瘯鍔熻兘锛岃繕鍙互瀹炴椂鐩戞帶VPS杩涘嚭绔欐祦閲?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/wikihost-opensource/als"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11230,8 +11230,8 @@ while true; do
 		}
 
 
-		local docker_describe="AdGuardHome是一款全网广告拦截与反跟踪软件，未来将不止是一个DNS服务器�?
-		local docker_url="官网介绍: https://hub.docker.com/r/adguard/adguardhome"
+		local docker_describe="AdGuardHome鏄竴娆惧叏缃戝箍鍛婃嫤鎴笌鍙嶈窡韪蒋浠讹紝鏈潵灏嗕笉姝㈡槸涓€涓狣NS鏈嶅姟鍣ㄣ€?
+		local docker_url="瀹樼綉浠嬬粛: https://hub.docker.com/r/adguard/adguardhome"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11259,8 +11259,8 @@ while true; do
 
 		}
 
-		local docker_describe="onlyoffice是一款开源的在线office工具，太强大了！"
-		local docker_url="官网介绍: https://www.onlyoffice.com/"
+		local docker_describe="onlyoffice鏄竴娆惧紑婧愮殑鍦ㄧ嚎office宸ュ叿锛屽お寮哄ぇ浜嗭紒"
+		local docker_url="瀹樼綉浠嬬粛: https://www.onlyoffice.com/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="2"
@@ -11269,7 +11269,7 @@ while true; do
 		  ;;
 
 	  19|safeline)
-		send_stats "搭建雷池"
+		send_stats "鎼缓闆锋睜"
 
 		local app_id="19"
 		local docker_name=safeline-mgt
@@ -11277,20 +11277,20 @@ while true; do
 		while true; do
 			check_docker_app
 			clear
-			echo -e "雷池服务 $check_docker"
-			echo "雷池是长亭科技开发的WAF站点防火墙程序面板，可以反代站点进行自动化防�?
-			echo "视频介绍: https://www.bilibili.com/video/BV1mZ421T74c?t=0.1"
+			echo -e "闆锋睜鏈嶅姟 $check_docker"
+			echo "闆锋睜鏄暱浜鎶€寮€鍙戠殑WAF绔欑偣闃茬伀澧欑▼搴忛潰鏉匡紝鍙互鍙嶄唬绔欑偣杩涜鑷姩鍖栭槻寰?
+			echo "瑙嗛浠嬬粛: https://www.bilibili.com/video/BV1mZ421T74c?t=0.1"
 			if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -q "$docker_name"; then
 				check_docker_app_ip
 			fi
 			echo ""
 
 			echo "------------------------"
-			echo "1. 安装           2. 更新           3. 重置密码           4. 卸载"
+			echo "1. 瀹夎           2. 鏇存柊           3. 閲嶇疆瀵嗙爜           4. 鍗歌浇"
 			echo "------------------------"
-			echo "0. 返回上一级选单"
+			echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 			echo "------------------------"
-			read -e -p "输入你的选择: " choice
+			read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 
 			case $choice in
 				1)
@@ -11300,7 +11300,7 @@ while true; do
 
 					add_app_id
 					clear
-					echo "雷池WAF面板已经安装完成"
+					echo "闆锋睜WAF闈㈡澘宸茬粡瀹夎瀹屾垚"
 					check_docker_app_ip
 					docker exec safeline-mgt resetadmin
 
@@ -11313,7 +11313,7 @@ while true; do
 
 					add_app_id
 					clear
-					echo "雷池WAF面板已经更新完成"
+					echo "闆锋睜WAF闈㈡澘宸茬粡鏇存柊瀹屾垚"
 					check_docker_app_ip
 					;;
 				3)
@@ -11324,7 +11324,7 @@ while true; do
 					docker compose down --rmi all
 
 					sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-					echo "如果你是默认安装目录那现在项目已经卸载。如果你是自定义安装目录你需要到安装目录下自行执�?"
+					echo "濡傛灉浣犳槸榛樿瀹夎鐩綍閭ｇ幇鍦ㄩ」鐩凡缁忓嵏杞姐€傚鏋滀綘鏄嚜瀹氫箟瀹夎鐩綍浣犻渶瑕佸埌瀹夎鐩綍涓嬭嚜琛屾墽琛?"
 					echo "docker compose down && docker compose down --rmi all"
 					;;
 				*)
@@ -11356,8 +11356,8 @@ while true; do
 		}
 
 
-		local docker_describe="portainer是一个轻量级的docker容器管理面板"
-		local docker_url="官网介绍: https://www.portainer.io/"
+		local docker_describe="portainer鏄竴涓交閲忕骇鐨刣ocker瀹瑰櫒绠＄悊闈㈡澘"
+		local docker_url="瀹樼綉浠嬬粛: https://www.portainer.io/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11379,8 +11379,8 @@ while true; do
 		}
 
 
-		local docker_describe="VScode是一款强大的在线代码编写工具"
-		local docker_url="官网介绍: ${gh_proxy}github.com/coder/code-server"
+		local docker_describe="VScode鏄竴娆惧己澶х殑鍦ㄧ嚎浠ｇ爜缂栧啓宸ュ叿"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/coder/code-server"
 		local docker_use="sleep 3"
 		local docker_passwd="docker exec vscode-web cat /home/coder/.config/code-server/config.yaml"
 		local app_size="1"
@@ -11407,8 +11407,8 @@ while true; do
 		}
 
 
-		local docker_describe="Uptime Kuma 易于使用的自托管监控工具"
-		local docker_url="官网介绍: ${gh_proxy}github.com/louislam/uptime-kuma"
+		local docker_describe="Uptime Kuma 鏄撲簬浣跨敤鐨勮嚜鎵樼鐩戞帶宸ュ叿"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/louislam/uptime-kuma"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11427,8 +11427,8 @@ while true; do
 
 		}
 
-		local docker_describe="Memos是一款轻量级、自托管的备忘录中心"
-		local docker_url="官网介绍: ${gh_proxy}github.com/usememos/memos"
+		local docker_describe="Memos鏄竴娆捐交閲忕骇銆佽嚜鎵樼鐨勫蹇樺綍涓績"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/usememos/memos"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11443,8 +11443,8 @@ while true; do
 
 		docker_rum() {
 
-			read -e -p "设置登录用户�? " admin
-			read -e -p "设置登录用户密码: " admin_password
+			read -e -p "璁剧疆鐧诲綍鐢ㄦ埛鍚? " admin
+			read -e -p "璁剧疆鐧诲綍鐢ㄦ埛瀵嗙爜: " admin_password
 			docker run -d \
 			  --name=webtop \
 			  --security-opt seccomp=unconfined \
@@ -11468,8 +11468,8 @@ while true; do
 		}
 
 
-		local docker_describe="webtop基于Alpine的中文版容器。若IP无法访问，请添加域名访问�?
-		local docker_url="官网介绍: https://docs.linuxserver.io/images/docker-webtop/"
+		local docker_describe="webtop鍩轰簬Alpine鐨勪腑鏂囩増瀹瑰櫒銆傝嫢IP鏃犳硶璁块棶锛岃娣诲姞鍩熷悕璁块棶銆?
+		local docker_url="瀹樼綉浠嬬粛: https://docs.linuxserver.io/images/docker-webtop/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="2"
@@ -11489,9 +11489,9 @@ while true; do
 
 		}
 
-		local docker_describe="Nextcloud拥有超过 400,000 个部署，是您可以下载的最受欢迎的本地内容协作平台"
-		local docker_url="官网介绍: https://nextcloud.com/"
-		local docker_use="echo \"账号: nextcloud  密码: $rootpasswd\""
+		local docker_describe="Nextcloud鎷ユ湁瓒呰繃 400,000 涓儴缃诧紝鏄偍鍙互涓嬭浇鐨勬渶鍙楁杩庣殑鏈湴鍐呭鍗忎綔骞冲彴"
+		local docker_url="瀹樼綉浠嬬粛: https://nextcloud.com/"
+		local docker_use="echo \"璐﹀彿: nextcloud  瀵嗙爜: $rootpasswd\""
 		local docker_passwd=""
 		local app_size="3"
 		docker_app
@@ -11509,8 +11509,8 @@ while true; do
 
 		}
 
-		local docker_describe="QD-Today是一个HTTP请求定时任务自动执行框架"
-		local docker_url="官网介绍: https://qd-today.github.io/qd/zh_CN/"
+		local docker_describe="QD-Today鏄竴涓狧TTP璇锋眰瀹氭椂浠诲姟鑷姩鎵ц妗嗘灦"
+		local docker_url="瀹樼綉浠嬬粛: https://qd-today.github.io/qd/zh_CN/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11529,8 +11529,8 @@ while true; do
 
 		}
 
-		local docker_describe="dockge是一个可视化的docker-compose容器管理面板"
-		local docker_url="官网介绍: ${gh_proxy}github.com/louislam/dockge"
+		local docker_describe="dockge鏄竴涓彲瑙嗗寲鐨刣ocker-compose瀹瑰櫒绠＄悊闈㈡澘"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/louislam/dockge"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11549,8 +11549,8 @@ while true; do
 
 		}
 
-		local docker_describe="librespeed是用Javascript实现的轻量级速度测试工具，即开即用"
-		local docker_url="官网介绍: ${gh_proxy}github.com/librespeed/speedtest"
+		local docker_describe="librespeed鏄敤Javascript瀹炵幇鐨勮交閲忕骇閫熷害娴嬭瘯宸ュ叿锛屽嵆寮€鍗崇敤"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/librespeed/speedtest"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11574,8 +11574,8 @@ while true; do
 
 		}
 
-		local docker_describe="searxng是一个私有且隐私的搜索引擎站�?
-		local docker_url="官网介绍: https://hub.docker.com/r/alandoyle/searxng"
+		local docker_describe="searxng鏄竴涓鏈変笖闅愮鐨勬悳绱㈠紩鎿庣珯鐐?
+		local docker_url="瀹樼綉浠嬬粛: https://hub.docker.com/r/alandoyle/searxng"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11606,9 +11606,9 @@ while true; do
 		}
 
 
-		local docker_describe="photoprism非常强大的私有相册系�?
-		local docker_url="官网介绍: https://www.photoprism.app/"
-		local docker_use="echo \"账号: admin  密码: $rootpasswd\""
+		local docker_describe="photoprism闈炲父寮哄ぇ鐨勭鏈夌浉鍐岀郴缁?
+		local docker_url="瀹樼綉浠嬬粛: https://www.photoprism.app/"
+		local docker_use="echo \"璐﹀彿: admin  瀵嗙爜: $rootpasswd\""
 		local docker_passwd=""
 		local app_size="1"
 		docker_app
@@ -11634,8 +11634,8 @@ while true; do
 				 frooodle/s-pdf:latest
 		}
 
-		local docker_describe="这是一个强大的本地托管基于 Web �?PDF 操作工具，使�?docker，允许您�?PDF 文件执行各种操作，例如拆分合并、转换、重新组织、添加图像、旋转、压缩等�?
-		local docker_url="官网介绍: ${gh_proxy}github.com/Stirling-Tools/Stirling-PDF"
+		local docker_describe="杩欐槸涓€涓己澶х殑鏈湴鎵樼鍩轰簬 Web 鐨?PDF 鎿嶄綔宸ュ叿锛屼娇鐢?docker锛屽厑璁告偍瀵?PDF 鏂囦欢鎵ц鍚勭鎿嶄綔锛屼緥濡傛媶鍒嗗悎骞躲€佽浆鎹€侀噸鏂扮粍缁囥€佹坊鍔犲浘鍍忋€佹棆杞€佸帇缂╃瓑銆?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/Stirling-Tools/Stirling-PDF"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11655,8 +11655,8 @@ while true; do
 		}
 
 
-		local docker_describe="这是一个强大图表绘制软件。思维导图，拓扑图，流程图，都能画"
-		local docker_url="官网介绍: https://www.drawio.com/"
+		local docker_describe="杩欐槸涓€涓己澶у浘琛ㄧ粯鍒惰蒋浠躲€傛€濈淮瀵煎浘锛屾嫇鎵戝浘锛屾祦绋嬪浘锛岄兘鑳界敾"
+		local docker_url="瀹樼綉浠嬬粛: https://www.drawio.com/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11680,9 +11680,9 @@ while true; do
 
 		}
 
-		local docker_describe="Sun-Panel服务器、NAS导航面板、Homepage、浏览器首页"
-		local docker_url="官网介绍: https://doc.sun-panel.top/zh_cn/"
-		local docker_use="echo \"账号: admin@sun.cc  密码: 12345678\""
+		local docker_describe="Sun-Panel鏈嶅姟鍣ㄣ€丯AS瀵艰埅闈㈡澘銆丠omepage銆佹祻瑙堝櫒棣栭〉"
+		local docker_url="瀹樼綉浠嬬粛: https://doc.sun-panel.top/zh_cn/"
+		local docker_use="echo \"璐﹀彿: admin@sun.cc  瀵嗙爜: 12345678\""
 		local docker_passwd=""
 		local app_size="1"
 		docker_app
@@ -11704,8 +11704,8 @@ while true; do
 				stonith404/pingvin-share
 		}
 
-		local docker_describe="Pingvin Share 是一个可自建的文件分享平台，�?WeTransfer 的一个替代品"
-		local docker_url="官网介绍: ${gh_proxy}github.com/stonith404/pingvin-share"
+		local docker_describe="Pingvin Share 鏄竴涓彲鑷缓鐨勬枃浠跺垎浜钩鍙帮紝鏄?WeTransfer 鐨勪竴涓浛浠ｅ搧"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/stonith404/pingvin-share"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11731,9 +11731,9 @@ while true; do
 		}
 
 
-		local docker_describe="极简朋友圈，高仿微信朋友圈，记录你的美好生活"
-		local docker_url="官网介绍: ${gh_proxy}github.com/kingwrcy/moments?tab=readme-ov-file"
-		local docker_use="echo \"账号: admin  密码: a123456\""
+		local docker_describe="鏋佺畝鏈嬪弸鍦堬紝楂樹豢寰俊鏈嬪弸鍦堬紝璁板綍浣犵殑缇庡ソ鐢熸椿"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/kingwrcy/moments?tab=readme-ov-file"
+		local docker_use="echo \"璐﹀彿: admin  瀵嗙爜: a123456\""
 		local docker_passwd=""
 		local app_size="1"
 		docker_app
@@ -11755,8 +11755,8 @@ while true; do
 				lobehub/lobe-chat
 		}
 
-		local docker_describe="LobeChat聚合市面上主流的AI大模型，ChatGPT/Claude/Gemini/Groq/Ollama"
-		local docker_url="官网介绍: ${gh_proxy}github.com/lobehub/lobe-chat"
+		local docker_describe="LobeChat鑱氬悎甯傞潰涓婁富娴佺殑AI澶фā鍨嬶紝ChatGPT/Claude/Gemini/Groq/Ollama"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/lobehub/lobe-chat"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="2"
@@ -11776,8 +11776,8 @@ while true; do
 		}
 
 
-		local docker_describe="是一个多功能IP工具箱，可以查看自己IP信息及连通性，用网页面板呈�?
-		local docker_url="官网介绍: ${gh_proxy}github.com/jason5ng32/MyIP/blob/main/README_ZH.md"
+		local docker_describe="鏄竴涓鍔熻兘IP宸ュ叿绠憋紝鍙互鏌ョ湅鑷繁IP淇℃伅鍙婅繛閫氭€э紝鐢ㄧ綉椤甸潰鏉垮憟鐜?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/jason5ng32/MyIP/blob/main/README_ZH.md"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11785,7 +11785,7 @@ while true; do
 		  ;;
 
 	  38|xiaoya)
-		send_stats "小雅全家�?
+		send_stats "灏忛泤鍏ㄥ妗?
 		clear
 		install_docker
 		check_disk_space 1
@@ -11810,8 +11810,8 @@ while true; do
 
 		}
 
-		local docker_describe="Bililive-go是一个支持多种直播平台的直播录制工具"
-		local docker_url="官网介绍: ${gh_proxy}github.com/hr3lxphr6j/bililive-go"
+		local docker_describe="Bililive-go鏄竴涓敮鎸佸绉嶇洿鎾钩鍙扮殑鐩存挱褰曞埗宸ュ叿"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/hr3lxphr6j/bililive-go"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11827,8 +11827,8 @@ while true; do
 			docker run -d -p ${docker_port}:5032 --restart=always --name webssh -e TZ=Asia/Shanghai jrohy/webssh
 		}
 
-		local docker_describe="简易在线ssh连接工具和sftp工具"
-		local docker_url="官网介绍: ${gh_proxy}github.com/Jrohy/webssh"
+		local docker_describe="绠€鏄撳湪绾縮sh杩炴帴宸ュ叿鍜宻ftp宸ュ叿"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/Jrohy/webssh"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11839,8 +11839,8 @@ while true; do
 
 		local app_id="41"
 		local lujing="[ -d "/www/server/panel" ]"
-		local panelname="AcePanel 原耗子面板"
-		local panelurl="官方地址: ${gh_proxy}github.com/acepanel/panel"
+		local panelname="AcePanel 鍘熻€楀瓙闈㈡澘"
+		local panelurl="瀹樻柟鍦板潃: ${gh_proxy}github.com/acepanel/panel"
 
 		panel_app_install() {
 			cd ~
@@ -11881,8 +11881,8 @@ while true; do
 
 		}
 
-		local docker_describe="nexterm是一款强大的在线SSH/VNC/RDP连接工具�?
-		local docker_url="官网介绍: ${gh_proxy}github.com/gnmyt/Nexterm"
+		local docker_describe="nexterm鏄竴娆惧己澶х殑鍦ㄧ嚎SSH/VNC/RDP杩炴帴宸ュ叿銆?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_proxy}github.com/gnmyt/Nexterm"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11902,10 +11902,10 @@ while true; do
 		}
 
 
-		local docker_describe="rustdesk开源的远程桌面(服务�?，类似自己的向日葵私服�?
-		local docker_url="官网介绍: https://rustdesk.com/zh-cn/"
+		local docker_describe="rustdesk寮€婧愮殑杩滅▼妗岄潰(鏈嶅姟绔?锛岀被浼艰嚜宸辩殑鍚戞棩钁电鏈嶃€?
+		local docker_url="瀹樼綉浠嬬粛: https://rustdesk.com/zh-cn/"
 		local docker_use="docker logs hbbs"
-		local docker_passwd="echo \"把你的IP和key记录下，会在远程桌面客户端中用到。去44选项装中继端吧！\""
+		local docker_passwd="echo \"鎶婁綘鐨処P鍜宬ey璁板綍涓嬶紝浼氬湪杩滅▼妗岄潰瀹㈡埛绔腑鐢ㄥ埌銆傚幓44閫夐」瑁呬腑缁х鍚э紒\""
 		local app_size="1"
 		docker_app
 		  ;;
@@ -11922,9 +11922,9 @@ while true; do
 
 		}
 
-		local docker_describe="rustdesk开源的远程桌面(中继�?，类似自己的向日葵私服�?
-		local docker_url="官网介绍: https://rustdesk.com/zh-cn/"
-		local docker_use="echo \"前往官网下载远程桌面的客户端: https://rustdesk.com/zh-cn/\""
+		local docker_describe="rustdesk寮€婧愮殑杩滅▼妗岄潰(涓户绔?锛岀被浼艰嚜宸辩殑鍚戞棩钁电鏈嶃€?
+		local docker_url="瀹樼綉浠嬬粛: https://rustdesk.com/zh-cn/"
+		local docker_use="echo \"鍓嶅線瀹樼綉涓嬭浇杩滅▼妗岄潰鐨勫鎴风: https://rustdesk.com/zh-cn/\""
 		local docker_passwd=""
 		local app_size="1"
 		docker_app
@@ -11948,8 +11948,8 @@ while true; do
 
 		}
 
-		local docker_describe="Docker Registry 是一个用于存储和分发 Docker 镜像的服务�?
-		local docker_url="官网介绍: https://hub.docker.com/_/registry"
+		local docker_describe="Docker Registry 鏄竴涓敤浜庡瓨鍌ㄥ拰鍒嗗彂 Docker 闀滃儚鐨勬湇鍔°€?
+		local docker_url="瀹樼綉浠嬬粛: https://hub.docker.com/_/registry"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="2"
@@ -11968,8 +11968,8 @@ while true; do
 
 		}
 
-		local docker_describe="使用Go实现的GHProxy，用于加速部分地区Github仓库的拉取�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/WJQSERVER-STUDIO/ghproxy"
+		local docker_describe="浣跨敤Go瀹炵幇鐨凣HProxy锛岀敤浜庡姞閫熼儴鍒嗗湴鍖篏ithub浠撳簱鐨勬媺鍙栥€?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/WJQSERVER-STUDIO/ghproxy"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -11979,9 +11979,9 @@ while true; do
 	  47|prometheus|grafana)
 
 		local app_id="47"
-		local app_name="普罗米修斯监�?
-		local app_text="Prometheus+Grafana企业级监控系�?
-		local app_url="官网介绍: https://prometheus.io"
+		local app_name="鏅綏绫充慨鏂洃鎺?
+		local app_text="Prometheus+Grafana浼佷笟绾х洃鎺х郴缁?
+		local app_url="瀹樼綉浠嬬粛: https://prometheus.io"
 		local docker_name="grafana"
 		local docker_port="8047"
 		local app_size="2"
@@ -11990,9 +11990,9 @@ while true; do
 			prometheus_install
 			clear
 			ip_address
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
-			echo "初始用户名密码均�? admin"
+			echo "鍒濆鐢ㄦ埛鍚嶅瘑鐮佸潎涓? admin"
 		}
 
 		docker_app_update() {
@@ -12010,7 +12010,7 @@ while true; do
 			docker rmi -f grafana/grafana:latest
 
 			rm -rf /home/docker/monitoring
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -12033,8 +12033,8 @@ while true; do
 
 		}
 
-		local docker_describe="这是一个普罗米修斯的主机数据采集组件，请部署在被监控主机上�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/prometheus/node_exporter"
+		local docker_describe="杩欐槸涓€涓櫘缃楃背淇柉鐨勪富鏈烘暟鎹噰闆嗙粍浠讹紝璇烽儴缃插湪琚洃鎺т富鏈轰笂銆?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/prometheus/node_exporter"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12063,8 +12063,8 @@ while true; do
 
 		}
 
-		local docker_describe="这是一个普罗米修斯的容器数据采集组件，请部署在被监控主机上�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/google/cadvisor"
+		local docker_describe="杩欐槸涓€涓櫘缃楃背淇柉鐨勫鍣ㄦ暟鎹噰闆嗙粍浠讹紝璇烽儴缃插湪琚洃鎺т富鏈轰笂銆?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/google/cadvisor"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12086,8 +12086,8 @@ while true; do
 
 		}
 
-		local docker_describe="这是一款网站变化检测、补货监控和通知的小工具"
-		local docker_url="官网介绍: ${gh_https_url}github.com/dgtlmoon/changedetection.io"
+		local docker_describe="杩欐槸涓€娆剧綉绔欏彉鍖栨娴嬨€佽ˉ璐х洃鎺у拰閫氱煡鐨勫皬宸ュ叿"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/dgtlmoon/changedetection.io"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12097,7 +12097,7 @@ while true; do
 
 	  51|pve)
 		clear
-		send_stats "PVE开小鸡"
+		send_stats "PVE寮€灏忛浮"
 		check_disk_space 1
 		curl -L ${gh_proxy}raw.githubusercontent.com/oneclickvirt/pve/main/scripts/install_pve.sh -o install_pve.sh && chmod +x install_pve.sh && bash install_pve.sh
 		  ;;
@@ -12119,8 +12119,8 @@ while true; do
 
 		}
 
-		local docker_describe="Docker可视化面板系统，提供完善的docker管理功能�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/donknap/dpanel"
+		local docker_describe="Docker鍙鍖栭潰鏉跨郴缁燂紝鎻愪緵瀹屽杽鐨刣ocker绠＄悊鍔熻兘銆?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/donknap/dpanel"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12139,8 +12139,8 @@ while true; do
 
 		}
 
-		local docker_describe="OpenWebUI一款大语言模型网页框架，接入全新的llama3大语言模型"
-		local docker_url="官网介绍: ${gh_https_url}github.com/open-webui/open-webui"
+		local docker_describe="OpenWebUI涓€娆惧ぇ璇█妯″瀷缃戦〉妗嗘灦锛屾帴鍏ュ叏鏂扮殑llama3澶ц瑷€妯″瀷"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/open-webui/open-webui"
 		local docker_use="docker exec ollama ollama run llama3.2:1b"
 		local docker_passwd=""
 		local app_size="5"
@@ -12151,8 +12151,8 @@ while true; do
 
 		local app_id="54"
 		local lujing="[ -d "/www/server/panel" ]"
-		local panelname="AMH面板"
-		local panelurl="官方地址: https://amh.sh/index.htm?amh"
+		local panelname="AMH闈㈡澘"
+		local panelurl="瀹樻柟鍦板潃: https://amh.sh/index.htm?amh"
 
 		panel_app_install() {
 			cd ~
@@ -12191,8 +12191,8 @@ while true; do
 
 		}
 
-		local docker_describe="OpenWebUI一款大语言模型网页框架，接入全新的DeepSeek R1大语言模型"
-		local docker_url="官网介绍: ${gh_https_url}github.com/open-webui/open-webui"
+		local docker_describe="OpenWebUI涓€娆惧ぇ璇█妯″瀷缃戦〉妗嗘灦锛屾帴鍏ュ叏鏂扮殑DeepSeek R1澶ц瑷€妯″瀷"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/open-webui/open-webui"
 		local docker_use="docker exec ollama ollama run deepseek-r1:1.5b"
 		local docker_passwd=""
 		local app_size="5"
@@ -12202,9 +12202,9 @@ while true; do
 
 	  58|dify)
 		local app_id="58"
-		local app_name="Dify知识�?
-		local app_text="是一款开源的大语言模型(LLM) 应用开发平台。自托管训练数据用于AI生成"
-		local app_url="官方网站: https://docs.dify.ai/zh-hans"
+		local app_name="Dify鐭ヨ瘑搴?
+		local app_text="鏄竴娆惧紑婧愮殑澶ц瑷€妯″瀷(LLM) 搴旂敤寮€鍙戝钩鍙般€傝嚜鎵樼璁粌鏁版嵁鐢ㄤ簬AI鐢熸垚"
+		local app_url="瀹樻柟缃戠珯: https://docs.dify.ai/zh-hans"
 		local docker_name="docker-nginx-1"
 		local docker_port="8058"
 		local app_size="3"
@@ -12222,7 +12222,7 @@ while true; do
 			docker compose up -d
 
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -12237,7 +12237,7 @@ while true; do
 		docker_app_uninstall() {
 			cd  /home/docker/dify/docker/ && docker compose down --rmi all
 			rm -rf /home/docker/dify
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -12247,8 +12247,8 @@ while true; do
 	  59|new-api)
 		local app_id="59"
 		local app_name="NewAPI"
-		local app_text="新一代大模型网关与AI资产管理系统"
-		local app_url="官方网站: ${gh_https_url}github.com/Calcium-Ion/new-api"
+		local app_text="鏂颁竴浠ｅぇ妯″瀷缃戝叧涓嶢I璧勪骇绠＄悊绯荤粺"
+		local app_url="瀹樻柟缃戠珯: ${gh_https_url}github.com/Calcium-Ion/new-api"
 		local docker_name="new-api"
 		local docker_port="8059"
 		local app_size="3"
@@ -12265,7 +12265,7 @@ while true; do
 
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -12281,7 +12281,7 @@ while true; do
 
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 
 		}
@@ -12289,7 +12289,7 @@ while true; do
 		docker_app_uninstall() {
 			cd  /home/docker/new-api/ && docker compose down --rmi all
 			rm -rf /home/docker/new-api
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -12300,9 +12300,9 @@ while true; do
 	  60|jms)
 
 		local app_id="60"
-		local app_name="JumpServer开源堡垒机"
-		local app_text="是一个开源的特权访问管理 (PAM) 工具，该程序占用80端口不支持添加域名访问了"
-		local app_url="官方介绍: ${gh_https_url}github.com/jumpserver/jumpserver"
+		local app_name="JumpServer寮€婧愬牎鍨掓満"
+		local app_text="鏄竴涓紑婧愮殑鐗规潈璁块棶绠＄悊 (PAM) 宸ュ叿锛岃绋嬪簭鍗犵敤80绔彛涓嶆敮鎸佹坊鍔犲煙鍚嶈闂簡"
+		local app_url="瀹樻柟浠嬬粛: ${gh_https_url}github.com/jumpserver/jumpserver"
 		local docker_name="jms_web"
 		local docker_port="80"
 		local app_size="2"
@@ -12310,17 +12310,17 @@ while true; do
 		docker_app_install() {
 			curl -sSL ${gh_proxy}github.com/jumpserver/jumpserver/releases/latest/download/quick_start.sh | bash
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
-			echo "初始用户�? admin"
-			echo "初始密码: ChangeMe"
+			echo "鍒濆鐢ㄦ埛鍚? admin"
+			echo "鍒濆瀵嗙爜: ChangeMe"
 		}
 
 
 		docker_app_update() {
 			cd /opt/jumpserver-installer*/
 			./jmsctl.sh upgrade
-			echo "应用已更�?
+			echo "搴旂敤宸叉洿鏂?
 		}
 
 
@@ -12330,7 +12330,7 @@ while true; do
 			cd /opt
 			rm -rf jumpserver-installer*/
 			rm -rf jumpserver
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -12352,8 +12352,8 @@ while true; do
 
 		}
 
-		local docker_describe="免费开源机器翻�?API，完全自托管，它的翻译引擎由开源Argos Translate库提供支持�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/LibreTranslate/LibreTranslate"
+		local docker_describe="鍏嶈垂寮€婧愭満鍣ㄧ炕璇?API锛屽畬鍏ㄨ嚜鎵樼锛屽畠鐨勭炕璇戝紩鎿庣敱寮€婧怉rgos Translate搴撴彁渚涙敮鎸併€?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/LibreTranslate/LibreTranslate"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="5"
@@ -12364,9 +12364,9 @@ while true; do
 
 	  62|ragflow)
 		local app_id="62"
-		local app_name="RAGFlow知识�?
-		local app_text="基于深度文档理解的开�?RAG（检索增强生成）引擎"
-		local app_url="官方网站: ${gh_https_url}github.com/infiniflow/ragflow"
+		local app_name="RAGFlow鐭ヨ瘑搴?
+		local app_text="鍩轰簬娣卞害鏂囨。鐞嗚В鐨勫紑婧?RAG锛堟绱㈠寮虹敓鎴愶級寮曟搸"
+		local app_url="瀹樻柟缃戠珯: ${gh_https_url}github.com/infiniflow/ragflow"
 		local docker_name="ragflow-server"
 		local docker_port="8062"
 		local app_size="8"
@@ -12377,7 +12377,7 @@ while true; do
 			sed -i "s/- 80:80/- ${docker_port}:80/; /- 443:443/d" docker-compose.yml
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -12393,7 +12393,7 @@ while true; do
 		docker_app_uninstall() {
 			cd  /home/docker/ragflow/docker/ && docker compose down --rmi all
 			rm -rf /home/docker/ragflow
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -12413,8 +12413,8 @@ while true; do
 
 		}
 
-		local docker_describe="OpenWebUI一款大语言模型网页框架，官方精简版本，支持各大模型API接入"
-		local docker_url="官网介绍: ${gh_https_url}github.com/open-webui/open-webui"
+		local docker_describe="OpenWebUI涓€娆惧ぇ璇█妯″瀷缃戦〉妗嗘灦锛屽畼鏂圭簿绠€鐗堟湰锛屾敮鎸佸悇澶фā鍨婣PI鎺ュ叆"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/open-webui/open-webui"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="3"
@@ -12431,8 +12431,8 @@ while true; do
 			docker run -d --name it-tools --restart=always -p ${docker_port}:80 corentinth/it-tools:latest
 		}
 
-		local docker_describe="对开发人员和 IT 工作者来说非常有用的工具"
-		local docker_url="官网介绍: ${gh_https_url}github.com/CorentinTh/it-tools"
+		local docker_describe="瀵瑰紑鍙戜汉鍛樺拰 IT 宸ヤ綔鑰呮潵璇撮潪甯告湁鐢ㄧ殑宸ュ叿"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/CorentinTh/it-tools"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12467,8 +12467,8 @@ while true; do
 
 		}
 
-		local docker_describe="是一款功能强大的自动化工作流平台"
-		local docker_url="官网介绍: ${gh_https_url}github.com/n8n-io/n8n"
+		local docker_describe="鏄竴娆惧姛鑳藉己澶х殑鑷姩鍖栧伐浣滄祦骞冲彴"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/n8n-io/n8n"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12496,8 +12496,8 @@ while true; do
 
 		}
 
-		local docker_describe="自动将你的公�?IP（IPv4/IPv6）实时更新到各大 DNS 服务商，实现动态域名解析�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/jeessy2/ddns-go"
+		local docker_describe="鑷姩灏嗕綘鐨勫叕缃?IP锛圛Pv4/IPv6锛夊疄鏃舵洿鏂板埌鍚勫ぇ DNS 鏈嶅姟鍟嗭紝瀹炵幇鍔ㄦ€佸煙鍚嶈В鏋愩€?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/jeessy2/ddns-go"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12514,10 +12514,10 @@ while true; do
 			docker run -d --name allinssl -p ${docker_port}:8888 -v /home/docker/allinssl/data:/www/allinssl/data -e ALLINSSL_USER=allinssl -e ALLINSSL_PWD=allinssldocker -e ALLINSSL_URL=allinssl allinssl/allinssl:latest
 		}
 
-		local docker_describe="开源免费的 SSL 证书自动化管理平�?
-		local docker_url="官网介绍: https://allinssl.com"
-		local docker_use="echo \"安全入口: /allinssl\""
-		local docker_passwd="echo \"用户�? allinssl  密码: allinssldocker\""
+		local docker_describe="寮€婧愬厤璐圭殑 SSL 璇佷功鑷姩鍖栫鐞嗗钩鍙?
+		local docker_url="瀹樼綉浠嬬粛: https://allinssl.com"
+		local docker_use="echo \"瀹夊叏鍏ュ彛: /allinssl\""
+		local docker_passwd="echo \"鐢ㄦ埛鍚? allinssl  瀵嗙爜: allinssldocker\""
 		local app_size="1"
 		docker_app
 		  ;;
@@ -12546,8 +12546,8 @@ while true; do
 
 		}
 
-		local docker_describe="开源免费随时随地SFTP FTP WebDAV 文件传输工具"
-		local docker_url="官网介绍: https://sftpgo.com/"
+		local docker_describe="寮€婧愬厤璐归殢鏃堕殢鍦癝FTP FTP WebDAV 鏂囦欢浼犺緭宸ュ叿"
+		local docker_url="瀹樼綉浠嬬粛: https://sftpgo.com/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12578,9 +12578,9 @@ while true; do
 
 		}
 
-		local docker_describe="开源AI聊天机器人框架，支持微信，QQ，TG接入AI大模�?
-		local docker_url="官网介绍: https://astrbot.app/"
-		local docker_use="echo \"用户�? astrbot  密码: astrbot\""
+		local docker_describe="寮€婧怉I鑱婂ぉ鏈哄櫒浜烘鏋讹紝鏀寔寰俊锛孮Q锛孴G鎺ュ叆AI澶фā鍨?
+		local docker_url="瀹樼綉浠嬬粛: https://astrbot.app/"
+		local docker_use="echo \"鐢ㄦ埛鍚? astrbot  瀵嗙爜: astrbot\""
 		local docker_passwd=""
 		local app_size="1"
 		docker_app
@@ -12607,8 +12607,8 @@ while true; do
 
 		}
 
-		local docker_describe="是一个轻量、高性能的音乐流媒体服务�?
-		local docker_url="官网介绍: https://www.navidrome.org/"
+		local docker_describe="鏄竴涓交閲忋€侀珮鎬ц兘鐨勯煶涔愭祦濯掍綋鏈嶅姟鍣?
+		local docker_url="瀹樼綉浠嬬粛: https://www.navidrome.org/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12634,8 +12634,8 @@ while true; do
 
 		}
 
-		local docker_describe="一个你可以控制数据的密码管理器"
-		local docker_url="官网介绍: https://bitwarden.com/"
+		local docker_describe="涓€涓綘鍙互鎺у埗鏁版嵁鐨勫瘑鐮佺鐞嗗櫒"
+		local docker_url="瀹樼綉浠嬬粛: https://bitwarden.com/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12655,7 +12655,7 @@ while true; do
 
 		docker_rum() {
 
-			read -e -p "设置LibreTV的登录密�? " app_passwd
+			read -e -p "璁剧疆LibreTV鐨勭櫥褰曞瘑鐮? " app_passwd
 
 			docker run -d \
 			  --name libretv \
@@ -12666,8 +12666,8 @@ while true; do
 
 		}
 
-		local docker_describe="免费在线视频搜索与观看平�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/LibreSpark/LibreTV"
+		local docker_describe="鍏嶈垂鍦ㄧ嚎瑙嗛鎼滅储涓庤鐪嬪钩鍙?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/LibreSpark/LibreTV"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12681,17 +12681,17 @@ while true; do
 
 		local app_id="74"
 
-		local app_name="moontv私有影视"
-		local app_text="免费在线视频搜索与观看平�?
-		local app_url="视频介绍: ${gh_https_url}github.com/MoonTechLab/LunaTV"
+		local app_name="moontv绉佹湁褰辫"
+		local app_text="鍏嶈垂鍦ㄧ嚎瑙嗛鎼滅储涓庤鐪嬪钩鍙?
+		local app_url="瑙嗛浠嬬粛: ${gh_https_url}github.com/MoonTechLab/LunaTV"
 		local docker_name="moontv-core"
 		local docker_port="8074"
 		local app_size="2"
 
 		docker_app_install() {
-			read -e -p "设置登录用户�? " admin
-			read -e -p "设置登录用户密码: " admin_password
-			read -e -p "输入授权�? " shouquanma
+			read -e -p "璁剧疆鐧诲綍鐢ㄦ埛鍚? " admin
+			read -e -p "璁剧疆鐧诲綍鐢ㄦ埛瀵嗙爜: " admin_password
+			read -e -p "杈撳叆鎺堟潈鐮? " shouquanma
 
 
 			mkdir -p /home/docker/moontv
@@ -12707,7 +12707,7 @@ while true; do
 			cd /home/docker/moontv/
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -12721,7 +12721,7 @@ while true; do
 		docker_app_uninstall() {
 			cd /home/docker/moontv/ && docker compose down --rmi all
 			rm -rf /home/docker/moontv
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -12748,8 +12748,8 @@ while true; do
 
 		}
 
-		local docker_describe="你的音乐精灵，旨在帮助你更好地管理音乐�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/foamzou/melody"
+		local docker_describe="浣犵殑闊充箰绮剧伒锛屾棬鍦ㄥ府鍔╀綘鏇村ソ鍦扮鐞嗛煶涔愩€?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/foamzou/melody"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12775,8 +12775,8 @@ while true; do
 
 		}
 
-		local docker_describe="是一个中文DOS游戏合集网站"
-		local docker_url="官网介绍: ${gh_https_url}github.com/rwv/chinese-dos-games"
+		local docker_describe="鏄竴涓腑鏂嘍OS娓告垙鍚堥泦缃戠珯"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/rwv/chinese-dos-games"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="2"
@@ -12794,8 +12794,8 @@ while true; do
 
 		docker_rum() {
 
-			read -e -p "设置登录用户�? " app_use
-			read -e -p "设置登录密码: " app_passwd
+			read -e -p "璁剧疆鐧诲綍鐢ㄦ埛鍚? " app_use
+			read -e -p "璁剧疆鐧诲綍瀵嗙爜: " app_passwd
 
 			docker run -d \
 			  --name xunlei \
@@ -12810,9 +12810,9 @@ while true; do
 
 		}
 
-		local docker_describe="迅雷你的离线高速BT磁力下载工具"
-		local docker_url="官网介绍: ${gh_https_url}github.com/cnk3x/xunlei"
-		local docker_use="echo \"手机登录迅雷，再输入邀请码，邀请码: 迅雷牛通\""
+		local docker_describe="杩呴浄浣犵殑绂荤嚎楂橀€烞T纾佸姏涓嬭浇宸ュ叿"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/cnk3x/xunlei"
+		local docker_use="echo \"鎵嬫満鐧诲綍杩呴浄锛屽啀杈撳叆閭€璇风爜锛岄個璇风爜: 杩呴浄鐗涢€歕""
 		local docker_passwd=""
 		local app_size="1"
 		docker_app
@@ -12825,8 +12825,8 @@ while true; do
 
 		local app_id="78"
 		local app_name="PandaWiki"
-		local app_text="PandaWiki是一款AI大模型驱动的开源智能文档管理系统，强烈建议不要自定义端口部署�?
-		local app_url="官方介绍: ${gh_https_url}github.com/chaitin/PandaWiki"
+		local app_text="PandaWiki鏄竴娆続I澶фā鍨嬮┍鍔ㄧ殑寮€婧愭櫤鑳芥枃妗ｇ鐞嗙郴缁燂紝寮虹儓寤鸿涓嶈鑷畾涔夌鍙ｉ儴缃层€?
+		local app_url="瀹樻柟浠嬬粛: ${gh_https_url}github.com/chaitin/PandaWiki"
 		local docker_name="panda-wiki-nginx"
 		local docker_port="2443"
 		local app_size="2"
@@ -12868,8 +12868,8 @@ while true; do
 
 		}
 
-		local docker_describe="Beszel轻量易用的服务器监控"
-		local docker_url="官网介绍: https://beszel.dev/zh/"
+		local docker_describe="Beszel杞婚噺鏄撶敤鐨勬湇鍔″櫒鐩戞帶"
+		local docker_url="瀹樼綉浠嬬粛: https://beszel.dev/zh/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -12881,9 +12881,9 @@ while true; do
 	  80|linkwarden)
 
 		  local app_id="80"
-		  local app_name="linkwarden书签管理"
-		  local app_text="一个开源的自托管书签管理平台，支持标签、搜索和团队协作�?
-		  local app_url="官方网站: https://linkwarden.app/"
+		  local app_name="linkwarden涔︾绠＄悊"
+		  local app_text="涓€涓紑婧愮殑鑷墭绠′功绛剧鐞嗗钩鍙帮紝鏀寔鏍囩銆佹悳绱㈠拰鍥㈤槦鍗忎綔銆?
+		  local app_url="瀹樻柟缃戠珯: https://linkwarden.app/"
 		  local docker_name="linkwarden-linkwarden-1"
 		  local docker_port="8080"
 		  local app_size="3"
@@ -12892,11 +12892,11 @@ while true; do
 			  install git openssl
 			  mkdir -p /home/docker/linkwarden && cd /home/docker/linkwarden
 
-			  # 下载官方 docker-compose �?env 文件
+			  # 涓嬭浇瀹樻柟 docker-compose 鍜?env 鏂囦欢
 			  curl -O ${gh_proxy}raw.githubusercontent.com/linkwarden/linkwarden/refs/heads/main/docker-compose.yml
 			  curl -L ${gh_proxy}raw.githubusercontent.com/linkwarden/linkwarden/refs/heads/main/.env.sample -o ".env"
 
-			  # 生成随机密钥与密�?
+			  # 鐢熸垚闅忔満瀵嗛挜涓庡瘑鐮?
 			  local ADMIN_EMAIL="admin@example.com"
 			  local ADMIN_PASSWORD=$(openssl rand -hex 8)
 
@@ -12905,17 +12905,17 @@ while true; do
 			  sed -i "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=$(openssl rand -hex 16)|g" .env
 			  sed -i "s|^MEILI_MASTER_KEY=.*|MEILI_MASTER_KEY=$(openssl rand -hex 32)|g" .env
 
-			  # 追加管理员账号信�?
+			  # 杩藉姞绠＄悊鍛樿处鍙蜂俊鎭?
 			  echo "ADMIN_EMAIL=${ADMIN_EMAIL}" >> .env
 			  echo "ADMIN_PASSWORD=${ADMIN_PASSWORD}" >> .env
 
 			  sed -i "s/3000:3000/${docker_port}:3000/g" /home/docker/linkwarden/docker-compose.yml
 
-			  # 启动容器
+			  # 鍚姩瀹瑰櫒
 			  docker compose up -d
 
 			  clear
-			  echo "已经安装完成"
+			  echo "宸茬粡瀹夎瀹屾垚"
 		  	  check_docker_app_ip
 
 		  }
@@ -12925,7 +12925,7 @@ while true; do
 			  curl -O ${gh_proxy}raw.githubusercontent.com/linkwarden/linkwarden/refs/heads/main/docker-compose.yml
 			  curl -L ${gh_proxy}raw.githubusercontent.com/linkwarden/linkwarden/refs/heads/main/.env.sample -o ".env.new"
 
-			  # 保留原本的变�?
+			  # 淇濈暀鍘熸湰鐨勫彉閲?
 			  source .env
 			  mv .env.new .env
 			  echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
@@ -12942,7 +12942,7 @@ while true; do
 		  docker_app_uninstall() {
 			  cd /home/docker/linkwarden && docker compose down --rmi all
 			  rm -rf /home/docker/linkwarden
-			  echo "应用已卸�?
+			  echo "搴旂敤宸插嵏杞?
 		  }
 
 		  docker_app_plus
@@ -12953,9 +12953,9 @@ while true; do
 
 	  81|jitsi)
 		  local app_id="81"
-		  local app_name="JitsiMeet视频会议"
-		  local app_text="一个开源的安全视频会议解决方案，支持多人在线会议、屏幕共享与加密通信�?
-		  local app_url="官方网站: https://jitsi.org/"
+		  local app_name="JitsiMeet瑙嗛浼氳"
+		  local app_text="涓€涓紑婧愮殑瀹夊叏瑙嗛浼氳瑙ｅ喅鏂规锛屾敮鎸佸浜哄湪绾夸細璁€佸睆骞曞叡浜笌鍔犲瘑閫氫俊銆?
+		  local app_url="瀹樻柟缃戠珯: https://jitsi.org/"
 		  local docker_name="jitsi"
 		  local docker_port="8081"
 		  local app_size="3"
@@ -12992,7 +12992,7 @@ while true; do
 			  cd "$(ls -dt */ | head -n 1)"
 			  docker compose down --rmi all
 			  rm -rf /home/docker/jitsi
-			  echo "应用已卸�?
+			  echo "搴旂敤宸插嵏杞?
 		  }
 
 		  docker_app_plus
@@ -13010,7 +13010,7 @@ while true; do
 
 		docker_rum() {
 
-			read -e -p "设置${docker_name}的登录密钥（sk-开头字母和数字组合）如: sk-159kejilionyyds163: " app_passwd
+			read -e -p "璁剧疆${docker_name}鐨勭櫥褰曞瘑閽ワ紙sk-寮€澶村瓧姣嶅拰鏁板瓧缁勫悎锛夊: sk-159kejilionyyds163: " app_passwd
 
 			mkdir -p /home/docker/gpt-load && \
 			docker run -d --name gpt-load \
@@ -13021,8 +13021,8 @@ while true; do
 
 		}
 
-		local docker_describe="高性能AI接口透明代理服务"
-		local docker_url="官网介绍: https://www.gpt-load.com/"
+		local docker_describe="楂樻€ц兘AI鎺ュ彛閫忔槑浠ｇ悊鏈嶅姟"
+		local docker_url="瀹樼綉浠嬬粛: https://www.gpt-load.com/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13054,9 +13054,9 @@ while true; do
 
 		}
 
-		local docker_describe="轻量级的自托管服务器监控工具"
-		local docker_url="官网介绍: ${gh_https_url}github.com/komari-monitor/komari/tree/main"
-		local docker_use="echo \"默认账号: admin  默认密码: 1212156\""
+		local docker_describe="杞婚噺绾х殑鑷墭绠℃湇鍔″櫒鐩戞帶宸ュ叿"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/komari-monitor/komari/tree/main"
+		local docker_use="echo \"榛樿璐﹀彿: admin  榛樿瀵嗙爜: 1212156\""
 		local docker_passwd=""
 		local app_size="1"
 		docker_app
@@ -13085,8 +13085,8 @@ while true; do
 
 		}
 
-		local docker_describe="开源个人订阅追踪器，可用于财务管理"
-		local docker_url="官网介绍: ${gh_https_url}github.com/ellite/Wallos"
+		local docker_describe="寮€婧愪釜浜鸿闃呰拷韪櫒锛屽彲鐢ㄤ簬璐㈠姟绠＄悊"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/ellite/Wallos"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13097,9 +13097,9 @@ while true; do
 	  85|immich)
 
 		  local app_id="85"
-		  local app_name="immich图片视频管理�?
-		  local app_text="高性能自托管照片和视频管理解决方案�?
-		  local app_url="官网介绍: ${gh_https_url}github.com/immich-app/immich"
+		  local app_name="immich鍥剧墖瑙嗛绠＄悊鍣?
+		  local app_text="楂樻€ц兘鑷墭绠＄収鐗囧拰瑙嗛绠＄悊瑙ｅ喅鏂规銆?
+		  local app_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/immich-app/immich"
 		  local docker_name="immich_server"
 		  local docker_port="8085"
 		  local app_size="3"
@@ -13115,7 +13115,7 @@ while true; do
 			  docker compose up -d
 
 			  clear
-			  echo "已经安装完成"
+			  echo "宸茬粡瀹夎瀹屾垚"
 		  	  check_docker_app_ip
 
 		  }
@@ -13128,7 +13128,7 @@ while true; do
 		  docker_app_uninstall() {
 			  cd /home/docker/${docker_name} && docker compose down --rmi all
 			  rm -rf /home/docker/${docker_name}
-			  echo "应用已卸�?
+			  echo "搴旂敤宸插嵏杞?
 		  }
 
 		  docker_app_plus
@@ -13163,8 +13163,8 @@ while true; do
 
 		}
 
-		local docker_describe="是一款开源媒体服务器软件"
-		local docker_url="官网介绍: https://jellyfin.org/"
+		local docker_describe="鏄竴娆惧紑婧愬獟浣撴湇鍔″櫒杞欢"
+		local docker_url="瀹樼綉浠嬬粛: https://jellyfin.org/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13191,9 +13191,9 @@ while true; do
 
 		}
 
-		local docker_describe="远程一起观看电影和直播的程序。它提供了同步观影、直播、聊天等功能"
-		local docker_url="官网介绍: ${gh_https_url}github.com/synctv-org/synctv"
-		local docker_use="echo \"初始账号和密�? root  登陆后请及时修改登录密码\""
+		local docker_describe="杩滅▼涓€璧疯鐪嬬數褰卞拰鐩存挱鐨勭▼搴忋€傚畠鎻愪緵浜嗗悓姝ヨ褰便€佺洿鎾€佽亰澶╃瓑鍔熻兘"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/synctv-org/synctv"
+		local docker_use="echo \"鍒濆璐﹀彿鍜屽瘑鐮? root  鐧婚檰鍚庤鍙婃椂淇敼鐧诲綍瀵嗙爜\""
 		local docker_passwd=""
 		local app_size="1"
 		docker_app
@@ -13221,10 +13221,10 @@ while true; do
 
 		}
 
-		local docker_describe="开源、免费的自建直播平台"
-		local docker_url="官网介绍: https://owncast.online"
-		local docker_use="echo \"访问地址后面�?/admin 访问管理员页面\""
-		local docker_passwd="echo \"初始账号: admin  初始密码: abc123  登陆后请及时修改登录密码\""
+		local docker_describe="寮€婧愩€佸厤璐圭殑鑷缓鐩存挱骞冲彴"
+		local docker_url="瀹樼綉浠嬬粛: https://owncast.online"
+		local docker_use="echo \"璁块棶鍦板潃鍚庨潰甯?/admin 璁块棶绠＄悊鍛橀〉闈""
+		local docker_passwd="echo \"鍒濆璐﹀彿: admin  鍒濆瀵嗙爜: abc123  鐧婚檰鍚庤鍙婃椂淇敼鐧诲綍瀵嗙爜\""
 		local app_size="1"
 		docker_app
 
@@ -13250,10 +13250,10 @@ while true; do
 
 		}
 
-		local docker_describe="匿名口令分享文本和文件，像拿快递一样取文件"
-		local docker_url="官网介绍: ${gh_https_url}github.com/vastsa/FileCodeBox"
-		local docker_use="echo \"访问地址后面�?/#/admin 访问管理员页面\""
-		local docker_passwd="echo \"管理员密�? FileCodeBox2023\""
+		local docker_describe="鍖垮悕鍙ｄ护鍒嗕韩鏂囨湰鍜屾枃浠讹紝鍍忔嬁蹇€掍竴鏍峰彇鏂囦欢"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/vastsa/FileCodeBox"
+		local docker_use="echo \"璁块棶鍦板潃鍚庨潰甯?/#/admin 璁块棶绠＄悊鍛橀〉闈""
+		local docker_passwd="echo \"绠＄悊鍛樺瘑鐮? FileCodeBox2023\""
 		local app_size="1"
 		docker_app
 
@@ -13289,7 +13289,7 @@ while true; do
 			  --restart=always \
 			  matrixdotorg/synapse:latest
 
-			echo "创建初始用户或管理员。请设置以下内容用户名和密码以及是否为管理员�?
+			echo "鍒涘缓鍒濆鐢ㄦ埛鎴栫鐞嗗憳銆傝璁剧疆浠ヤ笅鍐呭鐢ㄦ埛鍚嶅拰瀵嗙爜浠ュ強鏄惁涓虹鐞嗗憳銆?
 			docker exec -it matrix register_new_matrix_user \
 			  http://localhost:8008 \
 			  -c /data/homeserver.yaml
@@ -13306,8 +13306,8 @@ while true; do
 
 		}
 
-		local docker_describe="Matrix是一个去中心化的聊天协议"
-		local docker_url="官网介绍: https://matrix.org/"
+		local docker_describe="Matrix鏄竴涓幓涓績鍖栫殑鑱婂ぉ鍗忚"
+		local docker_url="瀹樼綉浠嬬粛: https://matrix.org/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13321,9 +13321,9 @@ while true; do
 
 		local app_id="91"
 
-		local app_name="gitea私有代码仓库"
-		local app_text="免费新一代的代码托管平台，提供接�?GitHub 的使用体验�?
-		local app_url="视频介绍: ${gh_https_url}github.com/go-gitea/gitea"
+		local app_name="gitea绉佹湁浠ｇ爜浠撳簱"
+		local app_text="鍏嶈垂鏂颁竴浠ｇ殑浠ｇ爜鎵樼骞冲彴锛屾彁渚涙帴杩?GitHub 鐨勪娇鐢ㄤ綋楠屻€?
+		local app_url="瑙嗛浠嬬粛: ${gh_https_url}github.com/go-gitea/gitea"
 		local docker_name="gitea"
 		local docker_port="8091"
 		local app_size="2"
@@ -13341,7 +13341,7 @@ while true; do
 			cd /home/docker/gitea/
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -13355,7 +13355,7 @@ while true; do
 		docker_app_uninstall() {
 			cd /home/docker/gitea/ && docker compose down --rmi all
 			rm -rf /home/docker/gitea
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -13385,8 +13385,8 @@ while true; do
 
 		}
 
-		local docker_describe="是一个基于Web的文件管理器"
-		local docker_url="官网介绍: https://filebrowser.org/"
+		local docker_describe="鏄竴涓熀浜嶹eb鐨勬枃浠剁鐞嗗櫒"
+		local docker_url="瀹樼綉浠嬬粛: https://filebrowser.org/"
 		local docker_use="docker logs filebrowser"
 		local docker_passwd=""
 		local app_size="1"
@@ -13412,8 +13412,8 @@ while true; do
 
 		}
 
-		local docker_describe="极简静态文件服务器，支持上传下�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/sigoden/dufs"
+		local docker_describe="鏋佺畝闈欐€佹枃浠舵湇鍔″櫒锛屾敮鎸佷笂浼犱笅杞?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/sigoden/dufs"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13430,8 +13430,8 @@ while true; do
 
 		docker_rum() {
 
-			read -e -p "设置登录用户�? " app_use
-			read -e -p "设置登录密码: " app_passwd
+			read -e -p "璁剧疆鐧诲綍鐢ㄦ埛鍚? " app_use
+			read -e -p "璁剧疆鐧诲綍瀵嗙爜: " app_passwd
 
 			docker run -d \
 			  --name ${docker_name} \
@@ -13443,8 +13443,8 @@ while true; do
 
 		}
 
-		local docker_describe="分布式高速下载工具，支持多种协议"
-		local docker_url="官网介绍: ${gh_https_url}github.com/GopeedLab/gopeed"
+		local docker_describe="鍒嗗竷寮忛珮閫熶笅杞藉伐鍏凤紝鏀寔澶氱鍗忚"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/GopeedLab/gopeed"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13458,9 +13458,9 @@ while true; do
 
 		local app_id="95"
 
-		local app_name="paperless文档管理平台"
-		local app_text="开源的电子文档管理系统，它的主要用途是把你的纸质文件数字化并管理起来�?
-		local app_url="视频介绍: https://docs.paperless-ngx.com/"
+		local app_name="paperless鏂囨。绠＄悊骞冲彴"
+		local app_text="寮€婧愮殑鐢靛瓙鏂囨。绠＄悊绯荤粺锛屽畠鐨勪富瑕佺敤閫旀槸鎶婁綘鐨勭焊璐ㄦ枃浠舵暟瀛楀寲骞剁鐞嗚捣鏉ャ€?
+		local app_url="瑙嗛浠嬬粛: https://docs.paperless-ngx.com/"
 		local docker_name="paperless-webserver-1"
 		local docker_port="8095"
 		local app_size="2"
@@ -13479,7 +13479,7 @@ while true; do
 			cd /home/docker/paperless
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -13493,7 +13493,7 @@ while true; do
 		docker_app_uninstall() {
 			cd /home/docker/paperless/ && docker compose down --rmi all
 			rm -rf /home/docker/paperless
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -13506,9 +13506,9 @@ while true; do
 
 		local app_id="96"
 
-		local app_name="2FAuth自托管二步验证器"
-		local app_text="自托管的双重身份验证 (2FA) 账户管理和验证码生成工具�?
-		local app_url="官网: ${gh_https_url}github.com/Bubka/2FAuth"
+		local app_name="2FAuth鑷墭绠′簩姝ラ獙璇佸櫒"
+		local app_text="鑷墭绠＄殑鍙岄噸韬唤楠岃瘉 (2FA) 璐︽埛绠＄悊鍜岄獙璇佺爜鐢熸垚宸ュ叿銆?
+		local app_url="瀹樼綉: ${gh_https_url}github.com/Bubka/2FAuth"
 		local docker_name="2fauth"
 		local docker_port="8096"
 		local app_size="1"
@@ -13533,7 +13533,7 @@ while true; do
 			block_container_port "$docker_name" "$ipv4_address"
 
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -13547,7 +13547,7 @@ while true; do
 		docker_app_uninstall() {
 			cd /home/docker/2fauth/ && docker compose down --rmi all
 			rm -rf /home/docker/2fauth
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -13565,9 +13565,9 @@ while true; do
 
 		docker_rum() {
 
-		read -e -p  "请输入组网的客户端数�?(默认 5): " COUNT
+		read -e -p  "璇疯緭鍏ョ粍缃戠殑瀹㈡埛绔暟閲?(榛樿 5): " COUNT
 		COUNT=${COUNT:-5}
-		read -e -p  "请输�?WireGuard 网段 (默认 10.13.13.0): " NETWORK
+		read -e -p  "璇疯緭鍏?WireGuard 缃戞 (榛樿 10.13.13.0): " NETWORK
 		NETWORK=${NETWORK:-10.13.13.0}
 
 		PEERS=$(seq -f "wg%02g" 1 "$COUNT" | paste -sd,)
@@ -13637,24 +13637,24 @@ while true; do
 
 		sleep 2
 		echo
-		echo -e "${gl_huang}所有客户端二维码配�? ${gl_bai}"
+		echo -e "${gl_huang}鎵€鏈夊鎴风浜岀淮鐮侀厤缃? ${gl_bai}"
 		docker exec wireguard bash -c 'for i in $(ls /config | grep peer_ | sed "s/peer_//"); do echo "--- $i ---"; /app/show-peer $i; done'
 		sleep 2
 		echo
-		echo -e "${gl_huang}所有客户端配置代码: ${gl_bai}"
+		echo -e "${gl_huang}鎵€鏈夊鎴风閰嶇疆浠ｇ爜: ${gl_bai}"
 		docker exec wireguard sh -c 'for d in /config/peer_*; do echo "# $(basename $d) "; cat $d/*.conf; echo; done'
 		sleep 2
-		echo -e "${gl_lv}${COUNT}个客户端配置全部输出，使用方法如下：${gl_bai}"
-		echo -e "${gl_lv}1. 手机下载wg的APP，扫描上方二维码，可以快速连接网�?{gl_bai}"
-		echo -e "${gl_lv}2. Windows下载客户端，复制配置代码连接网络�?{gl_bai}"
-		echo -e "${gl_lv}3. Linux用脚本部署WG客户端，复制配置代码连接网络�?{gl_bai}"
-		echo -e "${gl_lv}官方客户端下载方�? https://www.wireguard.com/install/${gl_bai}"
+		echo -e "${gl_lv}${COUNT}涓鎴风閰嶇疆鍏ㄩ儴杈撳嚭锛屼娇鐢ㄦ柟娉曞涓嬶細${gl_bai}"
+		echo -e "${gl_lv}1. 鎵嬫満涓嬭浇wg鐨凙PP锛屾壂鎻忎笂鏂逛簩缁寸爜锛屽彲浠ュ揩閫熻繛鎺ョ綉缁?{gl_bai}"
+		echo -e "${gl_lv}2. Windows涓嬭浇瀹㈡埛绔紝澶嶅埗閰嶇疆浠ｇ爜杩炴帴缃戠粶銆?{gl_bai}"
+		echo -e "${gl_lv}3. Linux鐢ㄨ剼鏈儴缃瞁G瀹㈡埛绔紝澶嶅埗閰嶇疆浠ｇ爜杩炴帴缃戠粶銆?{gl_bai}"
+		echo -e "${gl_lv}瀹樻柟瀹㈡埛绔笅杞芥柟寮? https://www.wireguard.com/install/${gl_bai}"
 		break_end
 
 		}
 
-		local docker_describe="现代化、高性能的虚拟专用网络工�?
-		local docker_url="官网介绍: https://www.wireguard.com/"
+		local docker_describe="鐜颁唬鍖栥€侀珮鎬ц兘鐨勮櫄鎷熶笓鐢ㄧ綉缁滃伐鍏?
+		local docker_url="瀹樼綉浠嬬粛: https://www.wireguard.com/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13676,16 +13676,16 @@ while true; do
 
 			local CONFIG_FILE="/home/docker/wireguard/config/wg0.conf"
 
-			# 创建目录（如果不存在�?
+			# 鍒涘缓鐩綍锛堝鏋滀笉瀛樺湪锛?
 			mkdir -p "$(dirname "$CONFIG_FILE")"
 
-			echo "请粘贴你的客户端配置，连续按两次回车保存�?
+			echo "璇风矘璐翠綘鐨勫鎴风閰嶇疆锛岃繛缁寜涓ゆ鍥炶溅淇濆瓨锛?
 
-			# 初始化变�?
+			# 鍒濆鍖栧彉閲?
 			input=""
 			empty_line_count=0
 
-			# 逐行读取用户输入
+			# 閫愯璇诲彇鐢ㄦ埛杈撳叆
 			while IFS= read -r line; do
 				if [[ -z "$line" ]]; then
 					((empty_line_count++))
@@ -13698,10 +13698,10 @@ while true; do
 				fi
 			done
 
-			# 写入配置文件
+			# 鍐欏叆閰嶇疆鏂囦欢
 			echo "$input" > "$CONFIG_FILE"
 
-			echo "客户端配置已保存�?$CONFIG_FILE"
+			echo "瀹㈡埛绔厤缃凡淇濆瓨鍒?$CONFIG_FILE"
 
 			ip link delete wg0 &>/dev/null
 
@@ -13723,8 +13723,8 @@ while true; do
 
 		}
 
-		local docker_describe="现代化、高性能的虚拟专用网络工�?
-		local docker_url="官网介绍: https://www.wireguard.com/"
+		local docker_describe="鐜颁唬鍖栥€侀珮鎬ц兘鐨勮櫄鎷熶笓鐢ㄧ綉缁滃伐鍏?
+		local docker_url="瀹樼綉浠嬬粛: https://www.wireguard.com/"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13737,19 +13737,19 @@ while true; do
 
 		local app_id="99"
 
-		local app_name="dsm群晖虚拟�?
-		local app_text="Docker容器中的虚拟DSM"
-		local app_url="官网: ${gh_https_url}github.com/vdsm/virtual-dsm"
+		local app_name="dsm缇ゆ櫀铏氭嫙鏈?
+		local app_text="Docker瀹瑰櫒涓殑铏氭嫙DSM"
+		local app_url="瀹樼綉: ${gh_https_url}github.com/vdsm/virtual-dsm"
 		local docker_name="dsm"
 		local docker_port="8099"
 		local app_size="16"
 
 		docker_app_install() {
 
-			read -e -p "设置 CPU 核数 (默认 2): " CPU_CORES
+			read -e -p "璁剧疆 CPU 鏍告暟 (榛樿 2): " CPU_CORES
 			local CPU_CORES=${CPU_CORES:-2}
 
-			read -e -p "设置内存大小 (默认 4G): " RAM_SIZE
+			read -e -p "璁剧疆鍐呭瓨澶у皬 (榛樿 4G): " RAM_SIZE
 			local RAM_SIZE=${RAM_SIZE:-4}
 
 			mkdir -p /home/docker/dsm
@@ -13766,7 +13766,7 @@ while true; do
 			docker compose up -d
 
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -13780,7 +13780,7 @@ while true; do
 		docker_app_uninstall() {
 			cd /home/docker/dsm/ && docker compose down --rmi all
 			rm -rf /home/docker/dsm
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -13809,8 +13809,8 @@ while true; do
 			  syncthing/syncthing:latest
 		}
 
-		local docker_describe="开源的点对点文件同步工具，类似�?Dropbox、Resilio Sync，但完全去中心化�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/syncthing/syncthing"
+		local docker_describe="寮€婧愮殑鐐瑰鐐规枃浠跺悓姝ュ伐鍏凤紝绫讳技浜?Dropbox銆丷esilio Sync锛屼絾瀹屽叏鍘讳腑蹇冨寲銆?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/syncthing/syncthing"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13821,9 +13821,9 @@ while true; do
 
 	  101|moneyprinterturbo)
 		local app_id="101"
-		local app_name="AI视频生成工具"
-		local app_text="MoneyPrinterTurbo是一款使用AI大模型合成高清短视频的工�?
-		local app_url="官方网站: ${gh_https_url}github.com/harry0703/MoneyPrinterTurbo"
+		local app_name="AI瑙嗛鐢熸垚宸ュ叿"
+		local app_text="MoneyPrinterTurbo鏄竴娆句娇鐢ˋI澶фā鍨嬪悎鎴愰珮娓呯煭瑙嗛鐨勫伐鍏?
+		local app_url="瀹樻柟缃戠珯: ${gh_https_url}github.com/harry0703/MoneyPrinterTurbo"
 		local docker_name="moneyprinterturbo"
 		local docker_port="8101"
 		local app_size="3"
@@ -13835,7 +13835,7 @@ while true; do
 
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -13851,7 +13851,7 @@ while true; do
 		docker_app_uninstall() {
 			cd  /home/docker/MoneyPrinterTurbo/ && docker compose down --rmi all
 			rm -rf /home/docker/MoneyPrinterTurbo
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -13877,8 +13877,8 @@ while true; do
 
 		}
 
-		local docker_describe="是一款支持独立部署的个人云社交媒体聊天服�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/Privoce/vocechat-web"
+		local docker_describe="鏄竴娆炬敮鎸佺嫭绔嬮儴缃茬殑涓汉浜戠ぞ浜ゅ獟浣撹亰澶╂湇鍔?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/Privoce/vocechat-web"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13889,9 +13889,9 @@ while true; do
 
 	  103|umami)
 		local app_id="103"
-		local app_name="Umami网站统计工具"
-		local app_text="开源、轻量、隐私友好的网站分析工具，类似于GoogleAnalytics�?
-		local app_url="官方网站: ${gh_https_url}github.com/umami-software/umami"
+		local app_name="Umami缃戠珯缁熻宸ュ叿"
+		local app_text="寮€婧愩€佽交閲忋€侀殣绉佸弸濂界殑缃戠珯鍒嗘瀽宸ュ叿锛岀被浼间簬GoogleAnalytics銆?
+		local app_url="瀹樻柟缃戠珯: ${gh_https_url}github.com/umami-software/umami"
 		local docker_name="umami-umami-1"
 		local docker_port="8103"
 		local app_size="1"
@@ -13903,10 +13903,10 @@ while true; do
 
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
-			echo "初始用户�? admin"
-			echo "初始密码: umami"
+			echo "鍒濆鐢ㄦ埛鍚? admin"
+			echo "鍒濆瀵嗙爜: umami"
 		}
 
 		docker_app_update() {
@@ -13920,7 +13920,7 @@ while true; do
 		docker_app_uninstall() {
 			cd  /home/docker/umami/ && docker compose down --rmi all
 			rm -rf /home/docker/umami
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -13941,7 +13941,7 @@ while true; do
 
 		docker_rum() {
 
-			read -e -p "设置登录密码: " app_passwd
+			read -e -p "璁剧疆鐧诲綍瀵嗙爜: " app_passwd
 
 			docker run -d \
 			  --name siyuan \
@@ -13956,8 +13956,8 @@ while true; do
 
 		}
 
-		local docker_describe="思源笔记是一款隐私优先的知识管理系统"
-		local docker_url="官网介绍: ${gh_https_url}github.com/siyuan-note/siyuan"
+		local docker_describe="鎬濇簮绗旇鏄竴娆鹃殣绉佷紭鍏堢殑鐭ヨ瘑绠＄悊绯荤粺"
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/siyuan-note/siyuan"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -13983,8 +13983,8 @@ while true; do
 
 		}
 
-		local docker_describe="是一款强大的开源白板工具，集成思维导图、流程图等�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/plait-board/drawnix"
+		local docker_describe="鏄竴娆惧己澶х殑寮€婧愮櫧鏉垮伐鍏凤紝闆嗘垚鎬濈淮瀵煎浘銆佹祦绋嬪浘绛夈€?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/plait-board/drawnix"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -14018,8 +14018,8 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 		}
 
-		local docker_describe="PanSou是一个高性能的网盘资源搜索API服务�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/fish2018/pansou"
+		local docker_describe="PanSou鏄竴涓珮鎬ц兘鐨勭綉鐩樿祫婧愭悳绱PI鏈嶅姟銆?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/fish2018/pansou"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -14032,9 +14032,9 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 	  108|langbot)
 		local app_id="108"
-		local app_name="LangBot聊天机器�?
-		local app_text="是一个开源的大语言模型原生即时通信机器人开发平�?
-		local app_url="官方网站: ${gh_https_url}github.com/langbot-app/LangBot"
+		local app_name="LangBot鑱婂ぉ鏈哄櫒浜?
+		local app_text="鏄竴涓紑婧愮殑澶ц瑷€妯″瀷鍘熺敓鍗虫椂閫氫俊鏈哄櫒浜哄紑鍙戝钩鍙?
+		local app_url="瀹樻柟缃戠珯: ${gh_https_url}github.com/langbot-app/LangBot"
 		local docker_name="langbot_plugin_runtime"
 		local docker_port="8108"
 		local app_size="1"
@@ -14046,7 +14046,7 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -14061,7 +14061,7 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 		docker_app_uninstall() {
 			cd  /home/docker/LangBot/docker/ && docker compose down --rmi all
 			rm -rf /home/docker/LangBot
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -14090,8 +14090,8 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 		}
 
-		local docker_describe="是一个适用于个人或小团队的在线网盘程序�?
-		local docker_url="官网介绍: ${gh_https_url}github.com/zfile-dev/zfile"
+		local docker_describe="鏄竴涓€傜敤浜庝釜浜烘垨灏忓洟闃熺殑鍦ㄧ嚎缃戠洏绋嬪簭銆?
+		local docker_url="瀹樼綉浠嬬粛: ${gh_https_url}github.com/zfile-dev/zfile"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -14102,9 +14102,9 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 	  110|karakeep)
 		local app_id="110"
-		local app_name="karakeep书签管理"
-		local app_text="是一款可自行托管的书签应用，带有人工智能功能，专为数据囤积者而设计�?
-		local app_url="官方网站: ${gh_https_url}github.com/karakeep-app/karakeep"
+		local app_name="karakeep涔︾绠＄悊"
+		local app_text="鏄竴娆惧彲鑷鎵樼鐨勪功绛惧簲鐢紝甯︽湁浜哄伐鏅鸿兘鍔熻兘锛屼笓涓烘暟鎹洡绉€呰€岃璁°€?
+		local app_url="瀹樻柟缃戠珯: ${gh_https_url}github.com/karakeep-app/karakeep"
 		local docker_name="docker-web-1"
 		local docker_port="8110"
 		local app_size="1"
@@ -14116,7 +14116,7 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 			docker compose up -d
 			clear
-			echo "已经安装完成"
+			echo "宸茬粡瀹夎瀹屾垚"
 			check_docker_app_ip
 		}
 
@@ -14131,7 +14131,7 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 		docker_app_uninstall() {
 			cd  /home/docker/karakeep/docker/ && docker compose down --rmi all
 			rm -rf /home/docker/karakeep
-			echo "应用已卸�?
+			echo "搴旂敤宸插嵏杞?
 		}
 
 		docker_app_plus
@@ -14156,8 +14156,8 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 		}
 
-		local docker_describe="是一个功能强大的多格式文件转换工具（支持文档、图像、音频视频等）强烈建议添加域名访�?
-		local docker_url="项目地址: ${gh_https_url}github.com/c4illin/ConvertX"
+		local docker_describe="鏄竴涓姛鑳藉己澶х殑澶氭牸寮忔枃浠惰浆鎹㈠伐鍏凤紙鏀寔鏂囨。銆佸浘鍍忋€侀煶棰戣棰戠瓑锛夊己鐑堝缓璁坊鍔犲煙鍚嶈闂?
+		local docker_url="椤圭洰鍦板潃: ${gh_https_url}github.com/c4illin/ConvertX"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="2"
@@ -14171,7 +14171,7 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 		local app_id="112"
 		local docker_name="lucky"
 		local docker_img="gdy666/lucky:v2"
-		# 由于 Lucky 使用 host 网络模式，这里的端口仅作记录/说明参考，实际由应用自身控制（默认16601�?
+		# 鐢变簬 Lucky 浣跨敤 host 缃戠粶妯″紡锛岃繖閲岀殑绔彛浠呬綔璁板綍/璇存槑鍙傝€冿紝瀹為檯鐢卞簲鐢ㄨ嚜韬帶鍒讹紙榛樿16601锛?
 		local docker_port=8112
 
 		docker_rum() {
@@ -14182,15 +14182,15 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 				-v /var/run/docker.sock:/var/run/docker.sock \
 				${docker_img}
 
-			echo "正在等待 Lucky 初始�?.."
+			echo "姝ｅ湪绛夊緟 Lucky 鍒濆鍖?.."
 			sleep 10
 			docker exec lucky /app/lucky -rSetHttpAdminPort ${docker_port}
 
 		}
 
-		local docker_describe="Lucky 是一个大内网穿透及端口转发管理工具，支�?DDNS、反向代理、WOL 等功能�?
-		local docker_url="项目地址: ${gh_https_url}github.com/gdy666/lucky"
-		local docker_use="echo \"默认账号密码: 666\""
+		local docker_describe="Lucky 鏄竴涓ぇ鍐呯綉绌块€忓強绔彛杞彂绠＄悊宸ュ叿锛屾敮鎸?DDNS銆佸弽鍚戜唬鐞嗐€乄OL 绛夊姛鑳姐€?
+		local docker_url="椤圭洰鍦板潃: ${gh_https_url}github.com/gdy666/lucky"
+		local docker_use="echo \"榛樿璐﹀彿瀵嗙爜: 666\""
 		local docker_passwd=""
 		local app_size="1"
 		docker_app
@@ -14207,7 +14207,7 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 		docker_rum() {
 
-			read -e -p "设置登录密码: " admin_password
+			read -e -p "璁剧疆鐧诲綍瀵嗙爜: " admin_password
 
 			docker run -d --name=${docker_name} --restart=always \
 				-p ${docker_port}:5800 \
@@ -14218,8 +14218,8 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 				${docker_img}
 		}
 
-		local docker_describe="是一个运行在 Docker 中的 Firefox 浏览器，支持通过网页直接访问桌面版浏览器界面�?
-		local docker_url="项目地址: ${gh_https_url}github.com/jlesage/docker-firefox"
+		local docker_describe="鏄竴涓繍琛屽湪 Docker 涓殑 Firefox 娴忚鍣紝鏀寔閫氳繃缃戦〉鐩存帴璁块棶妗岄潰鐗堟祻瑙堝櫒鐣岄潰銆?
+		local docker_url="椤圭洰鍦板潃: ${gh_https_url}github.com/jlesage/docker-firefox"
 		local docker_use=""
 		local docker_passwd=""
 		local app_size="1"
@@ -14234,39 +14234,39 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 	  b)
 	  	clear
-	  	send_stats "全部应用备份"
+	  	send_stats "鍏ㄩ儴搴旂敤澶囦唤"
 
 	  	local backup_filename="app_$(date +"%Y%m%d%H%M%S").tar.gz"
-	  	echo -e "${gl_kjlan}正在备份 $backup_filename ...${gl_bai}"
+	  	echo -e "${gl_kjlan}姝ｅ湪澶囦唤 $backup_filename ...${gl_bai}"
 	  	cd / && tar czvf "$backup_filename" home
 
 	  	while true; do
 			clear
-			echo "备份文件已创�? /$backup_filename"
-			read -e -p "要传送备份数据到远程服务器吗�?Y/N): " choice
+			echo "澶囦唤鏂囦欢宸插垱寤? /$backup_filename"
+			read -e -p "瑕佷紶閫佸浠芥暟鎹埌杩滅▼鏈嶅姟鍣ㄥ悧锛?Y/N): " choice
 			case "$choice" in
 			  [Yy])
-				read -e -p "请输入远端服务器IP:  " remote_ip
-				read -e -p "目标服务器SSH端口 [默认22]: " TARGET_PORT
+				read -e -p "璇疯緭鍏ヨ繙绔湇鍔″櫒IP:  " remote_ip
+				read -e -p "鐩爣鏈嶅姟鍣⊿SH绔彛 [榛樿22]: " TARGET_PORT
 				local TARGET_PORT=${TARGET_PORT:-22}
 
 				if [ -z "$remote_ip" ]; then
-				  echo "错误: 请输入远端服务器IP�?
+				  echo "閿欒: 璇疯緭鍏ヨ繙绔湇鍔″櫒IP銆?
 				  continue
 				fi
 				local latest_tar=$(ls -t /app*.tar.gz | head -1)
 				if [ -n "$latest_tar" ]; then
 				  ssh-keygen -f "/root/.ssh/known_hosts" -R "$remote_ip"
-				  sleep 2  # 添加等待时间
+				  sleep 2  # 娣诲姞绛夊緟鏃堕棿
 				  scp -P "$TARGET_PORT" -o StrictHostKeyChecking=no "$latest_tar" "root@$remote_ip:/"
-				  echo "文件已传送至远程服务�?根目录�?
+				  echo "鏂囦欢宸蹭紶閫佽嚦杩滅▼鏈嶅姟鍣?鏍圭洰褰曘€?
 				else
-				  echo "未找到要传送的文件�?
+				  echo "鏈壘鍒拌浼犻€佺殑鏂囦欢銆?
 				fi
 				break
 				;;
 			  *)
-				echo "注意: 目前备份仅包含docker项目，不包含宝塔�?panel等建站面板的数据备份�?
+				echo "娉ㄦ剰: 鐩墠澶囦唤浠呭寘鍚玠ocker椤圭洰锛屼笉鍖呭惈瀹濆锛?panel绛夊缓绔欓潰鏉跨殑鏁版嵁澶囦唤銆?
 				break
 				;;
 			esac
@@ -14276,29 +14276,29 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 
 	  r)
 	  	root_use
-	  	send_stats "全部应用还原"
-	  	echo "可用的应用备�?
+	  	send_stats "鍏ㄩ儴搴旂敤杩樺師"
+	  	echo "鍙敤鐨勫簲鐢ㄥ浠?
 	  	echo "-------------------------"
 	  	ls -lt /app*.gz | awk '{print $NF}'
 	  	echo ""
-	  	read -e -p  "回车键还原最新的备份，输入备份文件名还原指定的备份，输入0退出：" filename
+	  	read -e -p  "鍥炶溅閿繕鍘熸渶鏂扮殑澶囦唤锛岃緭鍏ュ浠芥枃浠跺悕杩樺師鎸囧畾鐨勫浠斤紝杈撳叆0閫€鍑猴細" filename
 
 	  	if [ "$filename" == "0" ]; then
 			  break_end
 			  linux_panel
 	  	fi
 
-	  	# 如果用户没有输入文件名，使用最新的压缩�?
+	  	# 濡傛灉鐢ㄦ埛娌℃湁杈撳叆鏂囦欢鍚嶏紝浣跨敤鏈€鏂扮殑鍘嬬缉鍖?
 	  	if [ -z "$filename" ]; then
 			  local filename=$(ls -t /app*.tar.gz | head -1)
 	  	fi
 
 	  	if [ -n "$filename" ]; then
-		  	  echo -e "${gl_kjlan}正在解压 $filename ...${gl_bai}"
+		  	  echo -e "${gl_kjlan}姝ｅ湪瑙ｅ帇 $filename ...${gl_bai}"
 		  	  cd / && tar -xzf "$filename"
-			  echo "应用数据已还原，目前请手动进入指定应用菜单，更新应用，即可还原应用�?
+			  echo "搴旂敤鏁版嵁宸茶繕鍘燂紝鐩墠璇锋墜鍔ㄨ繘鍏ユ寚瀹氬簲鐢ㄨ彍鍗曪紝鏇存柊搴旂敤锛屽嵆鍙繕鍘熷簲鐢ㄣ€?
 	  	else
-			  echo "没有找到压缩包�?
+			  echo "娌℃湁鎵惧埌鍘嬬缉鍖呫€?
 	  	fi
 
 		  ;;
@@ -14320,7 +14320,7 @@ discourse,yunsou,ahhhhfs,nsgame,gying" \
 		if [ -f "$custom_app" ]; then
 			. "$custom_app"
 		else
-			echo -e "${gl_hong}错误: 未找到编号为 ${sub_choice} 的应用配�?{gl_bai}"
+			echo -e "${gl_hong}閿欒: 鏈壘鍒扮紪鍙蜂负 ${sub_choice} 鐨勫簲鐢ㄩ厤缃?{gl_bai}"
 		fi
 		  ;;
 	esac
@@ -14336,35 +14336,35 @@ linux_work() {
 
 	while true; do
 	  clear
-	  send_stats "后台工作�?
-	  echo -e "后台工作�?
-	  echo -e "系统将为你提供可以后台常驻运行的工作区，你可以用来执行长时间的任�?
-	  echo -e "即使你断开SSH，工作区中的任务也不会中断，后台常驻任务�?
-	  echo -e "${gl_huang}提示: ${gl_bai}进入工作区后使用Ctrl+b再单独按d，退出工作区�?
+	  send_stats "鍚庡彴宸ヤ綔鍖?
+	  echo -e "鍚庡彴宸ヤ綔鍖?
+	  echo -e "绯荤粺灏嗕负浣犳彁渚涘彲浠ュ悗鍙板父椹昏繍琛岀殑宸ヤ綔鍖猴紝浣犲彲浠ョ敤鏉ユ墽琛岄暱鏃堕棿鐨勪换鍔?
+	  echo -e "鍗充娇浣犳柇寮€SSH锛屽伐浣滃尯涓殑浠诲姟涔熶笉浼氫腑鏂紝鍚庡彴甯搁┗浠诲姟銆?
+	  echo -e "${gl_huang}鎻愮ず: ${gl_bai}杩涘叆宸ヤ綔鍖哄悗浣跨敤Ctrl+b鍐嶅崟鐙寜d锛岄€€鍑哄伐浣滃尯锛?
 	  echo -e "${gl_kjlan}------------------------"
-	  echo "当前已存在的工作区列�?
+	  echo "褰撳墠宸插瓨鍦ㄧ殑宸ヤ綔鍖哄垪琛?
 	  echo -e "${gl_kjlan}------------------------"
 	  tmux list-sessions
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}1.   ${gl_bai}1号工作区"
-	  echo -e "${gl_kjlan}2.   ${gl_bai}2号工作区"
-	  echo -e "${gl_kjlan}3.   ${gl_bai}3号工作区"
-	  echo -e "${gl_kjlan}4.   ${gl_bai}4号工作区"
-	  echo -e "${gl_kjlan}5.   ${gl_bai}5号工作区"
-	  echo -e "${gl_kjlan}6.   ${gl_bai}6号工作区"
-	  echo -e "${gl_kjlan}7.   ${gl_bai}7号工作区"
-	  echo -e "${gl_kjlan}8.   ${gl_bai}8号工作区"
-	  echo -e "${gl_kjlan}9.   ${gl_bai}9号工作区"
-	  echo -e "${gl_kjlan}10.  ${gl_bai}10号工作区"
+	  echo -e "${gl_kjlan}1.   ${gl_bai}1鍙峰伐浣滃尯"
+	  echo -e "${gl_kjlan}2.   ${gl_bai}2鍙峰伐浣滃尯"
+	  echo -e "${gl_kjlan}3.   ${gl_bai}3鍙峰伐浣滃尯"
+	  echo -e "${gl_kjlan}4.   ${gl_bai}4鍙峰伐浣滃尯"
+	  echo -e "${gl_kjlan}5.   ${gl_bai}5鍙峰伐浣滃尯"
+	  echo -e "${gl_kjlan}6.   ${gl_bai}6鍙峰伐浣滃尯"
+	  echo -e "${gl_kjlan}7.   ${gl_bai}7鍙峰伐浣滃尯"
+	  echo -e "${gl_kjlan}8.   ${gl_bai}8鍙峰伐浣滃尯"
+	  echo -e "${gl_kjlan}9.   ${gl_bai}9鍙峰伐浣滃尯"
+	  echo -e "${gl_kjlan}10.  ${gl_bai}10鍙峰伐浣滃尯"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}21.  ${gl_bai}SSH常驻模式 ${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}22.  ${gl_bai}创建/进入工作�?
-	  echo -e "${gl_kjlan}23.  ${gl_bai}注入命令到后台工作区"
-	  echo -e "${gl_kjlan}24.  ${gl_bai}删除指定工作�?
+	  echo -e "${gl_kjlan}21.  ${gl_bai}SSH甯搁┗妯″紡 ${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}22.  ${gl_bai}鍒涘缓/杩涘叆宸ヤ綔鍖?
+	  echo -e "${gl_kjlan}23.  ${gl_bai}娉ㄥ叆鍛戒护鍒板悗鍙板伐浣滃尯"
+	  echo -e "${gl_kjlan}24.  ${gl_bai}鍒犻櫎鎸囧畾宸ヤ綔鍖?
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主菜�?
+	  echo -e "${gl_kjlan}0.   ${gl_bai}杩斿洖涓昏彍鍗?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 	  case $sub_choice in
 
@@ -14372,7 +14372,7 @@ linux_work() {
 			  clear
 			  install tmux
 			  local SESSION_NAME="work1"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 
 			  ;;
@@ -14380,63 +14380,63 @@ linux_work() {
 			  clear
 			  install tmux
 			  local SESSION_NAME="work2"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 			  ;;
 		  3)
 			  clear
 			  install tmux
 			  local SESSION_NAME="work3"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 			  ;;
 		  4)
 			  clear
 			  install tmux
 			  local SESSION_NAME="work4"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 			  ;;
 		  5)
 			  clear
 			  install tmux
 			  local SESSION_NAME="work5"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 			  ;;
 		  6)
 			  clear
 			  install tmux
 			  local SESSION_NAME="work6"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 			  ;;
 		  7)
 			  clear
 			  install tmux
 			  local SESSION_NAME="work7"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 			  ;;
 		  8)
 			  clear
 			  install tmux
 			  local SESSION_NAME="work8"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 			  ;;
 		  9)
 			  clear
 			  install tmux
 			  local SESSION_NAME="work9"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 			  ;;
 		  10)
 			  clear
 			  install tmux
 			  local SESSION_NAME="work10"
-			  send_stats "启动工作�?SESSION_NAME"
+			  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
 			  tmux_run
 			  ;;
 
@@ -14444,30 +14444,30 @@ linux_work() {
 			while true; do
 			  clear
 			  if grep -q 'tmux attach-session -t sshd || tmux new-session -s sshd' ~/.bashrc; then
-				  local tmux_sshd_status="${gl_lv}开�?{gl_bai}"
+				  local tmux_sshd_status="${gl_lv}寮€鍚?{gl_bai}"
 			  else
-				  local tmux_sshd_status="${gl_hui}关闭${gl_bai}"
+				  local tmux_sshd_status="${gl_hui}鍏抽棴${gl_bai}"
 			  fi
-			  send_stats "SSH常驻模式 "
-			  echo -e "SSH常驻模式 ${tmux_sshd_status}"
-			  echo "开启后SSH连接后会直接进入常驻模式，直接回到之前的工作状态�?
+			  send_stats "SSH甯搁┗妯″紡 "
+			  echo -e "SSH甯搁┗妯″紡 ${tmux_sshd_status}"
+			  echo "寮€鍚悗SSH杩炴帴鍚庝細鐩存帴杩涘叆甯搁┗妯″紡锛岀洿鎺ュ洖鍒颁箣鍓嶇殑宸ヤ綔鐘舵€併€?
 			  echo "------------------------"
-			  echo "1. 开�?           2. 关闭"
+			  echo "1. 寮€鍚?           2. 鍏抽棴"
 			  echo "------------------------"
-			  echo "0. 返回上一级选单"
+			  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 			  echo "------------------------"
-			  read -e -p "请输入你的选择: " gongzuoqu_del
+			  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " gongzuoqu_del
 			  case "$gongzuoqu_del" in
 				1)
 			  	  install tmux
 			  	  local SESSION_NAME="sshd"
-			  	  send_stats "启动工作�?SESSION_NAME"
-				  grep -q "tmux attach-session -t sshd" ~/.bashrc || echo -e "\n# 自动进入 tmux 会话\nif [[ -z \"\$TMUX\" ]]; then\n    tmux attach-session -t sshd || tmux new-session -s sshd\nfi" >> ~/.bashrc
+			  	  send_stats "鍚姩宸ヤ綔鍖?SESSION_NAME"
+				  grep -q "tmux attach-session -t sshd" ~/.bashrc || echo -e "\n# 鑷姩杩涘叆 tmux 浼氳瘽\nif [[ -z \"\$TMUX\" ]]; then\n    tmux attach-session -t sshd || tmux new-session -s sshd\nfi" >> ~/.bashrc
 				  source ~/.bashrc
 			  	  tmux_run
 				  ;;
 				2)
-				  sed -i '/# 自动进入 tmux 会话/,+4d' ~/.bashrc
+				  sed -i '/# 鑷姩杩涘叆 tmux 浼氳瘽/,+4d' ~/.bashrc
 				  tmux kill-window -t sshd
 				  ;;
 				*)
@@ -14478,29 +14478,29 @@ linux_work() {
 			  ;;
 
 		  22)
-			  read -e -p "请输入你创建或进入的工作区名称，�?001 kj001 work1: " SESSION_NAME
+			  read -e -p "璇疯緭鍏ヤ綘鍒涘缓鎴栬繘鍏ョ殑宸ヤ綔鍖哄悕绉帮紝濡?001 kj001 work1: " SESSION_NAME
 			  tmux_run
-			  send_stats "自定义工作区"
+			  send_stats "鑷畾涔夊伐浣滃尯"
 			  ;;
 
 
 		  23)
-			  read -e -p "请输入你要后台执行的命令，如:curl -fsSL https://get.docker.com | sh: " tmuxd
+			  read -e -p "璇疯緭鍏ヤ綘瑕佸悗鍙版墽琛岀殑鍛戒护锛屽:curl -fsSL https://get.docker.com | sh: " tmuxd
 			  tmux_run_d
-			  send_stats "注入命令到后台工作区"
+			  send_stats "娉ㄥ叆鍛戒护鍒板悗鍙板伐浣滃尯"
 			  ;;
 
 		  24)
-			  read -e -p "请输入要删除的工作区名称: " gongzuoqu_name
+			  read -e -p "璇疯緭鍏ヨ鍒犻櫎鐨勫伐浣滃尯鍚嶇О: " gongzuoqu_name
 			  tmux kill-window -t $gongzuoqu_name
-			  send_stats "删除工作�?
+			  send_stats "鍒犻櫎宸ヤ綔鍖?
 			  ;;
 
 		  0)
 			  kejilion
 			  ;;
 		  *)
-			  echo "无效的输�?"
+			  echo "鏃犳晥鐨勮緭鍏?"
 			  ;;
 	  esac
 	  break_end
@@ -14519,20 +14519,20 @@ linux_work() {
 
 
 
-# 智能切换镜像源函�?
+# 鏅鸿兘鍒囨崲闀滃儚婧愬嚱鏁?
 switch_mirror() {
-	# 可选参数，默认�?false
+	# 鍙€夊弬鏁帮紝榛樿涓?false
 	local upgrade_software=${1:-false}
 	local clean_cache=${2:-false}
 
-	# 获取用户国家
+	# 鑾峰彇鐢ㄦ埛鍥藉
 	local country
 	country=$(curl -s ipinfo.io/country)
 
-	echo "检测到国家�?country"
+	echo "妫€娴嬪埌鍥藉锛?country"
 
 	if [ "$country" = "CN" ]; then
-		echo "使用国内镜像�?.."
+		echo "浣跨敤鍥藉唴闀滃儚婧?.."
 		bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 		  --source mirrors.huaweicloud.com \
 		  --protocol https \
@@ -14544,7 +14544,7 @@ switch_mirror() {
 		  --install-epel false \
 		  --pure-mode
 	else
-		echo "使用海外镜像�?.."
+		echo "浣跨敤娴峰闀滃儚婧?.."
 		if [ -f /etc/os-release ] && grep -qi "oracle" /etc/os-release; then
 			bash <(curl -sSL https://linuxmirrors.cn/main.sh) \
 			  --source mirrors.xtom.com \
@@ -14574,24 +14574,24 @@ switch_mirror() {
 
 fail2ban_panel() {
 		  root_use
-		  send_stats "ssh防御"
+		  send_stats "ssh闃插尽"
 		  while true; do
 
 				check_f2b_status
-				echo -e "SSH防御程序 $check_f2b_status"
-				echo "fail2ban是一个SSH防止暴力破解工具"
-				echo "官网介绍: ${gh_proxy}github.com/fail2ban/fail2ban"
+				echo -e "SSH闃插尽绋嬪簭 $check_f2b_status"
+				echo "fail2ban鏄竴涓猄SH闃叉鏆村姏鐮磋В宸ュ叿"
+				echo "瀹樼綉浠嬬粛: ${gh_proxy}github.com/fail2ban/fail2ban"
 				echo "------------------------"
-				echo "1. 安装防御程序"
+				echo "1. 瀹夎闃插尽绋嬪簭"
 				echo "------------------------"
-				echo "2. 查看SSH拦截记录"
-				echo "3. 日志实时监控"
+				echo "2. 鏌ョ湅SSH鎷︽埅璁板綍"
+				echo "3. 鏃ュ織瀹炴椂鐩戞帶"
 				echo "------------------------"
-				echo "9. 卸载防御程序"
+				echo "9. 鍗歌浇闃插尽绋嬪簭"
 				echo "------------------------"
-				echo "0. 返回上一级选单"
+				echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				echo "------------------------"
-				read -e -p "请输入你的选择: " sub_choice
+				read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 				case $sub_choice in
 					1)
 						f2b_install_sshd
@@ -14612,7 +14612,7 @@ fail2ban_panel() {
 					9)
 						remove fail2ban
 						rm -rf /etc/fail2ban
-						echo "Fail2Ban防御程序已卸�?
+						echo "Fail2Ban闃插尽绋嬪簭宸插嵏杞?
 						break
 						;;
 					*)
@@ -14629,16 +14629,16 @@ fail2ban_panel() {
 
 net_menu() {
 
-	send_stats "网卡管理工具"
+	send_stats "缃戝崱绠＄悊宸ュ叿"
 	show_nics() {
-		echo "================ 当前网卡信息 ================"
-		printf "%-18s %-12s %-20s %-26s\n" "网卡�? "状�? "IP地址" "MAC地址"
+		echo "================ 褰撳墠缃戝崱淇℃伅 ================"
+		printf "%-18s %-12s %-20s %-26s\n" "缃戝崱鍚? "鐘舵€? "IP鍦板潃" "MAC鍦板潃"
 		echo "------------------------------------------------"
 		for nic in $(ls /sys/class/net); do
 			state=$(cat /sys/class/net/$nic/operstate 2>/dev/null)
 			ipaddr=$(ip -4 addr show $nic | awk '/inet /{print $2}' | head -n1)
 			mac=$(cat /sys/class/net/$nic/address 2>/dev/null)
-			printf "%-15s %-10s %-18s %-20s\n" "$nic" "$state" "${ipaddr:-无}" "$mac"
+			printf "%-15s %-10s %-18s %-20s\n" "$nic" "$state" "${ipaddr:-鏃爙" "$mac"
 		done
 		echo "================================================"
 	}
@@ -14647,50 +14647,50 @@ net_menu() {
 		clear
 		show_nics
 		echo
-		echo "=========== 网卡管理菜单 ==========="
-		echo "1. 启用网卡"
-		echo "2. 禁用网卡"
-		echo "3. 查看网卡详细信息"
-		echo "4. 刷新网卡信息"
-		echo "0. 返回上一级选单"
+		echo "=========== 缃戝崱绠＄悊鑿滃崟 ==========="
+		echo "1. 鍚敤缃戝崱"
+		echo "2. 绂佺敤缃戝崱"
+		echo "3. 鏌ョ湅缃戝崱璇︾粏淇℃伅"
+		echo "4. 鍒锋柊缃戝崱淇℃伅"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "===================================="
-		read -erp "请选择操作: " choice
+		read -erp "璇烽€夋嫨鎿嶄綔: " choice
 
 		case $choice in
 			1)
-				send_stats "启用网卡"
-				read -erp "请输入要启用的网卡名: " nic
+				send_stats "鍚敤缃戝崱"
+				read -erp "璇疯緭鍏ヨ鍚敤鐨勭綉鍗″悕: " nic
 				if ip link show "$nic" &>/dev/null; then
-					ip link set "$nic" up && echo "�?网卡 $nic 已启�?
+					ip link set "$nic" up && echo "鉁?缃戝崱 $nic 宸插惎鐢?
 				else
-					echo "�?网卡不存�?
+					echo "鉁?缃戝崱涓嶅瓨鍦?
 				fi
-				read -erp "按回车继�?.."
+				read -erp "鎸夊洖杞︾户缁?.."
 				;;
 			2)
-				send_stats "禁用网卡"
-				read -erp "请输入要禁用的网卡名: " nic
+				send_stats "绂佺敤缃戝崱"
+				read -erp "璇疯緭鍏ヨ绂佺敤鐨勭綉鍗″悕: " nic
 				if ip link show "$nic" &>/dev/null; then
-					ip link set "$nic" down && echo "�?网卡 $nic 已禁�?
+					ip link set "$nic" down && echo "鉁?缃戝崱 $nic 宸茬鐢?
 				else
-					echo "�?网卡不存�?
+					echo "鉁?缃戝崱涓嶅瓨鍦?
 				fi
-				read -erp "按回车继�?.."
+				read -erp "鎸夊洖杞︾户缁?.."
 				;;
 			3)
-				send_stats "查看网卡详情"
-				read -erp "请输入要查看的网卡名: " nic
+				send_stats "鏌ョ湅缃戝崱璇︽儏"
+				read -erp "璇疯緭鍏ヨ鏌ョ湅鐨勭綉鍗″悕: " nic
 				if ip link show "$nic" &>/dev/null; then
-					echo "========== $nic 详细信息 =========="
+					echo "========== $nic 璇︾粏淇℃伅 =========="
 					ip addr show "$nic"
 					ethtool "$nic" 2>/dev/null | head -n 10
 				else
-					echo "�?网卡不存�?
+					echo "鉁?缃戝崱涓嶅瓨鍦?
 				fi
-				read -erp "按回车继�?.."
+				read -erp "鎸夊洖杞︾户缁?.."
 				;;
 			4)
-				send_stats "刷新网卡信息"
+				send_stats "鍒锋柊缃戝崱淇℃伅"
 				continue
 				;;
 			*)
@@ -14703,17 +14703,17 @@ net_menu() {
 
 
 log_menu() {
-	send_stats "系统日志管理工具"
+	send_stats "绯荤粺鏃ュ織绠＄悊宸ュ叿"
 
 	show_log_overview() {
-		echo "============= 系统日志概览 ============="
-		echo "主机�? $(hostname)"
-		echo "系统时间: $(date)"
+		echo "============= 绯荤粺鏃ュ織姒傝 ============="
+		echo "涓绘満鍚? $(hostname)"
+		echo "绯荤粺鏃堕棿: $(date)"
 		echo
-		echo "[ /var/log 目录占用 ]"
+		echo "[ /var/log 鐩綍鍗犵敤 ]"
 		du -sh /var/log 2>/dev/null
 		echo
-		echo "[ journal 日志占用 ]"
+		echo "[ journal 鏃ュ織鍗犵敤 ]"
 		journalctl --disk-usage 2>/dev/null
 		echo "========================================"
 	}
@@ -14722,77 +14722,77 @@ log_menu() {
 		clear
 		show_log_overview
 		echo
-		echo "=========== 系统日志管理菜单 ==========="
-		echo "1. 查看最近系统日志（journal�?
-		echo "2. 查看指定服务日志"
-		echo "3. 查看登录/安全日志"
-		echo "4. 实时跟踪日志"
-		echo "5. 清理�?journal 日志"
-		echo "0. 返回上一级选单"
+		echo "=========== 绯荤粺鏃ュ織绠＄悊鑿滃崟 ==========="
+		echo "1. 鏌ョ湅鏈€杩戠郴缁熸棩蹇楋紙journal锛?
+		echo "2. 鏌ョ湅鎸囧畾鏈嶅姟鏃ュ織"
+		echo "3. 鏌ョ湅鐧诲綍/瀹夊叏鏃ュ織"
+		echo "4. 瀹炴椂璺熻釜鏃ュ織"
+		echo "5. 娓呯悊鏃?journal 鏃ュ織"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "======================================="
-		read -erp "请选择操作: " choice
+		read -erp "璇烽€夋嫨鎿嶄綔: " choice
 
 		case $choice in
 			1)
-				send_stats "查看最近日�?
-				read -erp "查看最近多少行日志？[默认 100]: " lines
+				send_stats "鏌ョ湅鏈€杩戞棩蹇?
+				read -erp "鏌ョ湅鏈€杩戝灏戣鏃ュ織锛焄榛樿 100]: " lines
 				lines=${lines:-100}
 				journalctl -n "$lines" --no-pager
-				read -erp "按回车继�?.."
+				read -erp "鎸夊洖杞︾户缁?.."
 				;;
 			2)
-				send_stats "查看指定服务日志"
-				read -erp "请输入服务名（如 sshd、nginx�? " svc
+				send_stats "鏌ョ湅鎸囧畾鏈嶅姟鏃ュ織"
+				read -erp "璇疯緭鍏ユ湇鍔″悕锛堝 sshd銆乶ginx锛? " svc
 				if systemctl list-unit-files | grep -q "^$svc"; then
 					journalctl -u "$svc" -n 100 --no-pager
 				else
-					echo "�?服务不存在或无日�?
+					echo "鉁?鏈嶅姟涓嶅瓨鍦ㄦ垨鏃犳棩蹇?
 				fi
-				read -erp "按回车继�?.."
+				read -erp "鎸夊洖杞︾户缁?.."
 				;;
 			3)
-				send_stats "查看登录/安全日志"
-				echo "====== 最近登录日�?======"
+				send_stats "鏌ョ湅鐧诲綍/瀹夊叏鏃ュ織"
+				echo "====== 鏈€杩戠櫥褰曟棩蹇?======"
 				last -n 10
 				echo
-				echo "====== 认证日志 ======"
+				echo "====== 璁よ瘉鏃ュ織 ======"
 				if [ -f /var/log/secure ]; then
 					tail -n 20 /var/log/secure
 				elif [ -f /var/log/auth.log ]; then
 					tail -n 20 /var/log/auth.log
 				else
-					echo "未找到安全日志文�?
+					echo "鏈壘鍒板畨鍏ㄦ棩蹇楁枃浠?
 				fi
-				read -erp "按回车继�?.."
+				read -erp "鎸夊洖杞︾户缁?.."
 				;;
 			4)
-				send_stats "实时跟踪日志"
-				echo "1) 系统日志"
-				echo "2) 指定服务日志"
-				read -erp "选择跟踪类型: " t
+				send_stats "瀹炴椂璺熻釜鏃ュ織"
+				echo "1) 绯荤粺鏃ュ織"
+				echo "2) 鎸囧畾鏈嶅姟鏃ュ織"
+				read -erp "閫夋嫨璺熻釜绫诲瀷: " t
 				if [ "$t" = "1" ]; then
 					journalctl -f
 				elif [ "$t" = "2" ]; then
-					read -erp "输入服务�? " svc
+					read -erp "杈撳叆鏈嶅姟鍚? " svc
 					journalctl -u "$svc" -f
 				else
-					echo "无效选择"
+					echo "鏃犳晥閫夋嫨"
 				fi
 				;;
 			5)
-				send_stats "清理�?journal 日志"
-				echo "⚠️ 清理 journal 日志（安全方式）"
-				echo "1) 保留最�?7 �?
-				echo "2) 保留最�?3 �?
-				echo "3) 限制日志最�?500M"
-				read -erp "请选择清理方式: " c
+				send_stats "娓呯悊鏃?journal 鏃ュ織"
+				echo "鈿狅笍 娓呯悊 journal 鏃ュ織锛堝畨鍏ㄦ柟寮忥級"
+				echo "1) 淇濈暀鏈€杩?7 澶?
+				echo "2) 淇濈暀鏈€杩?3 澶?
+				echo "3) 闄愬埗鏃ュ織鏈€澶?500M"
+				read -erp "璇烽€夋嫨娓呯悊鏂瑰紡: " c
 				case $c in
 					1) journalctl --vacuum-time=7d ;;
 					2) journalctl --vacuum-time=3d ;;
 					3) journalctl --vacuum-size=500M ;;
-					*) echo "无效选项" ;;
+					*) echo "鏃犳晥閫夐」" ;;
 				esac
-				echo "�?journal 日志清理完成"
+				echo "鉁?journal 鏃ュ織娓呯悊瀹屾垚"
 				sleep 2
 				;;
 			*)
@@ -14809,13 +14809,13 @@ env_menu() {
 	BASHRC="$HOME/.bashrc"
 	PROFILE="$HOME/.profile"
 
-	send_stats "系统变量管理工具"
+	send_stats "绯荤粺鍙橀噺绠＄悊宸ュ叿"
 
 	show_env_vars() {
 		clear
-		send_stats "当前已生效环境变�?
-		echo "========== 当前已生效环境变量（节选） =========="
-		printf "%-20s %s\n" "变量�? "�?
+		send_stats "褰撳墠宸茬敓鏁堢幆澧冨彉閲?
+		echo "========== 褰撳墠宸茬敓鏁堢幆澧冨彉閲忥紙鑺傞€夛級 =========="
+		printf "%-20s %s\n" "鍙橀噺鍚? "鍊?
 		echo "-----------------------------------------------"
 		for v in USER HOME SHELL LANG PWD; do
 			printf "%-20s %s\n" "$v" "${!v}"
@@ -14826,17 +14826,17 @@ env_menu() {
 		echo "$PATH" | tr ':' '\n' | nl -ba
 
 		echo
-		echo "========== 配置文件中定义的变量（解析） =========="
+		echo "========== 閰嶇疆鏂囦欢涓畾涔夌殑鍙橀噺锛堣В鏋愶級 =========="
 
 		parse_file_vars() {
 			local file="$1"
 			[ -f "$file" ] || return
 
 			echo
-			echo ">>> 来源文件�?file"
+			echo ">>> 鏉ユ簮鏂囦欢锛?file"
 			echo "-----------------------------------------------"
 
-			# 提取 export VAR=xxx �?VAR=xxx
+			# 鎻愬彇 export VAR=xxx 鎴?VAR=xxx
 			grep -Ev '^\s*#|^\s*$' "$file" \
 			| grep -E '^(export[[:space:]]+)?[A-Za-z_][A-Za-z0-9_]*=' \
 			| while read -r line; do
@@ -14851,55 +14851,55 @@ env_menu() {
 
 		echo
 		echo "==============================================="
-		read -erp "按回车继�?.."
+		read -erp "鎸夊洖杞︾户缁?.."
 	}
 
 
 	view_file() {
 		local file="$1"
-		send_stats "查看变量文件 $file"
+		send_stats "鏌ョ湅鍙橀噺鏂囦欢 $file"
 		clear
 		if [ -f "$file" ]; then
-			echo "========== 查看文件�?file =========="
+			echo "========== 鏌ョ湅鏂囦欢锛?file =========="
 			cat -n "$file"
 			echo "===================================="
 		else
-			echo "文件不存在：$file"
+			echo "鏂囦欢涓嶅瓨鍦細$file"
 		fi
-		read -erp "按回车继�?.."
+		read -erp "鎸夊洖杞︾户缁?.."
 	}
 
 	edit_file() {
 		local file="$1"
-		send_stats "编辑变量文件 $file"
+		send_stats "缂栬緫鍙橀噺鏂囦欢 $file"
 		install nano
 		nano "$file"
 	}
 
 	source_files() {
-		echo "正在重新加载环境变量..."
-		send_stats "正在重新加载环境变量"
+		echo "姝ｅ湪閲嶆柊鍔犺浇鐜鍙橀噺..."
+		send_stats "姝ｅ湪閲嶆柊鍔犺浇鐜鍙橀噺"
 		source "$BASHRC"
 		source "$PROFILE"
-		echo "�?环境变量已重新加�?
-		read -erp "按回车继�?.."
+		echo "鉁?鐜鍙橀噺宸查噸鏂板姞杞?
+		read -erp "鎸夊洖杞︾户缁?.."
 	}
 
 	while true; do
 		clear
-		echo "=========== 系统环境变量管理 =========="
-		echo "当前用户�?USER"
+		echo "=========== 绯荤粺鐜鍙橀噺绠＄悊 =========="
+		echo "褰撳墠鐢ㄦ埛锛?USER"
 		echo "--------------------------------------"
-		echo "1. 查看当前常用环境变量"
-		echo "2. 查看 ~/.bashrc"
-		echo "3. 查看 ~/.profile"
-		echo "4. 编辑 ~/.bashrc"
-		echo "5. 编辑 ~/.profile"
-		echo "6. 重新加载环境变量（source�?
+		echo "1. 鏌ョ湅褰撳墠甯哥敤鐜鍙橀噺"
+		echo "2. 鏌ョ湅 ~/.bashrc"
+		echo "3. 鏌ョ湅 ~/.profile"
+		echo "4. 缂栬緫 ~/.bashrc"
+		echo "5. 缂栬緫 ~/.profile"
+		echo "6. 閲嶆柊鍔犺浇鐜鍙橀噺锛坰ource锛?
 		echo "--------------------------------------"
-		echo "0. 返回上一级选单"
+		echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		echo "--------------------------------------"
-		read -erp "请选择操作: " choice
+		read -erp "璇烽€夋嫨鎿嶄綔: " choice
 
 		case "$choice" in
 			1)
@@ -14924,7 +14924,7 @@ env_menu() {
 				break
 				;;
 			*)
-				echo "无效选项"
+				echo "鏃犳晥閫夐」"
 				sleep 1
 				;;
 		esac
@@ -14938,40 +14938,40 @@ create_user_with_sshkey() {
 	local sshkey_vl
 
 	if [[ -z "$new_username" ]]; then
-		echo "用法：create_user_with_sshkey <用户�?"
+		echo "鐢ㄦ硶锛歝reate_user_with_sshkey <鐢ㄦ埛鍚?"
 		return 1
 	fi
 
-	# 创建用户
+	# 鍒涘缓鐢ㄦ埛
 	useradd -m -s /bin/bash "$new_username" || return 1
 
-	echo "导入公钥范例�?
-	echo "  - URL�?     ${gh_https_url}github.com/torvalds.keys"
-	echo "  - 直接粘贴�?ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."
-	read -e -p "请导�?${new_username} 的公�? " sshkey_vl
+	echo "瀵煎叆鍏挜鑼冧緥锛?
+	echo "  - URL锛?     ${gh_https_url}github.com/torvalds.keys"
+	echo "  - 鐩存帴绮樿创锛?ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."
+	read -e -p "璇峰鍏?${new_username} 鐨勫叕閽? " sshkey_vl
 
 	case "$sshkey_vl" in
 		http://*|https://*)
-			send_stats "�?URL 导入 SSH 公钥"
+			send_stats "浠?URL 瀵煎叆 SSH 鍏挜"
 			fetch_remote_ssh_keys "$sshkey_vl" "/home/$new_username"
 			;;
 		ssh-rsa*|ssh-ed25519*|ssh-ecdsa*)
-			send_stats "公钥直接导入"
+			send_stats "鍏挜鐩存帴瀵煎叆"
 			import_sshkey "$sshkey_vl" "/home/$new_username"
 			;;
 		*)
-			echo "错误：未知参�?'$sshkey_vl'"
+			echo "閿欒锛氭湭鐭ュ弬鏁?'$sshkey_vl'"
 			return 1
 			;;
 	esac
 
 
-	# 修正权限
+	# 淇鏉冮檺
 	chown -R "$new_username:$new_username" "/home/$new_username/.ssh"
 
 	install sudo
 
-	# sudo 免密
+	# sudo 鍏嶅瘑
 	if [[ "$is_sudo" == "true" ]]; then
 		cat >"/etc/sudoers.d/$new_username" <<EOF
 $new_username ALL=(ALL) NOPASSWD:ALL
@@ -14984,7 +14984,7 @@ EOF
 	passwd -l "$new_username" &>/dev/null
 	restart_ssh
 
-	echo "用户 $new_username 创建完成"
+	echo "鐢ㄦ埛 $new_username 鍒涘缓瀹屾垚"
 }
 
 
@@ -15005,48 +15005,48 @@ linux_Settings() {
 
 	while true; do
 	  clear
-	  # send_stats "系统工具"
-	  echo -e "系统工具"
+	  # send_stats "绯荤粺宸ュ叿"
+	  echo -e "绯荤粺宸ュ叿"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}1.   ${gl_bai}设置脚本启动快捷�?                ${gl_kjlan}2.   ${gl_bai}修改登录密码"
-	  echo -e "${gl_kjlan}3.   ${gl_bai}用户密码登录模式                   ${gl_kjlan}4.   ${gl_bai}安装Python指定版本"
-	  echo -e "${gl_kjlan}5.   ${gl_bai}开放所有端�?                      ${gl_kjlan}6.   ${gl_bai}修改SSH连接端口"
-	  echo -e "${gl_kjlan}7.   ${gl_bai}优化DNS地址                        ${gl_kjlan}8.   ${gl_bai}一键重装系�?${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}9.   ${gl_bai}禁用ROOT账户创建新账�?            ${gl_kjlan}10.  ${gl_bai}切换优先ipv4/ipv6"
+	  echo -e "${gl_kjlan}1.   ${gl_bai}璁剧疆鑴氭湰鍚姩蹇嵎閿?                ${gl_kjlan}2.   ${gl_bai}淇敼鐧诲綍瀵嗙爜"
+	  echo -e "${gl_kjlan}3.   ${gl_bai}鐢ㄦ埛瀵嗙爜鐧诲綍妯″紡                   ${gl_kjlan}4.   ${gl_bai}瀹夎Python鎸囧畾鐗堟湰"
+	  echo -e "${gl_kjlan}5.   ${gl_bai}寮€鏀炬墍鏈夌鍙?                      ${gl_kjlan}6.   ${gl_bai}淇敼SSH杩炴帴绔彛"
+	  echo -e "${gl_kjlan}7.   ${gl_bai}浼樺寲DNS鍦板潃                        ${gl_kjlan}8.   ${gl_bai}涓€閿噸瑁呯郴缁?${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}9.   ${gl_bai}绂佺敤ROOT璐︽埛鍒涘缓鏂拌处鎴?            ${gl_kjlan}10.  ${gl_bai}鍒囨崲浼樺厛ipv4/ipv6"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}11.  ${gl_bai}查看端口占用状�?                  ${gl_kjlan}12.  ${gl_bai}修改虚拟内存大小"
-	  echo -e "${gl_kjlan}13.  ${gl_bai}用户管理                           ${gl_kjlan}14.  ${gl_bai}用户/密码生成�?
-	  echo -e "${gl_kjlan}15.  ${gl_bai}系统时区调整                       ${gl_kjlan}16.  ${gl_bai}设置BBR3加�?
-	  echo -e "${gl_kjlan}17.  ${gl_bai}防火墙高级管理器                   ${gl_kjlan}18.  ${gl_bai}修改主机�?
-	  echo -e "${gl_kjlan}19.  ${gl_bai}切换系统更新�?                    ${gl_kjlan}20.  ${gl_bai}定时任务管理"
+	  echo -e "${gl_kjlan}11.  ${gl_bai}鏌ョ湅绔彛鍗犵敤鐘舵€?                  ${gl_kjlan}12.  ${gl_bai}淇敼铏氭嫙鍐呭瓨澶у皬"
+	  echo -e "${gl_kjlan}13.  ${gl_bai}鐢ㄦ埛绠＄悊                           ${gl_kjlan}14.  ${gl_bai}鐢ㄦ埛/瀵嗙爜鐢熸垚鍣?
+	  echo -e "${gl_kjlan}15.  ${gl_bai}绯荤粺鏃跺尯璋冩暣                       ${gl_kjlan}16.  ${gl_bai}璁剧疆BBR3鍔犻€?
+	  echo -e "${gl_kjlan}17.  ${gl_bai}闃茬伀澧欓珮绾х鐞嗗櫒                   ${gl_kjlan}18.  ${gl_bai}淇敼涓绘満鍚?
+	  echo -e "${gl_kjlan}19.  ${gl_bai}鍒囨崲绯荤粺鏇存柊婧?                    ${gl_kjlan}20.  ${gl_bai}瀹氭椂浠诲姟绠＄悊"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}21.  ${gl_bai}本机host解析                       ${gl_kjlan}22.  ${gl_bai}SSH防御程序"
-	  echo -e "${gl_kjlan}23.  ${gl_bai}限流自动关机                       ${gl_kjlan}24.  ${gl_bai}用户密钥登录模式"
-	  echo -e "${gl_kjlan}25.  ${gl_bai}TG-bot系统监控预警                 ${gl_kjlan}26.  ${gl_bai}修复OpenSSH高危漏洞"
-	  echo -e "${gl_kjlan}27.  ${gl_bai}红帽系Linux内核升级                ${gl_kjlan}28.  ${gl_bai}Linux系统内核参数优化 ${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}29.  ${gl_bai}病毒扫描工具 ${gl_huang}�?{gl_bai}                     ${gl_kjlan}30.  ${gl_bai}文件管理�?
+	  echo -e "${gl_kjlan}21.  ${gl_bai}鏈満host瑙ｆ瀽                       ${gl_kjlan}22.  ${gl_bai}SSH闃插尽绋嬪簭"
+	  echo -e "${gl_kjlan}23.  ${gl_bai}闄愭祦鑷姩鍏虫満                       ${gl_kjlan}24.  ${gl_bai}鐢ㄦ埛瀵嗛挜鐧诲綍妯″紡"
+	  echo -e "${gl_kjlan}25.  ${gl_bai}TG-bot绯荤粺鐩戞帶棰勮                 ${gl_kjlan}26.  ${gl_bai}淇OpenSSH楂樺嵄婕忔礊"
+	  echo -e "${gl_kjlan}27.  ${gl_bai}绾㈠附绯籐inux鍐呮牳鍗囩骇                ${gl_kjlan}28.  ${gl_bai}Linux绯荤粺鍐呮牳鍙傛暟浼樺寲 ${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}29.  ${gl_bai}鐥呮瘨鎵弿宸ュ叿 ${gl_huang}鈽?{gl_bai}                     ${gl_kjlan}30.  ${gl_bai}鏂囦欢绠＄悊鍣?
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}31.  ${gl_bai}切换系统语言                       ${gl_kjlan}32.  ${gl_bai}命令行美化工�?${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}33.  ${gl_bai}设置系统回收�?                    ${gl_kjlan}34.  ${gl_bai}系统备份与恢�?
-	  echo -e "${gl_kjlan}35.  ${gl_bai}ssh远程连接工具                    ${gl_kjlan}36.  ${gl_bai}硬盘分区管理工具"
-	  echo -e "${gl_kjlan}37.  ${gl_bai}命令行历史记�?                    ${gl_kjlan}38.  ${gl_bai}rsync远程同步工具"
-	  echo -e "${gl_kjlan}39.  ${gl_bai}命令收藏�?${gl_huang}�?{gl_bai}                       ${gl_kjlan}40.  ${gl_bai}网卡管理工具"
+	  echo -e "${gl_kjlan}31.  ${gl_bai}鍒囨崲绯荤粺璇█                       ${gl_kjlan}32.  ${gl_bai}鍛戒护琛岀編鍖栧伐鍏?${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}33.  ${gl_bai}璁剧疆绯荤粺鍥炴敹绔?                    ${gl_kjlan}34.  ${gl_bai}绯荤粺澶囦唤涓庢仮澶?
+	  echo -e "${gl_kjlan}35.  ${gl_bai}ssh杩滅▼杩炴帴宸ュ叿                    ${gl_kjlan}36.  ${gl_bai}纭洏鍒嗗尯绠＄悊宸ュ叿"
+	  echo -e "${gl_kjlan}37.  ${gl_bai}鍛戒护琛屽巻鍙茶褰?                    ${gl_kjlan}38.  ${gl_bai}rsync杩滅▼鍚屾宸ュ叿"
+	  echo -e "${gl_kjlan}39.  ${gl_bai}鍛戒护鏀惰棌澶?${gl_huang}鈽?{gl_bai}                       ${gl_kjlan}40.  ${gl_bai}缃戝崱绠＄悊宸ュ叿"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}41.  ${gl_bai}系统日志管理工具 ${gl_huang}�?{gl_bai}                 ${gl_kjlan}42.  ${gl_bai}系统变量管理工具"
+	  echo -e "${gl_kjlan}41.  ${gl_bai}绯荤粺鏃ュ織绠＄悊宸ュ叿 ${gl_huang}鈽?{gl_bai}                 ${gl_kjlan}42.  ${gl_bai}绯荤粺鍙橀噺绠＄悊宸ュ叿"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}61.  ${gl_bai}留言�?                            ${gl_kjlan}66.  ${gl_bai}一条龙系统调优 ${gl_huang}�?{gl_bai}"
-	  echo -e "${gl_kjlan}99.  ${gl_bai}重启服务�?                        ${gl_kjlan}100. ${gl_bai}隐私与安�?
-	  echo -e "${gl_kjlan}101. ${gl_bai}k命令高级用法 ${gl_huang}�?{gl_bai}                    ${gl_kjlan}102. ${gl_bai}卸载科技lion脚本"
+	  echo -e "${gl_kjlan}61.  ${gl_bai}鐣欒█鏉?                            ${gl_kjlan}66.  ${gl_bai}涓€鏉￠緳绯荤粺璋冧紭 ${gl_huang}鈽?{gl_bai}"
+	  echo -e "${gl_kjlan}99.  ${gl_bai}閲嶅惎鏈嶅姟鍣?                        ${gl_kjlan}100. ${gl_bai}闅愮涓庡畨鍏?
+	  echo -e "${gl_kjlan}101. ${gl_bai}k鍛戒护楂樼骇鐢ㄦ硶 ${gl_huang}鈽?{gl_bai}                    ${gl_kjlan}102. ${gl_bai}鍗歌浇绉戞妧lion鑴氭湰"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主菜�?
+	  echo -e "${gl_kjlan}0.   ${gl_bai}杩斿洖涓昏彍鍗?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 	  case $sub_choice in
 		  1)
 			  while true; do
 				  clear
-				  read -e -p "请输入你的快捷按键（输入0退出）: " kuaijiejian
+				  read -e -p "璇疯緭鍏ヤ綘鐨勫揩鎹锋寜閿紙杈撳叆0閫€鍑猴級: " kuaijiejian
 				  if [ "$kuaijiejian" == "0" ]; then
 					   break_end
 					   linux_Settings
@@ -15056,8 +15056,8 @@ linux_Settings() {
 					  ln -sf /usr/local/bin/k /usr/local/bin/$kuaijiejian
 				  fi
 				  ln -sf /usr/local/bin/k /usr/bin/$kuaijiejian > /dev/null 2>&1
-				  echo "快捷键已设置"
-				  send_stats "脚本快捷键已设置"
+				  echo "蹇嵎閿凡璁剧疆"
+				  send_stats "鑴氭湰蹇嵎閿凡璁剧疆"
 				  break_end
 				  linux_Settings
 			  done
@@ -15065,8 +15065,8 @@ linux_Settings() {
 
 		  2)
 			  clear
-			  send_stats "设置你的登录密码"
-			  echo "设置你的登录密码"
+			  send_stats "璁剧疆浣犵殑鐧诲綍瀵嗙爜"
+			  echo "璁剧疆浣犵殑鐧诲綍瀵嗙爜"
 			  passwd
 			  ;;
 		  3)
@@ -15076,22 +15076,22 @@ linux_Settings() {
 
 		  4)
 			root_use
-			send_stats "py版本管理"
-			echo "python版本管理"
-			echo "视频介绍: https://www.bilibili.com/video/BV1Pm42157cK?t=0.1"
+			send_stats "py鐗堟湰绠＄悊"
+			echo "python鐗堟湰绠＄悊"
+			echo "瑙嗛浠嬬粛: https://www.bilibili.com/video/BV1Pm42157cK?t=0.1"
 			echo "---------------------------------------"
-			echo "该功能可无缝安装python官方支持的任何版本！"
+			echo "璇ュ姛鑳藉彲鏃犵紳瀹夎python瀹樻柟鏀寔鐨勪换浣曠増鏈紒"
 			local VERSION=$(python3 -V 2>&1 | awk '{print $2}')
-			echo -e "当前python版本�? ${gl_huang}$VERSION${gl_bai}"
+			echo -e "褰撳墠python鐗堟湰鍙? ${gl_huang}$VERSION${gl_bai}"
 			echo "------------"
-			echo "推荐版本:  3.12    3.11    3.10    3.9    3.8    2.7"
-			echo "查询更多版本: https://www.python.org/downloads/"
+			echo "鎺ㄨ崘鐗堟湰:  3.12    3.11    3.10    3.9    3.8    2.7"
+			echo "鏌ヨ鏇村鐗堟湰: https://www.python.org/downloads/"
 			echo "------------"
-			read -e -p "输入你要安装的python版本号（输入0退出）: " py_new_v
+			read -e -p "杈撳叆浣犺瀹夎鐨刾ython鐗堟湰鍙凤紙杈撳叆0閫€鍑猴級: " py_new_v
 
 
 			if [[ "$py_new_v" == "0" ]]; then
-				send_stats "脚本PY管理"
+				send_stats "鑴氭湰PY绠＄悊"
 				break_end
 				linux_Settings
 			fi
@@ -15124,7 +15124,7 @@ linux_Settings() {
 					apk update && apk add git
 					apk add --no-cache bash gcc musl-dev libffi-dev openssl-dev bzip2-dev zlib-dev readline-dev sqlite-dev libc6-compat linux-headers make xz-dev build-base  ncurses-dev
 				else
-					echo "未知的包管理�?"
+					echo "鏈煡鐨勫寘绠＄悊鍣?"
 					return
 				fi
 
@@ -15153,55 +15153,55 @@ EOF
 			rm -rf $(pyenv root)/cache/*
 
 			local VERSION=$(python -V 2>&1 | awk '{print $2}')
-			echo -e "当前python版本�? ${gl_huang}$VERSION${gl_bai}"
-			send_stats "脚本PY版本切换"
+			echo -e "褰撳墠python鐗堟湰鍙? ${gl_huang}$VERSION${gl_bai}"
+			send_stats "鑴氭湰PY鐗堟湰鍒囨崲"
 
 			  ;;
 
 		  5)
 			  root_use
-			  send_stats "开放端�?
+			  send_stats "寮€鏀剧鍙?
 			  iptables_open
 			  remove iptables-persistent ufw firewalld iptables-services > /dev/null 2>&1
-			  echo "端口已全部开�?
+			  echo "绔彛宸插叏閮ㄥ紑鏀?
 
 			  ;;
 		  6)
 			root_use
-			send_stats "修改SSH端口"
+			send_stats "淇敼SSH绔彛"
 
 			while true; do
 				clear
 				sed -i 's/^\s*#\?\s*Port/Port/' /etc/ssh/sshd_config
 
-				# 读取当前�?SSH 端口�?
+				# 璇诲彇褰撳墠鐨?SSH 绔彛鍙?
 				local current_port=$(grep -E '^ *Port [0-9]+' /etc/ssh/sshd_config | awk '{print $2}')
 
-				# 打印当前�?SSH 端口�?
-				echo -e "当前�?SSH 端口号是:  ${gl_huang}$current_port ${gl_bai}"
+				# 鎵撳嵃褰撳墠鐨?SSH 绔彛鍙?
+				echo -e "褰撳墠鐨?SSH 绔彛鍙锋槸:  ${gl_huang}$current_port ${gl_bai}"
 
 				echo "------------------------"
-				echo "端口号范�?�?5535之间的数字。（输入0退出）"
+				echo "绔彛鍙疯寖鍥?鍒?5535涔嬮棿鐨勬暟瀛椼€傦紙杈撳叆0閫€鍑猴級"
 
-				# 提示用户输入新的 SSH 端口�?
-				read -e -p "请输入新�?SSH 端口�? " new_port
+				# 鎻愮ず鐢ㄦ埛杈撳叆鏂扮殑 SSH 绔彛鍙?
+				read -e -p "璇疯緭鍏ユ柊鐨?SSH 绔彛鍙? " new_port
 
-				# 判断端口号是否在有效范围�?
-				if [[ $new_port =~ ^[0-9]+$ ]]; then  # 检查输入是否为数字
+				# 鍒ゆ柇绔彛鍙锋槸鍚﹀湪鏈夋晥鑼冨洿鍐?
+				if [[ $new_port =~ ^[0-9]+$ ]]; then  # 妫€鏌ヨ緭鍏ユ槸鍚︿负鏁板瓧
 					if [[ $new_port -ge 1 && $new_port -le 65535 ]]; then
-						send_stats "SSH端口已修�?
+						send_stats "SSH绔彛宸蹭慨鏀?
 						new_ssh_port $new_port
 					elif [[ $new_port -eq 0 ]]; then
-						send_stats "退出SSH端口修改"
+						send_stats "閫€鍑篠SH绔彛淇敼"
 						break
 					else
-						echo "端口号无效，请输�?�?5535之间的数字�?
-						send_stats "输入无效SSH端口"
+						echo "绔彛鍙锋棤鏁堬紝璇疯緭鍏?鍒?5535涔嬮棿鐨勬暟瀛椼€?
+						send_stats "杈撳叆鏃犳晥SSH绔彛"
 						break_end
 					fi
 				else
-					echo "输入无效，请输入数字�?
-					send_stats "输入无效SSH端口"
+					echo "杈撳叆鏃犳晥锛岃杈撳叆鏁板瓧銆?
+					send_stats "杈撳叆鏃犳晥SSH绔彛"
 					break_end
 				fi
 			done
@@ -15220,8 +15220,8 @@ EOF
 			  ;;
 		  9)
 			root_use
-			send_stats "新用户禁用root"
-			read -e -p "请输入新用户名（输入0退出）: " new_username
+			send_stats "鏂扮敤鎴风鐢╮oot"
+			read -e -p "璇疯緭鍏ユ柊鐢ㄦ埛鍚嶏紙杈撳叆0閫€鍑猴級: " new_username
 			if [ "$new_username" == "0" ]; then
 				break_end
 				linux_Settings
@@ -15239,26 +15239,26 @@ EOF
 
 		  10)
 			root_use
-			send_stats "设置v4/v6优先�?
+			send_stats "璁剧疆v4/v6浼樺厛绾?
 			while true; do
 				clear
-				echo "设置v4/v6优先�?
+				echo "璁剧疆v4/v6浼樺厛绾?
 				echo "------------------------"
 
 
 				if grep -Eq '^\s*precedence\s+::ffff:0:0/96\s+100\s*$' /etc/gai.conf 2>/dev/null; then
-					echo -e "当前网络优先级设�? ${gl_huang}IPv4${gl_bai} 优先"
+					echo -e "褰撳墠缃戠粶浼樺厛绾ц缃? ${gl_huang}IPv4${gl_bai} 浼樺厛"
 				else
-					echo -e "当前网络优先级设�? ${gl_huang}IPv6${gl_bai} 优先"
+					echo -e "褰撳墠缃戠粶浼樺厛绾ц缃? ${gl_huang}IPv6${gl_bai} 浼樺厛"
 				fi
 
 				echo ""
 				echo "------------------------"
-				echo "1. IPv4 优先          2. IPv6 优先          3. IPv6 修复工具"
+				echo "1. IPv4 浼樺厛          2. IPv6 浼樺厛          3. IPv6 淇宸ュ叿"
 				echo "------------------------"
-				echo "0. 返回上一级选单"
+				echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				echo "------------------------"
-				read -e -p "选择优先的网�? " choice
+				read -e -p "閫夋嫨浼樺厛鐨勭綉缁? " choice
 
 				case $choice in
 					1)
@@ -15266,15 +15266,15 @@ EOF
 						;;
 					2)
 						rm -f /etc/gai.conf
-						echo "已切换为 IPv6 优先"
-						send_stats "已切换为 IPv6 优先"
+						echo "宸插垏鎹负 IPv6 浼樺厛"
+						send_stats "宸插垏鎹负 IPv6 浼樺厛"
 						;;
 
 					3)
 						clear
 						bash <(curl -L -s jhb.ovh/jb/v6.sh)
-						echo "该功能由jhb大神提供，感谢他�?
-						send_stats "ipv6修复"
+						echo "璇ュ姛鑳界敱jhb澶х鎻愪緵锛屾劅璋粬锛?
+						send_stats "ipv6淇"
 						;;
 
 					*)
@@ -15292,43 +15292,43 @@ EOF
 
 		  12)
 			root_use
-			send_stats "设置虚拟内存"
+			send_stats "璁剧疆铏氭嫙鍐呭瓨"
 			while true; do
 				clear
-				echo "设置虚拟内存"
+				echo "璁剧疆铏氭嫙鍐呭瓨"
 				local swap_used=$(free -m | awk 'NR==3{print $3}')
 				local swap_total=$(free -m | awk 'NR==3{print $2}')
 				local swap_info=$(free -m | awk 'NR==3{used=$3; total=$2; if (total == 0) {percentage=0} else {percentage=used*100/total}; printf "%dM/%dM (%d%%)", used, total, percentage}')
 
-				echo -e "当前虚拟内存: ${gl_huang}$swap_info${gl_bai}"
+				echo -e "褰撳墠铏氭嫙鍐呭瓨: ${gl_huang}$swap_info${gl_bai}"
 				echo "------------------------"
-				echo "1. 分配1024M         2. 分配2048M         3. 分配4096M         4. 自定义大�?
+				echo "1. 鍒嗛厤1024M         2. 鍒嗛厤2048M         3. 鍒嗛厤4096M         4. 鑷畾涔夊ぇ灏?
 				echo "------------------------"
-				echo "0. 返回上一级选单"
+				echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				echo "------------------------"
-				read -e -p "请输入你的选择: " choice
+				read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " choice
 
 				case "$choice" in
 				  1)
-					send_stats "已设�?G虚拟内存"
+					send_stats "宸茶缃?G铏氭嫙鍐呭瓨"
 					add_swap 1024
 
 					;;
 				  2)
-					send_stats "已设�?G虚拟内存"
+					send_stats "宸茶缃?G铏氭嫙鍐呭瓨"
 					add_swap 2048
 
 					;;
 				  3)
-					send_stats "已设�?G虚拟内存"
+					send_stats "宸茶缃?G铏氭嫙鍐呭瓨"
 					add_swap 4096
 
 					;;
 
 				  4)
-					read -e -p "请输入虚拟内存大小（单位M�? " new_swap
+					read -e -p "璇疯緭鍏ヨ櫄鎷熷唴瀛樺ぇ灏忥紙鍗曚綅M锛? " new_swap
 					add_swap "$new_swap"
-					send_stats "已设置自定义虚拟内存"
+					send_stats "宸茶缃嚜瀹氫箟铏氭嫙鍐呭瓨"
 					;;
 
 				  *)
@@ -15341,10 +15341,10 @@ EOF
 		  13)
 			  while true; do
 				root_use
-				send_stats "用户管理"
-				echo "用户列表"
+				send_stats "鐢ㄦ埛绠＄悊"
+				echo "鐢ㄦ埛鍒楄〃"
 				echo "----------------------------------------------------------------------------"
-				printf "%-24s %-34s %-20s %-10s\n" "用户�? "用户权限" "用户�? "sudo权限"
+				printf "%-24s %-34s %-20s %-10s\n" "鐢ㄦ埛鍚? "鐢ㄦ埛鏉冮檺" "鐢ㄦ埛缁? "sudo鏉冮檺"
 				while IFS=: read -r username _ userid groupid _ _ homedir shell; do
 					local groups=$(groups "$username" | cut -d : -f 2)
 					local sudo_status
@@ -15358,34 +15358,34 @@ EOF
 
 
 				  echo ""
-				  echo "账户操作"
+				  echo "璐︽埛鎿嶄綔"
 				  echo "------------------------"
-				  echo "1. 创建普通用�?            2. 创建高级用户"
+				  echo "1. 鍒涘缓鏅€氱敤鎴?            2. 鍒涘缓楂樼骇鐢ㄦ埛"
 				  echo "------------------------"
-				  echo "3. 赋予最高权�?            4. 取消最高权�?
+				  echo "3. 璧嬩簣鏈€楂樻潈闄?            4. 鍙栨秷鏈€楂樻潈闄?
 				  echo "------------------------"
-				  echo "5. 删除账号"
+				  echo "5. 鍒犻櫎璐﹀彿"
 				  echo "------------------------"
-				  echo "0. 返回上一级选单"
+				  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				  echo "------------------------"
-				  read -e -p "请输入你的选择: " sub_choice
+				  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 				  case $sub_choice in
 					  1)
-					   # 提示用户输入新用户名
-					   read -e -p "请输入新用户�? " new_username
+					   # 鎻愮ず鐢ㄦ埛杈撳叆鏂扮敤鎴峰悕
+					   read -e -p "璇疯緭鍏ユ柊鐢ㄦ埛鍚? " new_username
 					   create_user_with_sshkey $new_username false
 
 						  ;;
 
 					  2)
-					   # 提示用户输入新用户名
-					   read -e -p "请输入新用户�? " new_username
+					   # 鎻愮ず鐢ㄦ埛杈撳叆鏂扮敤鎴峰悕
+					   read -e -p "璇疯緭鍏ユ柊鐢ㄦ埛鍚? " new_username
 					   create_user_with_sshkey $new_username true
 
 						  ;;
 					  3)
-					   read -e -p "请输入用户名: " username
+					   read -e -p "璇疯緭鍏ョ敤鎴峰悕: " username
 					   install sudo
 					   cat >"/etc/sudoers.d/$username" <<EOF
 $username ALL=(ALL) NOPASSWD:ALL
@@ -15394,19 +15394,19 @@ EOF
 
 						  ;;
 					  4)
-					   read -e -p "请输入用户名: " username
+					   read -e -p "璇疯緭鍏ョ敤鎴峰悕: " username
 				  	   if [[ -f "/etc/sudoers.d/$username" ]]; then
 						   grep -lR "^$username" /etc/sudoers.d/ 2>/dev/null | xargs rm -f
 					   fi
 					   sed -i "/^$username\s*ALL=(ALL)/d" /etc/sudoers
 						  ;;
 					  5)
-					   read -e -p "请输入要删除的用户名: " username
+					   read -e -p "璇疯緭鍏ヨ鍒犻櫎鐨勭敤鎴峰悕: " username
 					   userdel -r "$username"
 						  ;;
 
 					  *)
-						  break  # 跳出循环，退出菜�?
+						  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 						  ;;
 				  esac
 
@@ -15415,50 +15415,50 @@ EOF
 
 		  14)
 			clear
-			send_stats "用户信息生成�?
-			echo "随机用户�?
+			send_stats "鐢ㄦ埛淇℃伅鐢熸垚鍣?
+			echo "闅忔満鐢ㄦ埛鍚?
 			echo "------------------------"
 			for i in {1..5}; do
 				username="user$(< /dev/urandom tr -dc _a-z0-9 | head -c6)"
-				echo "随机用户�?$i: $username"
+				echo "闅忔満鐢ㄦ埛鍚?$i: $username"
 			done
 
 			echo ""
-			echo "随机姓名"
+			echo "闅忔満濮撳悕"
 			echo "------------------------"
 			local first_names=("John" "Jane" "Michael" "Emily" "David" "Sophia" "William" "Olivia" "James" "Emma" "Ava" "Liam" "Mia" "Noah" "Isabella")
 			local last_names=("Smith" "Johnson" "Brown" "Davis" "Wilson" "Miller" "Jones" "Garcia" "Martinez" "Williams" "Lee" "Gonzalez" "Rodriguez" "Hernandez")
 
-			# 生成5个随机用户姓�?
+			# 鐢熸垚5涓殢鏈虹敤鎴峰鍚?
 			for i in {1..5}; do
 				local first_name_index=$((RANDOM % ${#first_names[@]}))
 				local last_name_index=$((RANDOM % ${#last_names[@]}))
 				local user_name="${first_names[$first_name_index]} ${last_names[$last_name_index]}"
-				echo "随机用户姓名 $i: $user_name"
+				echo "闅忔満鐢ㄦ埛濮撳悕 $i: $user_name"
 			done
 
 			echo ""
-			echo "随机UUID"
+			echo "闅忔満UUID"
 			echo "------------------------"
 			for i in {1..5}; do
 				uuid=$(cat /proc/sys/kernel/random/uuid)
-				echo "随机UUID $i: $uuid"
+				echo "闅忔満UUID $i: $uuid"
 			done
 
 			echo ""
-			echo "16位随机密�?
+			echo "16浣嶉殢鏈哄瘑鐮?
 			echo "------------------------"
 			for i in {1..5}; do
 				local password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
-				echo "随机密码 $i: $password"
+				echo "闅忔満瀵嗙爜 $i: $password"
 			done
 
 			echo ""
-			echo "32位随机密�?
+			echo "32浣嶉殢鏈哄瘑鐮?
 			echo "------------------------"
 			for i in {1..5}; do
 				local password=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c32)
-				echo "随机密码 $i: $password"
+				echo "闅忔満瀵嗙爜 $i: $password"
 			done
 			echo ""
 
@@ -15466,46 +15466,46 @@ EOF
 
 		  15)
 			root_use
-			send_stats "换时�?
+			send_stats "鎹㈡椂鍖?
 			while true; do
 				clear
-				echo "系统时间信息"
+				echo "绯荤粺鏃堕棿淇℃伅"
 
-				# 获取当前系统时区
+				# 鑾峰彇褰撳墠绯荤粺鏃跺尯
 				local timezone=$(current_timezone)
 
-				# 获取当前系统时间
+				# 鑾峰彇褰撳墠绯荤粺鏃堕棿
 				local current_time=$(date +"%Y-%m-%d %H:%M:%S")
 
-				# 显示时区和时�?
-				echo "当前系统时区�?timezone"
-				echo "当前系统时间�?current_time"
+				# 鏄剧ず鏃跺尯鍜屾椂闂?
+				echo "褰撳墠绯荤粺鏃跺尯锛?timezone"
+				echo "褰撳墠绯荤粺鏃堕棿锛?current_time"
 
 				echo ""
-				echo "时区切换"
+				echo "鏃跺尯鍒囨崲"
 				echo "------------------------"
-				echo "亚洲"
-				echo "1.  中国上海时间             2.  中国香港时间"
-				echo "3.  日本东京时间             4.  韩国首尔时间"
-				echo "5.  新加坡时�?              6.  印度加尔各答时间"
-				echo "7.  阿联酋迪拜时�?          8.  澳大利亚悉尼时间"
-				echo "9.  泰国曼谷时间"
+				echo "浜氭床"
+				echo "1.  涓浗涓婃捣鏃堕棿             2.  涓浗棣欐腐鏃堕棿"
+				echo "3.  鏃ユ湰涓滀含鏃堕棿             4.  闊╁浗棣栧皵鏃堕棿"
+				echo "5.  鏂板姞鍧℃椂闂?              6.  鍗板害鍔犲皵鍚勭瓟鏃堕棿"
+				echo "7.  闃胯仈閰嬭开鎷滄椂闂?          8.  婢冲ぇ鍒╀簹鎮夊凹鏃堕棿"
+				echo "9.  娉板浗鏇艰胺鏃堕棿"
 				echo "------------------------"
-				echo "欧洲"
-				echo "11. 英国伦敦时间             12. 法国巴黎时间"
-				echo "13. 德国柏林时间             14. 俄罗斯莫斯科时间"
-				echo "15. 荷兰尤特赖赫特时�?      16. 西班牙马德里时间"
+				echo "娆ф床"
+				echo "11. 鑻卞浗浼︽暒鏃堕棿             12. 娉曞浗宸撮粠鏃堕棿"
+				echo "13. 寰峰浗鏌忔灄鏃堕棿             14. 淇勭綏鏂帿鏂鏃堕棿"
+				echo "15. 鑽峰叞灏ょ壒璧栬但鐗规椂闂?      16. 瑗跨彮鐗欓┈寰烽噷鏃堕棿"
 				echo "------------------------"
-				echo "美洲"
-				echo "21. 美国西部时间             22. 美国东部时间"
-				echo "23. 加拿大时�?              24. 墨西哥时�?
-				echo "25. 巴西时间                 26. 阿根廷时�?
+				echo "缇庢床"
+				echo "21. 缇庡浗瑗块儴鏃堕棿             22. 缇庡浗涓滈儴鏃堕棿"
+				echo "23. 鍔犳嬁澶ф椂闂?              24. 澧ㄨタ鍝ユ椂闂?
+				echo "25. 宸磋タ鏃堕棿                 26. 闃挎牴寤锋椂闂?
 				echo "------------------------"
-				echo "31. UTC全球标准时间"
+				echo "31. UTC鍏ㄧ悆鏍囧噯鏃堕棿"
 				echo "------------------------"
-				echo "0. 返回上一级选单"
+				echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				echo "------------------------"
-				read -e -p "请输入你的选择: " sub_choice
+				read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 
 				case $sub_choice in
@@ -15548,21 +15548,21 @@ EOF
 
 		  18)
 		  root_use
-		  send_stats "修改主机�?
+		  send_stats "淇敼涓绘満鍚?
 
 		  while true; do
 			  clear
 			  local current_hostname=$(uname -n)
-			  echo -e "当前主机�? ${gl_huang}$current_hostname${gl_bai}"
+			  echo -e "褰撳墠涓绘満鍚? ${gl_huang}$current_hostname${gl_bai}"
 			  echo "------------------------"
-			  read -e -p "请输入新的主机名（输�?退出）: " new_hostname
+			  read -e -p "璇疯緭鍏ユ柊鐨勪富鏈哄悕锛堣緭鍏?閫€鍑猴級: " new_hostname
 			  if [ -n "$new_hostname" ] && [ "$new_hostname" != "0" ]; then
 				  if [ -f /etc/alpine-release ]; then
 					  # Alpine
 					  echo "$new_hostname" > /etc/hostname
 					  hostname "$new_hostname"
 				  else
-					  # 其他系统，如 Debian, Ubuntu, CentOS �?
+					  # 鍏朵粬绯荤粺锛屽 Debian, Ubuntu, CentOS 绛?
 					  hostnamectl set-hostname "$new_hostname"
 					  sed -i "s/$current_hostname/$new_hostname/g" /etc/hostname
 					  systemctl restart systemd-hostnamed
@@ -15580,11 +15580,11 @@ EOF
 					  echo "::1             $new_hostname localhost localhost.localdomain ipv6-localhost ipv6-loopback" >> /etc/hosts
 				  fi
 
-				  echo "主机名已更改�? $new_hostname"
-				  send_stats "主机名已更改"
+				  echo "涓绘満鍚嶅凡鏇存敼涓? $new_hostname"
+				  send_stats "涓绘満鍚嶅凡鏇存敼"
 				  sleep 1
 			  else
-				  echo "已退出，未更改主机名�?
+				  echo "宸查€€鍑猴紝鏈洿鏀逛富鏈哄悕銆?
 				  break
 			  fi
 		  done
@@ -15592,37 +15592,37 @@ EOF
 
 		  19)
 		  root_use
-		  send_stats "换系统更新源"
+		  send_stats "鎹㈢郴缁熸洿鏂版簮"
 		  clear
-		  echo "选择更新源区�?
-		  echo "接入LinuxMirrors切换系统更新�?
+		  echo "閫夋嫨鏇存柊婧愬尯鍩?
+		  echo "鎺ュ叆LinuxMirrors鍒囨崲绯荤粺鏇存柊婧?
 		  echo "------------------------"
-		  echo "1. 中国大陆【默认�?         2. 中国大陆【教育网�?         3. 海外地区          4. 智能切换更新�?
+		  echo "1. 涓浗澶ч檰銆愰粯璁ゃ€?         2. 涓浗澶ч檰銆愭暀鑲茬綉銆?         3. 娴峰鍦板尯          4. 鏅鸿兘鍒囨崲鏇存柊婧?
 		  echo "------------------------"
-		  echo "0. 返回上一级选单"
+		  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 		  echo "------------------------"
-		  read -e -p "输入你的选择: " choice
+		  read -e -p "杈撳叆浣犵殑閫夋嫨: " choice
 
 		  case $choice in
 			  1)
-				  send_stats "中国大陆默认�?
+				  send_stats "涓浗澶ч檰榛樿婧?
 				  bash <(curl -sSL https://linuxmirrors.cn/main.sh)
 				  ;;
 			  2)
-				  send_stats "中国大陆教育�?
+				  send_stats "涓浗澶ч檰鏁欒偛婧?
 				  bash <(curl -sSL https://linuxmirrors.cn/main.sh) --edu
 				  ;;
 			  3)
-				  send_stats "海外�?
+				  send_stats "娴峰婧?
 				  bash <(curl -sSL https://linuxmirrors.cn/main.sh) --abroad
 				  ;;
 			  4)
-				  send_stats "智能切换更新�?
+				  send_stats "鏅鸿兘鍒囨崲鏇存柊婧?
 				  switch_mirror false false
 				  ;;
 
 			  *)
-				  echo "已取�?
+				  echo "宸插彇娑?
 				  ;;
 
 		  esac
@@ -15630,65 +15630,65 @@ EOF
 			  ;;
 
 		  20)
-		  send_stats "定时任务管理"
+		  send_stats "瀹氭椂浠诲姟绠＄悊"
 			  while true; do
 				  clear
 				  check_crontab_installed
 				  clear
-				  echo "定时任务列表"
+				  echo "瀹氭椂浠诲姟鍒楄〃"
 				  crontab -l
 				  echo ""
-				  echo "操作"
+				  echo "鎿嶄綔"
 				  echo "------------------------"
-				  echo "1. 添加定时任务              2. 删除定时任务              3. 编辑定时任务"
+				  echo "1. 娣诲姞瀹氭椂浠诲姟              2. 鍒犻櫎瀹氭椂浠诲姟              3. 缂栬緫瀹氭椂浠诲姟"
 				  echo "------------------------"
-				  echo "0. 返回上一级选单"
+				  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				  echo "------------------------"
-				  read -e -p "请输入你的选择: " sub_choice
+				  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 				  case $sub_choice in
 					  1)
-						  read -e -p "请输入新任务的执行命�? " newquest
+						  read -e -p "璇疯緭鍏ユ柊浠诲姟鐨勬墽琛屽懡浠? " newquest
 						  echo "------------------------"
-						  echo "1. 每月任务                 2. 每周任务"
-						  echo "3. 每天任务                 4. 每小时任�?
+						  echo "1. 姣忔湀浠诲姟                 2. 姣忓懆浠诲姟"
+						  echo "3. 姣忓ぉ浠诲姟                 4. 姣忓皬鏃朵换鍔?
 						  echo "------------------------"
-						  read -e -p "请输入你的选择: " dingshi
+						  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " dingshi
 
 						  case $dingshi in
 							  1)
-								  read -e -p "选择每月的几号执行任务？ (1-30): " day
+								  read -e -p "閫夋嫨姣忔湀鐨勫嚑鍙锋墽琛屼换鍔★紵 (1-30): " day
 								  (crontab -l ; echo "0 0 $day * * $newquest") | crontab - > /dev/null 2>&1
 								  ;;
 							  2)
-								  read -e -p "选择周几执行任务�?(0-6�?代表星期�?: " weekday
+								  read -e -p "閫夋嫨鍛ㄥ嚑鎵ц浠诲姟锛?(0-6锛?浠ｈ〃鏄熸湡鏃?: " weekday
 								  (crontab -l ; echo "0 0 * * $weekday $newquest") | crontab - > /dev/null 2>&1
 								  ;;
 							  3)
-								  read -e -p "选择每天几点执行任务？（小时�?-23�? " hour
+								  read -e -p "閫夋嫨姣忓ぉ鍑犵偣鎵ц浠诲姟锛燂紙灏忔椂锛?-23锛? " hour
 								  (crontab -l ; echo "0 $hour * * * $newquest") | crontab - > /dev/null 2>&1
 								  ;;
 							  4)
-								  read -e -p "输入每小时的第几分钟执行任务？（分钟�?-60�? " minute
+								  read -e -p "杈撳叆姣忓皬鏃剁殑绗嚑鍒嗛挓鎵ц浠诲姟锛燂紙鍒嗛挓锛?-60锛? " minute
 								  (crontab -l ; echo "$minute * * * * $newquest") | crontab - > /dev/null 2>&1
 								  ;;
 							  *)
-								  break  # 跳出
+								  break  # 璺冲嚭
 								  ;;
 						  esac
-						  send_stats "添加定时任务"
+						  send_stats "娣诲姞瀹氭椂浠诲姟"
 						  ;;
 					  2)
-						  read -e -p "请输入需要删除任务的关键�? " kquest
+						  read -e -p "璇疯緭鍏ラ渶瑕佸垹闄や换鍔＄殑鍏抽敭瀛? " kquest
 						  crontab -l | grep -v "$kquest" | crontab -
-						  send_stats "删除定时任务"
+						  send_stats "鍒犻櫎瀹氭椂浠诲姟"
 						  ;;
 					  3)
 						  crontab -e
-						  send_stats "编辑定时任务"
+						  send_stats "缂栬緫瀹氭椂浠诲姟"
 						  ;;
 					  *)
-						  break  # 跳出循环，退出菜�?
+						  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 						  ;;
 				  esac
 			  done
@@ -15697,35 +15697,35 @@ EOF
 
 		  21)
 			  root_use
-			  send_stats "本地host解析"
+			  send_stats "鏈湴host瑙ｆ瀽"
 			  while true; do
 				  clear
-				  echo "本机host解析列表"
-				  echo "如果你在这里添加解析匹配，将不再使用动态解析了"
+				  echo "鏈満host瑙ｆ瀽鍒楄〃"
+				  echo "濡傛灉浣犲湪杩欓噷娣诲姞瑙ｆ瀽鍖归厤锛屽皢涓嶅啀浣跨敤鍔ㄦ€佽В鏋愪簡"
 				  cat /etc/hosts
 				  echo ""
-				  echo "操作"
+				  echo "鎿嶄綔"
 				  echo "------------------------"
-				  echo "1. 添加新的解析              2. 删除解析地址"
+				  echo "1. 娣诲姞鏂扮殑瑙ｆ瀽              2. 鍒犻櫎瑙ｆ瀽鍦板潃"
 				  echo "------------------------"
-				  echo "0. 返回上一级选单"
+				  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				  echo "------------------------"
-				  read -e -p "请输入你的选择: " host_dns
+				  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " host_dns
 
 				  case $host_dns in
 					  1)
-						  read -e -p "请输入新的解析记�?格式: 110.25.5.33 kejilion.pro : " addhost
+						  read -e -p "璇疯緭鍏ユ柊鐨勮В鏋愯褰?鏍煎紡: 110.25.5.33 kejilion.pro : " addhost
 						  echo "$addhost" >> /etc/hosts
-						  send_stats "本地host解析新增"
+						  send_stats "鏈湴host瑙ｆ瀽鏂板"
 
 						  ;;
 					  2)
-						  read -e -p "请输入需要删除的解析内容关键�? " delhost
+						  read -e -p "璇疯緭鍏ラ渶瑕佸垹闄ょ殑瑙ｆ瀽鍐呭鍏抽敭瀛? " delhost
 						  sed -i "/$delhost/d" /etc/hosts
-						  send_stats "本地host解析删除"
+						  send_stats "鏈湴host瑙ｆ瀽鍒犻櫎"
 						  ;;
 					  *)
-						  break  # 跳出循环，退出菜�?
+						  break  # 璺冲嚭寰幆锛岄€€鍑鸿彍鍗?
 						  ;;
 				  esac
 			  done
@@ -15738,47 +15738,47 @@ EOF
 
 		  23)
 			root_use
-			send_stats "限流关机功能"
+			send_stats "闄愭祦鍏虫満鍔熻兘"
 			while true; do
 				clear
-				echo "限流关机功能"
-				echo "视频介绍: https://www.bilibili.com/video/BV1mC411j7Qd?t=0.1"
+				echo "闄愭祦鍏虫満鍔熻兘"
+				echo "瑙嗛浠嬬粛: https://www.bilibili.com/video/BV1mC411j7Qd?t=0.1"
 				echo "------------------------------------------------"
-				echo "当前流量使用情况，重启服务器流量计算会清零！"
+				echo "褰撳墠娴侀噺浣跨敤鎯呭喌锛岄噸鍚湇鍔″櫒娴侀噺璁＄畻浼氭竻闆讹紒"
 				output_status
-				echo -e "${gl_kjlan}总接�? ${gl_bai}$rx"
-				echo -e "${gl_kjlan}总发�? ${gl_bai}$tx"
+				echo -e "${gl_kjlan}鎬绘帴鏀? ${gl_bai}$rx"
+				echo -e "${gl_kjlan}鎬诲彂閫? ${gl_bai}$tx"
 
-				# 检查是否存�?Limiting_Shut_down.sh 文件
+				# 妫€鏌ユ槸鍚﹀瓨鍦?Limiting_Shut_down.sh 鏂囦欢
 				if [ -f ~/Limiting_Shut_down.sh ]; then
-					# 获取 threshold_gb 的�?
+					# 鑾峰彇 threshold_gb 鐨勫€?
 					local rx_threshold_gb=$(grep -oP 'rx_threshold_gb=\K\d+' ~/Limiting_Shut_down.sh)
 					local tx_threshold_gb=$(grep -oP 'tx_threshold_gb=\K\d+' ~/Limiting_Shut_down.sh)
-					echo -e "${gl_lv}当前设置的进站限流阈值为: ${gl_huang}${rx_threshold_gb}${gl_lv}G${gl_bai}"
-					echo -e "${gl_lv}当前设置的出站限流阈值为: ${gl_huang}${tx_threshold_gb}${gl_lv}GB${gl_bai}"
+					echo -e "${gl_lv}褰撳墠璁剧疆鐨勮繘绔欓檺娴侀槇鍊间负: ${gl_huang}${rx_threshold_gb}${gl_lv}G${gl_bai}"
+					echo -e "${gl_lv}褰撳墠璁剧疆鐨勫嚭绔欓檺娴侀槇鍊间负: ${gl_huang}${tx_threshold_gb}${gl_lv}GB${gl_bai}"
 				else
-					echo -e "${gl_hui}当前未启用限流关机功�?{gl_bai}"
+					echo -e "${gl_hui}褰撳墠鏈惎鐢ㄩ檺娴佸叧鏈哄姛鑳?{gl_bai}"
 				fi
 
 				echo
 				echo "------------------------------------------------"
-				echo "系统每分钟会检测实际流量是否到达阈值，到达后会自动关闭服务器！"
+				echo "绯荤粺姣忓垎閽熶細妫€娴嬪疄闄呮祦閲忔槸鍚﹀埌杈鹃槇鍊硷紝鍒拌揪鍚庝細鑷姩鍏抽棴鏈嶅姟鍣紒"
 				echo "------------------------"
-				echo "1. 开启限流关机功�?         2. 停用限流关机功能"
+				echo "1. 寮€鍚檺娴佸叧鏈哄姛鑳?         2. 鍋滅敤闄愭祦鍏虫満鍔熻兘"
 				echo "------------------------"
-				echo "0. 返回上一级选单"
+				echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 				echo "------------------------"
-				read -e -p "请输入你的选择: " Limiting
+				read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " Limiting
 
 				case "$Limiting" in
 				  1)
-					# 输入新的虚拟内存大小
-					echo "如果实际服务器就100G流量，可设置阈值为95G，提前关机，以免出现流量误差或溢出�?
-					read -e -p "请输入进站流量阈值（单位为G，默�?00G�? " rx_threshold_gb
+					# 杈撳叆鏂扮殑铏氭嫙鍐呭瓨澶у皬
+					echo "濡傛灉瀹為檯鏈嶅姟鍣ㄥ氨100G娴侀噺锛屽彲璁剧疆闃堝€间负95G锛屾彁鍓嶅叧鏈猴紝浠ュ厤鍑虹幇娴侀噺璇樊鎴栨孩鍑恒€?
+					read -e -p "璇疯緭鍏ヨ繘绔欐祦閲忛槇鍊硷紙鍗曚綅涓篏锛岄粯璁?00G锛? " rx_threshold_gb
 					rx_threshold_gb=${rx_threshold_gb:-100}
-					read -e -p "请输入出站流量阈值（单位为G，默�?00G�? " tx_threshold_gb
+					read -e -p "璇疯緭鍏ュ嚭绔欐祦閲忛槇鍊硷紙鍗曚綅涓篏锛岄粯璁?00G锛? " tx_threshold_gb
 					tx_threshold_gb=${tx_threshold_gb:-100}
-					read -e -p "请输入流量重置日期（默认每月1日重置）: " cz_day
+					read -e -p "璇疯緭鍏ユ祦閲忛噸缃棩鏈燂紙榛樿姣忔湀1鏃ラ噸缃級: " cz_day
 					cz_day=${cz_day:-1}
 
 					cd ~
@@ -15791,15 +15791,15 @@ EOF
 					(crontab -l ; echo "* * * * * ~/Limiting_Shut_down.sh") | crontab - > /dev/null 2>&1
 					crontab -l | grep -v 'reboot' | crontab -
 					(crontab -l ; echo "0 1 $cz_day * * reboot") | crontab - > /dev/null 2>&1
-					echo "限流关机已设�?
-					send_stats "限流关机已设�?
+					echo "闄愭祦鍏虫満宸茶缃?
+					send_stats "闄愭祦鍏虫満宸茶缃?
 					;;
 				  2)
 					check_crontab_installed
 					crontab -l | grep -v '~/Limiting_Shut_down.sh' | crontab -
 					crontab -l | grep -v 'reboot' | crontab -
 					rm ~/Limiting_Shut_down.sh
-					echo "已关闭限流关机功�?
+					echo "宸插叧闂檺娴佸叧鏈哄姛鑳?
 					;;
 				  *)
 					break
@@ -15815,18 +15815,18 @@ EOF
 
 		  25)
 			  root_use
-			  send_stats "电报预警"
-			  echo "TG-bot监控预警功能"
-			  echo "视频介绍: https://youtu.be/vLL-eb3Z_TY"
+			  send_stats "鐢垫姤棰勮"
+			  echo "TG-bot鐩戞帶棰勮鍔熻兘"
+			  echo "瑙嗛浠嬬粛: https://youtu.be/vLL-eb3Z_TY"
 			  echo "------------------------------------------------"
-			  echo "您需要配置tg机器人API和接收预警的用户ID，即可实现本机CPU，内存，硬盘，流量，SSH登录的实时监控预�?
-			  echo "到达阈值后会向用户发预警消�?
-			  echo -e "${gl_hui}-关于流量，重启服务器将重新计�?${gl_bai}"
-			  read -e -p "确定继续吗？(Y/N): " choice
+			  echo "鎮ㄩ渶瑕侀厤缃畉g鏈哄櫒浜篈PI鍜屾帴鏀堕璀︾殑鐢ㄦ埛ID锛屽嵆鍙疄鐜版湰鏈篊PU锛屽唴瀛橈紝纭洏锛屾祦閲忥紝SSH鐧诲綍鐨勫疄鏃剁洃鎺ч璀?
+			  echo "鍒拌揪闃堝€煎悗浼氬悜鐢ㄦ埛鍙戦璀︽秷鎭?
+			  echo -e "${gl_hui}-鍏充簬娴侀噺锛岄噸鍚湇鍔″櫒灏嗛噸鏂拌绠?${gl_bai}"
+			  read -e -p "纭畾缁х画鍚楋紵(Y/N): " choice
 
 			  case "$choice" in
 				[Yy])
-				  send_stats "电报预警启用"
+				  send_stats "鐢垫姤棰勮鍚敤"
 				  cd ~
 				  install nano tmux bc jq
 				  check_crontab_installed
@@ -15848,7 +15848,7 @@ EOF
 				  sed -i "4i$(grep '^CHAT_ID=' ~/TG-check-notify.sh)" TG-SSH-check-notify.sh
 				  chmod +x ~/TG-SSH-check-notify.sh
 
-				  # 添加�?~/.profile 文件�?
+				  # 娣诲姞鍒?~/.profile 鏂囦欢涓?
 				  if ! grep -q 'bash ~/TG-SSH-check-notify.sh' ~/.profile > /dev/null 2>&1; then
 					  echo 'bash ~/TG-SSH-check-notify.sh' >> ~/.profile
 					  if command -v dnf &>/dev/null || command -v yum &>/dev/null; then
@@ -15859,21 +15859,21 @@ EOF
 				  source ~/.profile
 
 				  clear
-				  echo "TG-bot预警系统已启�?
-				  echo -e "${gl_hui}你还可以将root目录中的TG-check-notify.sh预警文件放到其他机器上直接使用！${gl_bai}"
+				  echo "TG-bot棰勮绯荤粺宸插惎鍔?
+				  echo -e "${gl_hui}浣犺繕鍙互灏唕oot鐩綍涓殑TG-check-notify.sh棰勮鏂囦欢鏀惧埌鍏朵粬鏈哄櫒涓婄洿鎺ヤ娇鐢紒${gl_bai}"
 				  ;;
 				[Nn])
-				  echo "已取�?
+				  echo "宸插彇娑?
 				  ;;
 				*)
-				  echo "无效的选择，请输入 Y �?N�?
+				  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 				  ;;
 			  esac
 			  ;;
 
 		  26)
 			  root_use
-			  send_stats "修复SSH高危漏洞"
+			  send_stats "淇SSH楂樺嵄婕忔礊"
 			  cd ~
 			  curl -sS -O ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/upgrade_openssh9.8p1.sh
 			  chmod +x ~/upgrade_openssh9.8p1.sh
@@ -15917,7 +15917,7 @@ EOF
 			  ;;
 		  37)
 			  clear
-			  send_stats "命令行历史记�?
+			  send_stats "鍛戒护琛屽巻鍙茶褰?
 			  get_history_file() {
 				  for file in "$HOME"/.bash_history "$HOME"/.ash_history "$HOME"/.zsh_history "$HOME"/.local/share/fish/fish_history; do
 					  [ -f "$file" ] && { echo "$file"; return; }
@@ -15956,94 +15956,94 @@ EOF
 
 		  61)
 			clear
-			send_stats "留言�?
-			echo "访问科技lion官方留言板，您对脚本有任何想法欢迎留言交流�?
+			send_stats "鐣欒█鏉?
+			echo "璁块棶绉戞妧lion瀹樻柟鐣欒█鏉匡紝鎮ㄥ鑴氭湰鏈変换浣曟兂娉曟杩庣暀瑷€浜ゆ祦锛?
 			echo "https://board.kejilion.pro"
-			echo "公共密码: kejilion.sh"
+			echo "鍏叡瀵嗙爜: kejilion.sh"
 			  ;;
 
 		  66)
 
 			  root_use
-			  send_stats "一条龙调优"
-			  echo "一条龙系统调优"
+			  send_stats "涓€鏉￠緳璋冧紭"
+			  echo "涓€鏉￠緳绯荤粺璋冧紭"
 			  echo "------------------------------------------------"
-			  echo "将对以下内容进行操作与优�?
-			  echo "1. 优化系统更新源，更新系统到最�?
-			  echo "2. 清理系统垃圾文件"
-			  echo -e "3. 设置虚拟内存${gl_huang}1G${gl_bai}"
-			  echo -e "4. 设置SSH端口号为${gl_huang}5522${gl_bai}"
-			  echo -e "5. 启动fail2ban防御SSH暴力破解"
-			  echo -e "6. 开放所有端�?
-			  echo -e "7. 开�?{gl_huang}BBR${gl_bai}加�?
-			  echo -e "8. 设置时区�?{gl_huang}上海${gl_bai}"
-			  echo -e "9. 自动优化DNS地址${gl_huang}海外: 1.1.1.1 8.8.8.8  国内: 223.5.5.5 ${gl_bai}"
-		  	  echo -e "10. 设置网络�?{gl_huang}ipv4优先${gl_bai}"
-			  echo -e "11. 安装基础工具${gl_huang}docker wget sudo tar unzip socat btop nano vim${gl_bai}"
-			  echo -e "12. Linux系统内核参数优化切换�?{gl_huang}均衡优化模式${gl_bai}"
+			  echo "灏嗗浠ヤ笅鍐呭杩涜鎿嶄綔涓庝紭鍖?
+			  echo "1. 浼樺寲绯荤粺鏇存柊婧愶紝鏇存柊绯荤粺鍒版渶鏂?
+			  echo "2. 娓呯悊绯荤粺鍨冨溇鏂囦欢"
+			  echo -e "3. 璁剧疆铏氭嫙鍐呭瓨${gl_huang}1G${gl_bai}"
+			  echo -e "4. 璁剧疆SSH绔彛鍙蜂负${gl_huang}5522${gl_bai}"
+			  echo -e "5. 鍚姩fail2ban闃插尽SSH鏆村姏鐮磋В"
+			  echo -e "6. 寮€鏀炬墍鏈夌鍙?
+			  echo -e "7. 寮€鍚?{gl_huang}BBR${gl_bai}鍔犻€?
+			  echo -e "8. 璁剧疆鏃跺尯鍒?{gl_huang}涓婃捣${gl_bai}"
+			  echo -e "9. 鑷姩浼樺寲DNS鍦板潃${gl_huang}娴峰: 1.1.1.1 8.8.8.8  鍥藉唴: 223.5.5.5 ${gl_bai}"
+		  	  echo -e "10. 璁剧疆缃戠粶涓?{gl_huang}ipv4浼樺厛${gl_bai}"
+			  echo -e "11. 瀹夎鍩虹宸ュ叿${gl_huang}docker wget sudo tar unzip socat btop nano vim${gl_bai}"
+			  echo -e "12. Linux绯荤粺鍐呮牳鍙傛暟浼樺寲鍒囨崲鍒?{gl_huang}鍧囪　浼樺寲妯″紡${gl_bai}"
 			  echo "------------------------------------------------"
-			  read -e -p "确定一键保养吗�?Y/N): " choice
+			  read -e -p "纭畾涓€閿繚鍏诲悧锛?Y/N): " choice
 
 			  case "$choice" in
 				[Yy])
 				  clear
-				  send_stats "一条龙调优启动"
+				  send_stats "涓€鏉￠緳璋冧紭鍚姩"
 				  echo "------------------------------------------------"
 				  switch_mirror false false
 				  linux_update
-				  echo -e "[${gl_lv}OK${gl_bai}] 1/12. 更新系统到最�?
+				  echo -e "[${gl_lv}OK${gl_bai}] 1/12. 鏇存柊绯荤粺鍒版渶鏂?
 
 				  echo "------------------------------------------------"
 				  linux_clean
-				  echo -e "[${gl_lv}OK${gl_bai}] 2/12. 清理系统垃圾文件"
+				  echo -e "[${gl_lv}OK${gl_bai}] 2/12. 娓呯悊绯荤粺鍨冨溇鏂囦欢"
 
 				  echo "------------------------------------------------"
 				  add_swap 1024
-				  echo -e "[${gl_lv}OK${gl_bai}] 3/12. 设置虚拟内存${gl_huang}1G${gl_bai}"
+				  echo -e "[${gl_lv}OK${gl_bai}] 3/12. 璁剧疆铏氭嫙鍐呭瓨${gl_huang}1G${gl_bai}"
 
 				  echo "------------------------------------------------"
 				  new_ssh_port 5522
-				  echo -e "[${gl_lv}OK${gl_bai}] 4/12. 设置SSH端口号为${gl_huang}5522${gl_bai}"
+				  echo -e "[${gl_lv}OK${gl_bai}] 4/12. 璁剧疆SSH绔彛鍙蜂负${gl_huang}5522${gl_bai}"
 				  echo "------------------------------------------------"
 				  f2b_install_sshd
 				  cd ~
 				  f2b_status
-				  echo -e "[${gl_lv}OK${gl_bai}] 5/12. 启动fail2ban防御SSH暴力破解"
+				  echo -e "[${gl_lv}OK${gl_bai}] 5/12. 鍚姩fail2ban闃插尽SSH鏆村姏鐮磋В"
 
 				  echo "------------------------------------------------"
-				  echo -e "[${gl_lv}OK${gl_bai}] 6/12. 开放所有端�?
+				  echo -e "[${gl_lv}OK${gl_bai}] 6/12. 寮€鏀炬墍鏈夌鍙?
 
 				  echo "------------------------------------------------"
 				  bbr_on
-				  echo -e "[${gl_lv}OK${gl_bai}] 7/12. 开�?{gl_huang}BBR${gl_bai}加�?
+				  echo -e "[${gl_lv}OK${gl_bai}] 7/12. 寮€鍚?{gl_huang}BBR${gl_bai}鍔犻€?
 
 				  echo "------------------------------------------------"
 				  set_timedate Asia/Shanghai
-				  echo -e "[${gl_lv}OK${gl_bai}] 8/12. 设置时区�?{gl_huang}上海${gl_bai}"
+				  echo -e "[${gl_lv}OK${gl_bai}] 8/12. 璁剧疆鏃跺尯鍒?{gl_huang}涓婃捣${gl_bai}"
 
 				  echo "------------------------------------------------"
 				  auto_optimize_dns
-				  echo -e "[${gl_lv}OK${gl_bai}] 9/12. 自动优化DNS地址${gl_huang}${gl_bai}"
+				  echo -e "[${gl_lv}OK${gl_bai}] 9/12. 鑷姩浼樺寲DNS鍦板潃${gl_huang}${gl_bai}"
 				  echo "------------------------------------------------"
 				  prefer_ipv4
-				  echo -e "[${gl_lv}OK${gl_bai}] 10/12. 设置网络�?{gl_huang}ipv4优先${gl_bai}}"
+				  echo -e "[${gl_lv}OK${gl_bai}] 10/12. 璁剧疆缃戠粶涓?{gl_huang}ipv4浼樺厛${gl_bai}}"
 
 				  echo "------------------------------------------------"
 				  install_docker
 				  install wget sudo tar unzip socat btop nano vim
-				  echo -e "[${gl_lv}OK${gl_bai}] 11/12. 安装基础工具${gl_huang}docker wget sudo tar unzip socat btop nano vim${gl_bai}"
+				  echo -e "[${gl_lv}OK${gl_bai}] 11/12. 瀹夎鍩虹宸ュ叿${gl_huang}docker wget sudo tar unzip socat btop nano vim${gl_bai}"
 				  echo "------------------------------------------------"
 
 				  optimize_balanced
-				  echo -e "[${gl_lv}OK${gl_bai}] 12/12. Linux系统内核参数优化"
-				  echo -e "${gl_lv}一条龙系统调优已完�?{gl_bai}"
+				  echo -e "[${gl_lv}OK${gl_bai}] 12/12. Linux绯荤粺鍐呮牳鍙傛暟浼樺寲"
+				  echo -e "${gl_lv}涓€鏉￠緳绯荤粺璋冧紭宸插畬鎴?{gl_bai}"
 
 				  ;;
 				[Nn])
-				  echo "已取�?
+				  echo "宸插彇娑?
 				  ;;
 				*)
-				  echo "无效的选择，请输入 Y �?N�?
+				  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 				  ;;
 			  esac
 
@@ -16051,7 +16051,7 @@ EOF
 
 		  99)
 			  clear
-			  send_stats "重启系统"
+			  send_stats "閲嶅惎绯荤粺"
 			  server_reboot
 			  ;;
 		  100)
@@ -16060,39 +16060,39 @@ EOF
 			while true; do
 			  clear
 			  if grep -q '^ENABLE_STATS="true"' /usr/local/bin/k > /dev/null 2>&1; then
-			  	local status_message="${gl_lv}正在采集数据${gl_bai}"
+			  	local status_message="${gl_lv}姝ｅ湪閲囬泦鏁版嵁${gl_bai}"
 			  elif grep -q '^ENABLE_STATS="false"' /usr/local/bin/k > /dev/null 2>&1; then
-			  	local status_message="${gl_hui}采集已关�?{gl_bai}"
+			  	local status_message="${gl_hui}閲囬泦宸插叧闂?{gl_bai}"
 			  else
-			  	local status_message="无法确定的状�?
+			  	local status_message="鏃犳硶纭畾鐨勭姸鎬?
 			  fi
 
-			  echo "隐私与安�?
-			  echo "脚本将收集用户使用功能的数据，优化脚本体验，制作更多好玩好用的功�?
-			  echo "将收集脚本版本号，使用的时间，系统版本，CPU架构，机器所属国家和使用的功能的名称�?
+			  echo "闅愮涓庡畨鍏?
+			  echo "鑴氭湰灏嗘敹闆嗙敤鎴蜂娇鐢ㄥ姛鑳界殑鏁版嵁锛屼紭鍖栬剼鏈綋楠岋紝鍒朵綔鏇村濂界帺濂界敤鐨勫姛鑳?
+			  echo "灏嗘敹闆嗚剼鏈増鏈彿锛屼娇鐢ㄧ殑鏃堕棿锛岀郴缁熺増鏈紝CPU鏋舵瀯锛屾満鍣ㄦ墍灞炲浗瀹跺拰浣跨敤鐨勫姛鑳界殑鍚嶇О锛?
 			  echo "------------------------------------------------"
-			  echo -e "当前状�? $status_message"
+			  echo -e "褰撳墠鐘舵€? $status_message"
 			  echo "--------------------"
-			  echo "1. 开启采�?
-			  echo "2. 关闭采集"
+			  echo "1. 寮€鍚噰闆?
+			  echo "2. 鍏抽棴閲囬泦"
 			  echo "--------------------"
-			  echo "0. 返回上一级选单"
+			  echo "0. 杩斿洖涓婁竴绾ч€夊崟"
 			  echo "--------------------"
-			  read -e -p "请输入你的选择: " sub_choice
+			  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 			  case $sub_choice in
 				  1)
 					  cd ~
 					  sed -i 's/^ENABLE_STATS="false"/ENABLE_STATS="true"/' /usr/local/bin/k
 					  sed -i 's/^ENABLE_STATS="false"/ENABLE_STATS="true"/' ~/kejilion.sh
-					  echo "已开启采�?
-					  send_stats "隐私与安全已开启采�?
+					  echo "宸插紑鍚噰闆?
+					  send_stats "闅愮涓庡畨鍏ㄥ凡寮€鍚噰闆?
 					  ;;
 				  2)
 					  cd ~
 					  sed -i 's/^ENABLE_STATS="true"/ENABLE_STATS="false"/' /usr/local/bin/k
 					  sed -i 's/^ENABLE_STATS="true"/ENABLE_STATS="false"/' ~/kejilion.sh
-					  echo "已关闭采�?
-					  send_stats "隐私与安全已关闭采集"
+					  echo "宸插叧闂噰闆?
+					  send_stats "闅愮涓庡畨鍏ㄥ凡鍏抽棴閲囬泦"
 					  ;;
 				  *)
 					  break
@@ -16108,11 +16108,11 @@ EOF
 
 		  102)
 			  clear
-			  send_stats "卸载科技lion脚本"
-			  echo "卸载科技lion脚本"
+			  send_stats "鍗歌浇绉戞妧lion鑴氭湰"
+			  echo "鍗歌浇绉戞妧lion鑴氭湰"
 			  echo "------------------------------------------------"
-			  echo "将彻底卸载kejilion脚本，不影响你其他功�?
-			  read -e -p "确定继续吗？(Y/N): " choice
+			  echo "灏嗗交搴曞嵏杞絢ejilion鑴氭湰锛屼笉褰卞搷浣犲叾浠栧姛鑳?
+			  read -e -p "纭畾缁х画鍚楋紵(Y/N): " choice
 
 			  case "$choice" in
 				[Yy])
@@ -16120,16 +16120,16 @@ EOF
 				  (crontab -l | grep -v "kejilion.sh") | crontab -
 				  rm -f /usr/local/bin/k
 				  rm ~/kejilion.sh
-				  echo "脚本已卸载，再见�?
+				  echo "鑴氭湰宸插嵏杞斤紝鍐嶈锛?
 				  break_end
 				  clear
 				  exit
 				  ;;
 				[Nn])
-				  echo "已取�?
+				  echo "宸插彇娑?
 				  ;;
 				*)
-				  echo "无效的选择，请输入 Y �?N�?
+				  echo "鏃犳晥鐨勯€夋嫨锛岃杈撳叆 Y 鎴?N銆?
 				  ;;
 			  esac
 			  ;;
@@ -16139,7 +16139,7 @@ EOF
 
 			  ;;
 		  *)
-			  echo "无效的输�?"
+			  echo "鏃犳晥鐨勮緭鍏?"
 			  ;;
 	  esac
 	  break_end
@@ -16157,187 +16157,187 @@ EOF
 
 linux_file() {
 	root_use
-	send_stats "文件管理�?
+	send_stats "鏂囦欢绠＄悊鍣?
 	while true; do
 		clear
-		echo "文件管理�?
+		echo "鏂囦欢绠＄悊鍣?
 		echo "------------------------"
-		echo "当前路径"
+		echo "褰撳墠璺緞"
 		pwd
 		echo "------------------------"
 		ls --color=auto -x
 		echo "------------------------"
-		echo "1.  进入目录           2.  创建目录             3.  修改目录权限         4.  重命名目�?
-		echo "5.  删除目录           6.  返回上一级选单目录"
+		echo "1.  杩涘叆鐩綍           2.  鍒涘缓鐩綍             3.  淇敼鐩綍鏉冮檺         4.  閲嶅懡鍚嶇洰褰?
+		echo "5.  鍒犻櫎鐩綍           6.  杩斿洖涓婁竴绾ч€夊崟鐩綍"
 		echo "------------------------"
-		echo "11. 创建文件           12. 编辑文件             13. 修改文件权限         14. 重命名文�?
-		echo "15. 删除文件"
+		echo "11. 鍒涘缓鏂囦欢           12. 缂栬緫鏂囦欢             13. 淇敼鏂囦欢鏉冮檺         14. 閲嶅懡鍚嶆枃浠?
+		echo "15. 鍒犻櫎鏂囦欢"
 		echo "------------------------"
-		echo "21. 压缩文件目录       22. 解压文件目录         23. 移动文件目录         24. 复制文件目录"
-		echo "25. 传文件至其他服务�?
+		echo "21. 鍘嬬缉鏂囦欢鐩綍       22. 瑙ｅ帇鏂囦欢鐩綍         23. 绉诲姩鏂囦欢鐩綍         24. 澶嶅埗鏂囦欢鐩綍"
+		echo "25. 浼犳枃浠惰嚦鍏朵粬鏈嶅姟鍣?
 		echo "------------------------"
-		echo "0.  返回上一级选单"
+		echo "0.  杩斿洖涓婁竴绾ч€夊崟"
 		echo "------------------------"
-		read -e -p "请输入你的选择: " Limiting
+		read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " Limiting
 
 		case "$Limiting" in
-			1)  # 进入目录
-				read -e -p "请输入目录名: " dirname
-				cd "$dirname" 2>/dev/null || echo "无法进入目录"
-				send_stats "进入目录"
+			1)  # 杩涘叆鐩綍
+				read -e -p "璇疯緭鍏ョ洰褰曞悕: " dirname
+				cd "$dirname" 2>/dev/null || echo "鏃犳硶杩涘叆鐩綍"
+				send_stats "杩涘叆鐩綍"
 				;;
-			2)  # 创建目录
-				read -e -p "请输入要创建的目录名: " dirname
-				mkdir -p "$dirname" && echo "目录已创�? || echo "创建失败"
-				send_stats "创建目录"
+			2)  # 鍒涘缓鐩綍
+				read -e -p "璇疯緭鍏ヨ鍒涘缓鐨勭洰褰曞悕: " dirname
+				mkdir -p "$dirname" && echo "鐩綍宸插垱寤? || echo "鍒涘缓澶辫触"
+				send_stats "鍒涘缓鐩綍"
 				;;
-			3)  # 修改目录权限
-				read -e -p "请输入目录名: " dirname
-				read -e -p "请输入权�?(�?755): " perm
-				chmod "$perm" "$dirname" && echo "权限已修�? || echo "修改失败"
-				send_stats "修改目录权限"
+			3)  # 淇敼鐩綍鏉冮檺
+				read -e -p "璇疯緭鍏ョ洰褰曞悕: " dirname
+				read -e -p "璇疯緭鍏ユ潈闄?(濡?755): " perm
+				chmod "$perm" "$dirname" && echo "鏉冮檺宸蹭慨鏀? || echo "淇敼澶辫触"
+				send_stats "淇敼鐩綍鏉冮檺"
 				;;
-			4)  # 重命名目�?
-				read -e -p "请输入当前目录名: " current_name
-				read -e -p "请输入新目录�? " new_name
-				mv "$current_name" "$new_name" && echo "目录已重命名" || echo "重命名失�?
-				send_stats "重命名目�?
+			4)  # 閲嶅懡鍚嶇洰褰?
+				read -e -p "璇疯緭鍏ュ綋鍓嶇洰褰曞悕: " current_name
+				read -e -p "璇疯緭鍏ユ柊鐩綍鍚? " new_name
+				mv "$current_name" "$new_name" && echo "鐩綍宸查噸鍛藉悕" || echo "閲嶅懡鍚嶅け璐?
+				send_stats "閲嶅懡鍚嶇洰褰?
 				;;
-			5)  # 删除目录
-				read -e -p "请输入要删除的目录名: " dirname
-				rm -rf "$dirname" && echo "目录已删�? || echo "删除失败"
-				send_stats "删除目录"
+			5)  # 鍒犻櫎鐩綍
+				read -e -p "璇疯緭鍏ヨ鍒犻櫎鐨勭洰褰曞悕: " dirname
+				rm -rf "$dirname" && echo "鐩綍宸插垹闄? || echo "鍒犻櫎澶辫触"
+				send_stats "鍒犻櫎鐩綍"
 				;;
-			6)  # 返回上一级选单目录
+			6)  # 杩斿洖涓婁竴绾ч€夊崟鐩綍
 				cd ..
-				send_stats "返回上一级选单目录"
+				send_stats "杩斿洖涓婁竴绾ч€夊崟鐩綍"
 				;;
-			11) # 创建文件
-				read -e -p "请输入要创建的文件名: " filename
-				touch "$filename" && echo "文件已创�? || echo "创建失败"
-				send_stats "创建文件"
+			11) # 鍒涘缓鏂囦欢
+				read -e -p "璇疯緭鍏ヨ鍒涘缓鐨勬枃浠跺悕: " filename
+				touch "$filename" && echo "鏂囦欢宸插垱寤? || echo "鍒涘缓澶辫触"
+				send_stats "鍒涘缓鏂囦欢"
 				;;
-			12) # 编辑文件
-				read -e -p "请输入要编辑的文件名: " filename
+			12) # 缂栬緫鏂囦欢
+				read -e -p "璇疯緭鍏ヨ缂栬緫鐨勬枃浠跺悕: " filename
 				install nano
 				nano "$filename"
-				send_stats "编辑文件"
+				send_stats "缂栬緫鏂囦欢"
 				;;
-			13) # 修改文件权限
-				read -e -p "请输入文件名: " filename
-				read -e -p "请输入权�?(�?755): " perm
-				chmod "$perm" "$filename" && echo "权限已修�? || echo "修改失败"
-				send_stats "修改文件权限"
+			13) # 淇敼鏂囦欢鏉冮檺
+				read -e -p "璇疯緭鍏ユ枃浠跺悕: " filename
+				read -e -p "璇疯緭鍏ユ潈闄?(濡?755): " perm
+				chmod "$perm" "$filename" && echo "鏉冮檺宸蹭慨鏀? || echo "淇敼澶辫触"
+				send_stats "淇敼鏂囦欢鏉冮檺"
 				;;
-			14) # 重命名文�?
-				read -e -p "请输入当前文件名: " current_name
-				read -e -p "请输入新文件�? " new_name
-				mv "$current_name" "$new_name" && echo "文件已重命名" || echo "重命名失�?
-				send_stats "重命名文�?
+			14) # 閲嶅懡鍚嶆枃浠?
+				read -e -p "璇疯緭鍏ュ綋鍓嶆枃浠跺悕: " current_name
+				read -e -p "璇疯緭鍏ユ柊鏂囦欢鍚? " new_name
+				mv "$current_name" "$new_name" && echo "鏂囦欢宸查噸鍛藉悕" || echo "閲嶅懡鍚嶅け璐?
+				send_stats "閲嶅懡鍚嶆枃浠?
 				;;
-			15) # 删除文件
-				read -e -p "请输入要删除的文件名: " filename
-				rm -f "$filename" && echo "文件已删�? || echo "删除失败"
-				send_stats "删除文件"
+			15) # 鍒犻櫎鏂囦欢
+				read -e -p "璇疯緭鍏ヨ鍒犻櫎鐨勬枃浠跺悕: " filename
+				rm -f "$filename" && echo "鏂囦欢宸插垹闄? || echo "鍒犻櫎澶辫触"
+				send_stats "鍒犻櫎鏂囦欢"
 				;;
-			21) # 压缩文件/目录
-				read -e -p "请输入要压缩的文�?目录�? " name
+			21) # 鍘嬬缉鏂囦欢/鐩綍
+				read -e -p "璇疯緭鍏ヨ鍘嬬缉鐨勬枃浠?鐩綍鍚? " name
 				install tar
-				tar -czvf "$name.tar.gz" "$name" && echo "已压缩为 $name.tar.gz" || echo "压缩失败"
-				send_stats "压缩文件/目录"
+				tar -czvf "$name.tar.gz" "$name" && echo "宸插帇缂╀负 $name.tar.gz" || echo "鍘嬬缉澶辫触"
+				send_stats "鍘嬬缉鏂囦欢/鐩綍"
 				;;
-			22) # 解压文件/目录
-				read -e -p "请输入要解压的文件名 (.tar.gz): " filename
+			22) # 瑙ｅ帇鏂囦欢/鐩綍
+				read -e -p "璇疯緭鍏ヨ瑙ｅ帇鐨勬枃浠跺悕 (.tar.gz): " filename
 				install tar
-				tar -xzvf "$filename" && echo "已解�?$filename" || echo "解压失败"
-				send_stats "解压文件/目录"
+				tar -xzvf "$filename" && echo "宸茶В鍘?$filename" || echo "瑙ｅ帇澶辫触"
+				send_stats "瑙ｅ帇鏂囦欢/鐩綍"
 				;;
 
-			23) # 移动文件或目�?
-				read -e -p "请输入要移动的文件或目录路径: " src_path
+			23) # 绉诲姩鏂囦欢鎴栫洰褰?
+				read -e -p "璇疯緭鍏ヨ绉诲姩鐨勬枃浠舵垨鐩綍璺緞: " src_path
 				if [ ! -e "$src_path" ]; then
-					echo "错误: 文件或目录不存在�?
-					send_stats "移动文件或目录失�? 文件或目录不存在"
+					echo "閿欒: 鏂囦欢鎴栫洰褰曚笉瀛樺湪銆?
+					send_stats "绉诲姩鏂囦欢鎴栫洰褰曞け璐? 鏂囦欢鎴栫洰褰曚笉瀛樺湪"
 					continue
 				fi
 
-				read -e -p "请输入目标路�?(包括新文件名或目录名): " dest_path
+				read -e -p "璇疯緭鍏ョ洰鏍囪矾寰?(鍖呮嫭鏂版枃浠跺悕鎴栫洰褰曞悕): " dest_path
 				if [ -z "$dest_path" ]; then
-					echo "错误: 请输入目标路径�?
-					send_stats "移动文件或目录失�? 目标路径未指�?
+					echo "閿欒: 璇疯緭鍏ョ洰鏍囪矾寰勩€?
+					send_stats "绉诲姩鏂囦欢鎴栫洰褰曞け璐? 鐩爣璺緞鏈寚瀹?
 					continue
 				fi
 
-				mv "$src_path" "$dest_path" && echo "文件或目录已移动�?$dest_path" || echo "移动文件或目录失�?
-				send_stats "移动文件或目�?
+				mv "$src_path" "$dest_path" && echo "鏂囦欢鎴栫洰褰曞凡绉诲姩鍒?$dest_path" || echo "绉诲姩鏂囦欢鎴栫洰褰曞け璐?
+				send_stats "绉诲姩鏂囦欢鎴栫洰褰?
 				;;
 
 
-		   24) # 复制文件目录
-				read -e -p "请输入要复制的文件或目录路径: " src_path
+		   24) # 澶嶅埗鏂囦欢鐩綍
+				read -e -p "璇疯緭鍏ヨ澶嶅埗鐨勬枃浠舵垨鐩綍璺緞: " src_path
 				if [ ! -e "$src_path" ]; then
-					echo "错误: 文件或目录不存在�?
-					send_stats "复制文件或目录失�? 文件或目录不存在"
+					echo "閿欒: 鏂囦欢鎴栫洰褰曚笉瀛樺湪銆?
+					send_stats "澶嶅埗鏂囦欢鎴栫洰褰曞け璐? 鏂囦欢鎴栫洰褰曚笉瀛樺湪"
 					continue
 				fi
 
-				read -e -p "请输入目标路�?(包括新文件名或目录名): " dest_path
+				read -e -p "璇疯緭鍏ョ洰鏍囪矾寰?(鍖呮嫭鏂版枃浠跺悕鎴栫洰褰曞悕): " dest_path
 				if [ -z "$dest_path" ]; then
-					echo "错误: 请输入目标路径�?
-					send_stats "复制文件或目录失�? 目标路径未指�?
+					echo "閿欒: 璇疯緭鍏ョ洰鏍囪矾寰勩€?
+					send_stats "澶嶅埗鏂囦欢鎴栫洰褰曞け璐? 鐩爣璺緞鏈寚瀹?
 					continue
 				fi
 
-				# 使用 -r 选项以递归方式复制目录
-				cp -r "$src_path" "$dest_path" && echo "文件或目录已复制�?$dest_path" || echo "复制文件或目录失�?
-				send_stats "复制文件或目�?
+				# 浣跨敤 -r 閫夐」浠ラ€掑綊鏂瑰紡澶嶅埗鐩綍
+				cp -r "$src_path" "$dest_path" && echo "鏂囦欢鎴栫洰褰曞凡澶嶅埗鍒?$dest_path" || echo "澶嶅埗鏂囦欢鎴栫洰褰曞け璐?
+				send_stats "澶嶅埗鏂囦欢鎴栫洰褰?
 				;;
 
 
-			 25) # 传送文件至远端服务�?
-				read -e -p "请输入要传送的文件路径: " file_to_transfer
+			 25) # 浼犻€佹枃浠惰嚦杩滅鏈嶅姟鍣?
+				read -e -p "璇疯緭鍏ヨ浼犻€佺殑鏂囦欢璺緞: " file_to_transfer
 				if [ ! -f "$file_to_transfer" ]; then
-					echo "错误: 文件不存在�?
-					send_stats "传送文件失�? 文件不存�?
+					echo "閿欒: 鏂囦欢涓嶅瓨鍦ㄣ€?
+					send_stats "浼犻€佹枃浠跺け璐? 鏂囦欢涓嶅瓨鍦?
 					continue
 				fi
 
-				read -e -p "请输入远端服务器IP: " remote_ip
+				read -e -p "璇疯緭鍏ヨ繙绔湇鍔″櫒IP: " remote_ip
 				if [ -z "$remote_ip" ]; then
-					echo "错误: 请输入远端服务器IP�?
-					send_stats "传送文件失�? 未输入远端服务器IP"
+					echo "閿欒: 璇疯緭鍏ヨ繙绔湇鍔″櫒IP銆?
+					send_stats "浼犻€佹枃浠跺け璐? 鏈緭鍏ヨ繙绔湇鍔″櫒IP"
 					continue
 				fi
 
-				read -e -p "请输入远端服务器用户�?(默认root): " remote_user
+				read -e -p "璇疯緭鍏ヨ繙绔湇鍔″櫒鐢ㄦ埛鍚?(榛樿root): " remote_user
 				remote_user=${remote_user:-root}
 
-				read -e -p "请输入远端服务器密码: " -s remote_password
+				read -e -p "璇疯緭鍏ヨ繙绔湇鍔″櫒瀵嗙爜: " -s remote_password
 				echo
 				if [ -z "$remote_password" ]; then
-					echo "错误: 请输入远端服务器密码�?
-					send_stats "传送文件失�? 未输入远端服务器密码"
+					echo "閿欒: 璇疯緭鍏ヨ繙绔湇鍔″櫒瀵嗙爜銆?
+					send_stats "浼犻€佹枃浠跺け璐? 鏈緭鍏ヨ繙绔湇鍔″櫒瀵嗙爜"
 					continue
 				fi
 
-				read -e -p "请输入登录端�?(默认22): " remote_port
+				read -e -p "璇疯緭鍏ョ櫥褰曠鍙?(榛樿22): " remote_port
 				remote_port=${remote_port:-22}
 
-				# 清除已知主机的旧条目
+				# 娓呴櫎宸茬煡涓绘満鐨勬棫鏉＄洰
 				ssh-keygen -f "/root/.ssh/known_hosts" -R "$remote_ip"
-				sleep 2  # 等待时间
+				sleep 2  # 绛夊緟鏃堕棿
 
-				# 使用scp传输文件
+				# 浣跨敤scp浼犺緭鏂囦欢
 				scp -P "$remote_port" -o StrictHostKeyChecking=no "$file_to_transfer" "$remote_user@$remote_ip:/home/" <<EOF
 $remote_password
 EOF
 
 				if [ $? -eq 0 ]; then
-					echo "文件已传送至远程服务器home目录�?
-					send_stats "文件传送成�?
+					echo "鏂囦欢宸蹭紶閫佽嚦杩滅▼鏈嶅姟鍣╤ome鐩綍銆?
+					send_stats "鏂囦欢浼犻€佹垚鍔?
 				else
-					echo "文件传送失败�?
-					send_stats "文件传送失�?
+					echo "鏂囦欢浼犻€佸け璐ャ€?
+					send_stats "鏂囦欢浼犻€佸け璐?
 				fi
 
 				break_end
@@ -16345,13 +16345,13 @@ EOF
 
 
 
-			0)  # 返回上一级选单
-				send_stats "返回上一级选单菜单"
+			0)  # 杩斿洖涓婁竴绾ч€夊崟
+				send_stats "杩斿洖涓婁竴绾ч€夊崟鑿滃崟"
 				break
 				;;
-			*)  # 处理无效输入
-				echo "无效的选择，请重新输入"
-				send_stats "无效选择"
+			*)  # 澶勭悊鏃犳晥杈撳叆
+				echo "鏃犳晥鐨勯€夋嫨锛岃閲嶆柊杈撳叆"
+				send_stats "鏃犳晥閫夋嫨"
 				;;
 		esac
 	done
@@ -16377,10 +16377,10 @@ run_commands_on_servers() {
 	local SERVERS_FILE="$HOME/cluster/servers.py"
 	local SERVERS=$(grep -oP '{"name": "\K[^"]+|"hostname": "\K[^"]+|"port": \K[^,]+|"username": "\K[^"]+|"password": "\K[^"]+' "$SERVERS_FILE")
 
-	# 将提取的信息转换为数�?
+	# 灏嗘彁鍙栫殑淇℃伅杞崲涓烘暟缁?
 	IFS=$'\n' read -r -d '' -a SERVER_ARRAY <<< "$SERVERS"
 
-	# 遍历服务器并执行命令
+	# 閬嶅巻鏈嶅姟鍣ㄥ苟鎵ц鍛戒护
 	for ((i=0; i<${#SERVER_ARRAY[@]}; i+=5)); do
 		local name=${SERVER_ARRAY[i]}
 		local hostname=${SERVER_ARRAY[i+1]}
@@ -16388,7 +16388,7 @@ run_commands_on_servers() {
 		local username=${SERVER_ARRAY[i+3]}
 		local password=${SERVER_ARRAY[i+4]}
 		echo
-		echo -e "${gl_huang}连接�?$name ($hostname)...${gl_bai}"
+		echo -e "${gl_huang}杩炴帴鍒?$name ($hostname)...${gl_bai}"
 		# sshpass -p "$password" ssh -o StrictHostKeyChecking=no "$username@$hostname" -p "$port" "$1"
 		sshpass -p "$password" ssh -t -o StrictHostKeyChecking=no "$username@$hostname" -p "$port" "$1"
 	done
@@ -16410,61 +16410,61 @@ fi
 
 while true; do
 	  clear
-	  send_stats "集群控制中心"
-	  echo "服务器集群控�?
+	  send_stats "闆嗙兢鎺у埗涓績"
+	  echo "鏈嶅姟鍣ㄩ泦缇ゆ帶鍒?
 	  cat ~/cluster/servers.py
 	  echo
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  echo -e "${gl_kjlan}服务器列表管�?{gl_bai}"
-	  echo -e "${gl_kjlan}1.  ${gl_bai}添加服务�?              ${gl_kjlan}2.  ${gl_bai}删除服务�?           ${gl_kjlan}3.  ${gl_bai}编辑服务�?
-	  echo -e "${gl_kjlan}4.  ${gl_bai}备份集群                 ${gl_kjlan}5.  ${gl_bai}还原集群"
+	  echo -e "${gl_kjlan}鏈嶅姟鍣ㄥ垪琛ㄧ鐞?{gl_bai}"
+	  echo -e "${gl_kjlan}1.  ${gl_bai}娣诲姞鏈嶅姟鍣?              ${gl_kjlan}2.  ${gl_bai}鍒犻櫎鏈嶅姟鍣?           ${gl_kjlan}3.  ${gl_bai}缂栬緫鏈嶅姟鍣?
+	  echo -e "${gl_kjlan}4.  ${gl_bai}澶囦唤闆嗙兢                 ${gl_kjlan}5.  ${gl_bai}杩樺師闆嗙兢"
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  echo -e "${gl_kjlan}批量执行任务${gl_bai}"
-	  echo -e "${gl_kjlan}11. ${gl_bai}安装科技lion脚本         ${gl_kjlan}12. ${gl_bai}更新系统              ${gl_kjlan}13. ${gl_bai}清理系统"
-	  echo -e "${gl_kjlan}14. ${gl_bai}安装docker               ${gl_kjlan}15. ${gl_bai}安装BBR3              ${gl_kjlan}16. ${gl_bai}设置1G虚拟内存"
-	  echo -e "${gl_kjlan}17. ${gl_bai}设置时区到上�?          ${gl_kjlan}18. ${gl_bai}开放所有端�?       ${gl_kjlan}51. ${gl_bai}自定义指�?
+	  echo -e "${gl_kjlan}鎵归噺鎵ц浠诲姟${gl_bai}"
+	  echo -e "${gl_kjlan}11. ${gl_bai}瀹夎绉戞妧lion鑴氭湰         ${gl_kjlan}12. ${gl_bai}鏇存柊绯荤粺              ${gl_kjlan}13. ${gl_bai}娓呯悊绯荤粺"
+	  echo -e "${gl_kjlan}14. ${gl_bai}瀹夎docker               ${gl_kjlan}15. ${gl_bai}瀹夎BBR3              ${gl_kjlan}16. ${gl_bai}璁剧疆1G铏氭嫙鍐呭瓨"
+	  echo -e "${gl_kjlan}17. ${gl_bai}璁剧疆鏃跺尯鍒颁笂娴?          ${gl_kjlan}18. ${gl_bai}寮€鏀炬墍鏈夌鍙?       ${gl_kjlan}51. ${gl_bai}鑷畾涔夋寚浠?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  echo -e "${gl_kjlan}0.  ${gl_bai}返回主菜�?
+	  echo -e "${gl_kjlan}0.  ${gl_bai}杩斿洖涓昏彍鍗?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 	  case $sub_choice in
 		  1)
-			  send_stats "添加集群服务�?
-			  read -e -p "服务器名�? " server_name
-			  read -e -p "服务器IP: " server_ip
-			  read -e -p "服务器端口（22�? " server_port
+			  send_stats "娣诲姞闆嗙兢鏈嶅姟鍣?
+			  read -e -p "鏈嶅姟鍣ㄥ悕绉? " server_name
+			  read -e -p "鏈嶅姟鍣↖P: " server_ip
+			  read -e -p "鏈嶅姟鍣ㄧ鍙ｏ紙22锛? " server_port
 			  local server_port=${server_port:-22}
-			  read -e -p "服务器用户名（root�? " server_username
+			  read -e -p "鏈嶅姟鍣ㄧ敤鎴峰悕锛坮oot锛? " server_username
 			  local server_username=${server_username:-root}
-			  read -e -p "服务器用户密�? " server_password
+			  read -e -p "鏈嶅姟鍣ㄧ敤鎴峰瘑鐮? " server_password
 
 			  sed -i "/servers = \[/a\    {\"name\": \"$server_name\", \"hostname\": \"$server_ip\", \"port\": $server_port, \"username\": \"$server_username\", \"password\": \"$server_password\", \"remote_path\": \"/home/\"}," ~/cluster/servers.py
 
 			  ;;
 		  2)
-			  send_stats "删除集群服务�?
-			  read -e -p "请输入需要删除的关键�? " rmserver
+			  send_stats "鍒犻櫎闆嗙兢鏈嶅姟鍣?
+			  read -e -p "璇疯緭鍏ラ渶瑕佸垹闄ょ殑鍏抽敭瀛? " rmserver
 			  sed -i "/$rmserver/d" ~/cluster/servers.py
 			  ;;
 		  3)
-			  send_stats "编辑集群服务�?
+			  send_stats "缂栬緫闆嗙兢鏈嶅姟鍣?
 			  install nano
 			  nano ~/cluster/servers.py
 			  ;;
 
 		  4)
 			  clear
-			  send_stats "备份集群"
-			  echo -e "请将 ${gl_huang}/root/cluster/servers.py${gl_bai} 文件下载，完成备份！"
+			  send_stats "澶囦唤闆嗙兢"
+			  echo -e "璇峰皢 ${gl_huang}/root/cluster/servers.py${gl_bai} 鏂囦欢涓嬭浇锛屽畬鎴愬浠斤紒"
 			  break_end
 			  ;;
 
 		  5)
 			  clear
-			  send_stats "还原集群"
-			  echo "请上传您的servers.py，按任意键开始上传！"
-			  echo -e "请上传您�?${gl_huang}servers.py${gl_bai} 文件�?${gl_huang}/root/cluster/${gl_bai} 完成还原�?
+			  send_stats "杩樺師闆嗙兢"
+			  echo "璇蜂笂浼犳偍鐨剆ervers.py锛屾寜浠绘剰閿紑濮嬩笂浼狅紒"
+			  echo -e "璇蜂笂浼犳偍鐨?${gl_huang}servers.py${gl_bai} 鏂囦欢鍒?${gl_huang}/root/cluster/${gl_bai} 瀹屾垚杩樺師锛?
 			  break_end
 			  ;;
 
@@ -16495,8 +16495,8 @@ while true; do
 			  ;;
 
 		  51)
-			  send_stats "自定义执行命�?
-			  read -e -p "请输入批量执行的命令: " mingling
+			  send_stats "鑷畾涔夋墽琛屽懡浠?
+			  read -e -p "璇疯緭鍏ユ壒閲忔墽琛岀殑鍛戒护: " mingling
 			  run_commands_on_servers "${mingling}"
 			  ;;
 
@@ -16514,48 +16514,48 @@ done
 kejilion_Affiliates() {
 
 clear
-send_stats "广告专栏"
-echo "广告专栏"
+send_stats "骞垮憡涓撴爮"
+echo "骞垮憡涓撴爮"
 echo "------------------------"
-echo "将为用户提供更简单优雅的推广与购买体验！"
+echo "灏嗕负鐢ㄦ埛鎻愪緵鏇寸畝鍗曚紭闆呯殑鎺ㄥ箍涓庤喘涔颁綋楠岋紒"
 echo ""
-echo -e "服务器优�?
+echo -e "鏈嶅姟鍣ㄤ紭鎯?
 echo "------------------------"
-echo -e "${gl_lan}莱卡�?香港CN2 GIA 韩国双ISP 美国CN2 GIA 优惠活动${gl_bai}"
-echo -e "${gl_bai}网址: https://www.lcayun.com/aff/ZEXUQBIM${gl_bai}"
+echo -e "${gl_lan}鑾卞崱浜?棣欐腐CN2 GIA 闊╁浗鍙孖SP 缇庡浗CN2 GIA 浼樻儬娲诲姩${gl_bai}"
+echo -e "${gl_bai}缃戝潃: https://www.lcayun.com/aff/ZEXUQBIM${gl_bai}"
 echo "------------------------"
-echo -e "${gl_lan}RackNerd 10.99刀每年 美国 1核心 1G内存 20G硬盘 1T流量每月${gl_bai}"
-echo -e "${gl_bai}网址: https://my.racknerd.com/aff.php?aff=5501&pid=879${gl_bai}"
+echo -e "${gl_lan}RackNerd 10.99鍒€姣忓勾 缇庡浗 1鏍稿績 1G鍐呭瓨 20G纭洏 1T娴侀噺姣忔湀${gl_bai}"
+echo -e "${gl_bai}缃戝潃: https://my.racknerd.com/aff.php?aff=5501&pid=879${gl_bai}"
 echo "------------------------"
-echo -e "${gl_zi}Hostinger 52.7刀每年 美国 1核心 4G内存 50G硬盘 4T流量每月${gl_bai}"
-echo -e "${gl_bai}网址: https://cart.hostinger.com/pay/d83c51e9-0c28-47a6-8414-b8ab010ef94f?_ga=GA1.3.942352702.1711283207${gl_bai}"
+echo -e "${gl_zi}Hostinger 52.7鍒€姣忓勾 缇庡浗 1鏍稿績 4G鍐呭瓨 50G纭洏 4T娴侀噺姣忔湀${gl_bai}"
+echo -e "${gl_bai}缃戝潃: https://cart.hostinger.com/pay/d83c51e9-0c28-47a6-8414-b8ab010ef94f?_ga=GA1.3.942352702.1711283207${gl_bai}"
 echo "------------------------"
-echo -e "${gl_huang}搬瓦�?49刀每季 美国CN2GIA 日本软银 2核心 1G内存 20G硬盘 1T流量每月${gl_bai}"
-echo -e "${gl_bai}网址: https://bandwagonhost.com/aff.php?aff=69004&pid=87${gl_bai}"
+echo -e "${gl_huang}鎼摝宸?49鍒€姣忓 缇庡浗CN2GIA 鏃ユ湰杞摱 2鏍稿績 1G鍐呭瓨 20G纭洏 1T娴侀噺姣忔湀${gl_bai}"
+echo -e "${gl_bai}缃戝潃: https://bandwagonhost.com/aff.php?aff=69004&pid=87${gl_bai}"
 echo "------------------------"
-echo -e "${gl_lan}DMIT 28刀每季 美国CN2GIA 1核心 2G内存 20G硬盘 800G流量每月${gl_bai}"
-echo -e "${gl_bai}网址: https://www.dmit.io/aff.php?aff=4966&pid=100${gl_bai}"
+echo -e "${gl_lan}DMIT 28鍒€姣忓 缇庡浗CN2GIA 1鏍稿績 2G鍐呭瓨 20G纭洏 800G娴侀噺姣忔湀${gl_bai}"
+echo -e "${gl_bai}缃戝潃: https://www.dmit.io/aff.php?aff=4966&pid=100${gl_bai}"
 echo "------------------------"
-echo -e "${gl_zi}V.PS 6.9刀每月 东京软银 2核心 1G内存 20G硬盘 1T流量每月${gl_bai}"
-echo -e "${gl_bai}网址: https://vps.hosting/cart/tokyo-cloud-kvm-vps/?id=148&?affid=1355&?affid=1355${gl_bai}"
+echo -e "${gl_zi}V.PS 6.9鍒€姣忔湀 涓滀含杞摱 2鏍稿績 1G鍐呭瓨 20G纭洏 1T娴侀噺姣忔湀${gl_bai}"
+echo -e "${gl_bai}缃戝潃: https://vps.hosting/cart/tokyo-cloud-kvm-vps/?id=148&?affid=1355&?affid=1355${gl_bai}"
 echo "------------------------"
-echo -e "${gl_kjlan}VPS更多热门优惠${gl_bai}"
-echo -e "${gl_bai}网址: https://kejilion.pro/topvps/${gl_bai}"
-echo "------------------------"
-echo ""
-echo -e "域名优惠"
-echo "------------------------"
-echo -e "${gl_lan}GNAME 8.8刀首年COM域名 6.68刀首年CC域名${gl_bai}"
-echo -e "${gl_bai}网址: https://www.gname.com/register?tt=86836&ttcode=KEJILION86836&ttbj=sh${gl_bai}"
+echo -e "${gl_kjlan}VPS鏇村鐑棬浼樻儬${gl_bai}"
+echo -e "${gl_bai}缃戝潃: https://kejilion.pro/topvps/${gl_bai}"
 echo "------------------------"
 echo ""
-echo -e "科技lion周边"
+echo -e "鍩熷悕浼樻儬"
 echo "------------------------"
-echo -e "${gl_kjlan}B�? ${gl_bai}https://b23.tv/2mqnQyh              ${gl_kjlan}油管: ${gl_bai}https://www.youtube.com/@kejilion${gl_bai}"
-echo -e "${gl_kjlan}官网: ${gl_bai}https://kejilion.pro/              ${gl_kjlan}导航: ${gl_bai}https://dh.kejilion.pro/${gl_bai}"
-echo -e "${gl_kjlan}博客: ${gl_bai}https://blog.kejilion.pro/         ${gl_kjlan}软件中心: ${gl_bai}https://app.kejilion.pro/${gl_bai}"
+echo -e "${gl_lan}GNAME 8.8鍒€棣栧勾COM鍩熷悕 6.68鍒€棣栧勾CC鍩熷悕${gl_bai}"
+echo -e "${gl_bai}缃戝潃: https://www.gname.com/register?tt=86836&ttcode=KEJILION86836&ttbj=sh${gl_bai}"
 echo "------------------------"
-echo -e "${gl_kjlan}脚本官网: ${gl_bai}https://kejilion.sh            ${gl_kjlan}GitHub地址: ${gl_bai}${gh_https_url}github.com/kejilion/sh${gl_bai}"
+echo ""
+echo -e "绉戞妧lion鍛ㄨ竟"
+echo "------------------------"
+echo -e "${gl_kjlan}B绔? ${gl_bai}https://b23.tv/2mqnQyh              ${gl_kjlan}娌圭: ${gl_bai}https://www.youtube.com/@kejilion${gl_bai}"
+echo -e "${gl_kjlan}瀹樼綉: ${gl_bai}https://kejilion.pro/              ${gl_kjlan}瀵艰埅: ${gl_bai}https://dh.kejilion.pro/${gl_bai}"
+echo -e "${gl_kjlan}鍗氬: ${gl_bai}https://blog.kejilion.pro/         ${gl_kjlan}杞欢涓績: ${gl_bai}https://app.kejilion.pro/${gl_bai}"
+echo "------------------------"
+echo -e "${gl_kjlan}鑴氭湰瀹樼綉: ${gl_bai}https://kejilion.sh            ${gl_kjlan}GitHub鍦板潃: ${gl_bai}${gh_https_url}github.com/kejilion/sh${gl_bai}"
 echo "------------------------"
 echo ""
 }
@@ -16567,22 +16567,22 @@ games_server_tools() {
 
 	while true; do
 	  clear
-	  echo -e "游戏开服脚本合�?
+	  echo -e "娓告垙寮€鏈嶈剼鏈悎闆?
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}1. ${gl_bai}幻兽帕鲁开服脚�?
-	  echo -e "${gl_kjlan}2. ${gl_bai}我的世界开服脚�?
+	  echo -e "${gl_kjlan}1. ${gl_bai}骞诲吔甯曢瞾寮€鏈嶈剼鏈?
+	  echo -e "${gl_kjlan}2. ${gl_bai}鎴戠殑涓栫晫寮€鏈嶈剼鏈?
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}0. ${gl_bai}返回主菜�?
+	  echo -e "${gl_kjlan}0. ${gl_bai}杩斿洖涓昏彍鍗?
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
-	  read -e -p "请输入你的选择: " sub_choice
+	  read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " sub_choice
 
 	  case $sub_choice in
 
-		  1) send_stats "幻兽帕鲁开服脚�? ; cd ~
+		  1) send_stats "骞诲吔甯曢瞾寮€鏈嶈剼鏈? ; cd ~
 			 curl -sS -O ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/palworld.sh ; chmod +x palworld.sh ; ./palworld.sh
 			 exit
 			 ;;
-		  2) send_stats "我的世界开服脚�? ; cd ~
+		  2) send_stats "鎴戠殑涓栫晫寮€鏈嶈剼鏈? ; cd ~
 			 curl -sS -O ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/mc.sh ; chmod +x mc.sh ; ./mc.sh
 			 exit
 			 ;;
@@ -16592,7 +16592,7 @@ games_server_tools() {
 			;;
 
 		  *)
-			echo "无效的输�?"
+			echo "鏃犳晥鐨勮緭鍏?"
 			;;
 	  esac
 	  break_end
@@ -16624,24 +16624,24 @@ games_server_tools() {
 
 kejilion_update() {
 
-send_stats "脚本更新"
+send_stats "鑴氭湰鏇存柊"
 cd ~
 while true; do
 	clear
-	echo "更新日志"
+	echo "鏇存柊鏃ュ織"
 	echo "------------------------"
-	echo "全部日志: ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/kejilion_sh_log.txt"
+	echo "鍏ㄩ儴鏃ュ織: ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/kejilion_sh_log.txt"
 	echo "------------------------"
 
 	curl -s ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/kejilion_sh_log.txt | tail -n 30
 	local sh_v_new=$(curl -s ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/kejilion.sh | grep -o 'sh_v="[0-9.]*"' | cut -d '"' -f 2)
 
 	if [ "$sh_v" = "$sh_v_new" ]; then
-		echo -e "${gl_lv}你已经是最新版本！${gl_huang}v$sh_v${gl_bai}"
-		send_stats "脚本已经最新了，无需更新"
+		echo -e "${gl_lv}浣犲凡缁忔槸鏈€鏂扮増鏈紒${gl_huang}v$sh_v${gl_bai}"
+		send_stats "鑴氭湰宸茬粡鏈€鏂颁簡锛屾棤闇€鏇存柊"
 	else
-		echo "发现新版本！"
-		echo -e "当前版本 v$sh_v        最新版�?${gl_huang}v$sh_v_new${gl_bai}"
+		echo "鍙戠幇鏂扮増鏈紒"
+		echo -e "褰撳墠鐗堟湰 v$sh_v        鏈€鏂扮増鏈?${gl_huang}v$sh_v_new${gl_bai}"
 	fi
 
 
@@ -16650,15 +16650,15 @@ while true; do
 
 	if [ -n "$existing_cron" ]; then
 		echo "------------------------"
-		echo -e "${gl_lv}自动更新已开启，每天凌晨2点脚本会自动更新�?{gl_bai}"
+		echo -e "${gl_lv}鑷姩鏇存柊宸插紑鍚紝姣忓ぉ鍑屾櫒2鐐硅剼鏈細鑷姩鏇存柊锛?{gl_bai}"
 	fi
 
 	echo "------------------------"
-	echo "1. 现在更新            2. 开启自动更�?           3. 关闭自动更新"
+	echo "1. 鐜板湪鏇存柊            2. 寮€鍚嚜鍔ㄦ洿鏂?           3. 鍏抽棴鑷姩鏇存柊"
 	echo "------------------------"
-	echo "0. 返回主菜�?
+	echo "0. 杩斿洖涓昏彍鍗?
 	echo "------------------------"
-	read -e -p "请输入你的选择: " choice
+	read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " choice
 	case "$choice" in
 		1)
 			clear
@@ -16672,8 +16672,8 @@ while true; do
 			CheckFirstRun_true
 			yinsiyuanquan2
 			cp -f ~/kejilion.sh /usr/local/bin/k > /dev/null 2>&1
-			echo -e "${gl_lv}脚本已更新到最新版本！${gl_huang}v$sh_v_new${gl_bai}"
-			send_stats "脚本已经最�?sh_v_new"
+			echo -e "${gl_lv}鑴氭湰宸叉洿鏂板埌鏈€鏂扮増鏈紒${gl_huang}v$sh_v_new${gl_bai}"
+			send_stats "鑴氭湰宸茬粡鏈€鏂?sh_v_new"
 			break_end
 			~/kejilion.sh
 			exit
@@ -16693,15 +16693,15 @@ while true; do
 			(crontab -l | grep -v "kejilion.sh") | crontab -
 			# (crontab -l 2>/dev/null; echo "0 2 * * * bash -c \"$SH_Update_task\"") | crontab -
 			(crontab -l 2>/dev/null; echo "$(shuf -i 0-59 -n 1) 2 * * * bash -c \"$SH_Update_task\"") | crontab -
-			echo -e "${gl_lv}自动更新已开启，每天凌晨2点脚本会自动更新�?{gl_bai}"
-			send_stats "开启脚本自动更�?
+			echo -e "${gl_lv}鑷姩鏇存柊宸插紑鍚紝姣忓ぉ鍑屾櫒2鐐硅剼鏈細鑷姩鏇存柊锛?{gl_bai}"
+			send_stats "寮€鍚剼鏈嚜鍔ㄦ洿鏂?
 			break_end
 			;;
 		3)
 			clear
 			(crontab -l | grep -v "kejilion.sh") | crontab -
-			echo -e "${gl_lv}自动更新已关�?{gl_bai}"
-			send_stats "关闭脚本自动更新"
+			echo -e "${gl_lv}鑷姩鏇存柊宸插叧闂?{gl_bai}"
+			send_stats "鍏抽棴鑴氭湰鑷姩鏇存柊"
 			break_end
 			;;
 		*)
@@ -16720,43 +16720,43 @@ kejilion_sh() {
 while true; do
 clear
 echo -e "${gl_kjlan}"
-echo "╦╔═╔═╗ ╦╦�? ╦╔═╗╔╗�?╔═╗╦ �?
-echo "╠╩╗║�? ║║�? ║║ ║║║║ ╚═╗╠═╣"
-echo "�?╩╚═╝╚╝╩╩═╝╩╚═╝╝╚╝o╚═╝╩ �?
-echo -e "科技lion脚本工具�?v$sh_v"
-echo -e "命令行输�?{gl_huang}k${gl_kjlan}可快速启动脚�?{gl_bai}"
+echo "鈺︹晹鈺愨晹鈺愨晽 鈺︹暒鈺? 鈺︹晹鈺愨晽鈺斺晽鈺?鈺斺晲鈺椻暒 鈺?
+echo "鈺犫暕鈺椻晳鈺? 鈺戔晳鈺? 鈺戔晳 鈺戔晳鈺戔晳 鈺氣晲鈺椻暊鈺愨暎"
+echo "鈺?鈺┾暁鈺愨暆鈺氣暆鈺┾暕鈺愨暆鈺┾暁鈺愨暆鈺濃暁鈺漮鈺氣晲鈺濃暕 鈺?
+echo -e "绉戞妧lion鑴氭湰宸ュ叿绠?v$sh_v"
+echo -e "鍛戒护琛岃緭鍏?{gl_huang}k${gl_kjlan}鍙揩閫熷惎鍔ㄨ剼鏈?{gl_bai}"
 echo -e "${gl_kjlan}------------------------${gl_bai}"
-echo -e "${gl_kjlan}1.   ${gl_bai}系统信息查询"
-echo -e "${gl_kjlan}2.   ${gl_bai}系统更新"
-echo -e "${gl_kjlan}3.   ${gl_bai}系统清理"
-echo -e "${gl_kjlan}4.   ${gl_bai}基础工具"
-echo -e "${gl_kjlan}5.   ${gl_bai}BBR管理"
-echo -e "${gl_kjlan}6.   ${gl_bai}Docker管理"
-echo -e "${gl_kjlan}7.   ${gl_bai}WARP管理"
-echo -e "${gl_kjlan}8.   ${gl_bai}测试脚本合集"
-echo -e "${gl_kjlan}9.   ${gl_bai}甲骨文云脚本合集"
-echo -e "${gl_huang}10.  ${gl_bai}LDNMP建站"
-echo -e "${gl_kjlan}11.  ${gl_bai}应用市场"
-echo -e "${gl_kjlan}12.  ${gl_bai}后台工作�?
-echo -e "${gl_kjlan}13.  ${gl_bai}系统工具"
-echo -e "${gl_kjlan}14.  ${gl_bai}服务器集群控�?
-echo -e "${gl_kjlan}15.  ${gl_bai}广告专栏"
-echo -e "${gl_kjlan}16.  ${gl_bai}游戏开服脚本合�?
+echo -e "${gl_kjlan}1.   ${gl_bai}绯荤粺淇℃伅鏌ヨ"
+echo -e "${gl_kjlan}2.   ${gl_bai}绯荤粺鏇存柊"
+echo -e "${gl_kjlan}3.   ${gl_bai}绯荤粺娓呯悊"
+echo -e "${gl_kjlan}4.   ${gl_bai}鍩虹宸ュ叿"
+echo -e "${gl_kjlan}5.   ${gl_bai}BBR绠＄悊"
+echo -e "${gl_kjlan}6.   ${gl_bai}Docker绠＄悊"
+echo -e "${gl_kjlan}7.   ${gl_bai}WARP绠＄悊"
+echo -e "${gl_kjlan}8.   ${gl_bai}娴嬭瘯鑴氭湰鍚堥泦"
+echo -e "${gl_kjlan}9.   ${gl_bai}鐢查鏂囦簯鑴氭湰鍚堥泦"
+echo -e "${gl_huang}10.  ${gl_bai}LDNMP寤虹珯"
+echo -e "${gl_kjlan}11.  ${gl_bai}搴旂敤甯傚満"
+echo -e "${gl_kjlan}12.  ${gl_bai}鍚庡彴宸ヤ綔鍖?
+echo -e "${gl_kjlan}13.  ${gl_bai}绯荤粺宸ュ叿"
+echo -e "${gl_kjlan}14.  ${gl_bai}鏈嶅姟鍣ㄩ泦缇ゆ帶鍒?
+echo -e "${gl_kjlan}15.  ${gl_bai}骞垮憡涓撴爮"
+echo -e "${gl_kjlan}16.  ${gl_bai}娓告垙寮€鏈嶈剼鏈悎闆?
 echo -e "${gl_kjlan}------------------------${gl_bai}"
-echo -e "${gl_kjlan}00.  ${gl_bai}脚本更新"
+echo -e "${gl_kjlan}00.  ${gl_bai}鑴氭湰鏇存柊"
 echo -e "${gl_kjlan}------------------------${gl_bai}"
-echo -e "${gl_kjlan}0.   ${gl_bai}退出脚�?
+echo -e "${gl_kjlan}0.   ${gl_bai}閫€鍑鸿剼鏈?
 echo -e "${gl_kjlan}------------------------${gl_bai}"
-read -e -p "请输入你的选择: " choice
+read -e -p "璇疯緭鍏ヤ綘鐨勯€夋嫨: " choice
 
 case $choice in
   1) linux_info ;;
-  2) clear ; send_stats "系统更新" ; linux_update ;;
-  3) clear ; send_stats "系统清理" ; linux_clean ;;
+  2) clear ; send_stats "绯荤粺鏇存柊" ; linux_update ;;
+  3) clear ; send_stats "绯荤粺娓呯悊" ; linux_clean ;;
   4) linux_tools ;;
   5) linux_bbr ;;
   6) linux_docker ;;
-  7) clear ; send_stats "warp管理" ; install wget
+  7) clear ; send_stats "warp绠＄悊" ; install wget
 	wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh ; bash menu.sh [option] [lisence/url/token]
 	;;
   8) linux_test ;;
@@ -16770,7 +16770,7 @@ case $choice in
   16) games_server_tools ;;
   00) kejilion_update ;;
   0) clear ; exit ;;
-  *) echo "无效的输�?" ;;
+  *) echo "鏃犳晥鐨勮緭鍏?" ;;
 esac
 	break_end
 done
@@ -16778,114 +16778,114 @@ done
 
 
 k_info() {
-send_stats "k命令参考用�?
+send_stats "k鍛戒护鍙傝€冪敤渚?
 echo "-------------------"
-echo "视频介绍: https://www.bilibili.com/video/BV1ib421E7it?t=0.1"
-echo "以下是k命令参考用例："
-echo "启动脚本            k"
-echo "安装软件�?         k install nano wget | k add nano wget | k 安装 nano wget"
-echo "卸载软件�?         k remove nano wget | k del nano wget | k uninstall nano wget | k 卸载 nano wget"
-echo "更新系统            k update | k 更新"
-echo "清理系统垃圾        k clean | k 清理"
-echo "重装系统面板        k dd | k 重装"
-echo "bbr3控制面板        k bbr3 | k bbrv3"
-echo "内核调优面板        k nhyh | k 内核优化"
-echo "设置虚拟内存        k swap 2048"
-echo "设置虚拟时区        k time Asia/Shanghai | k 时区 Asia/Shanghai"
-echo "系统回收�?         k trash | k hsz | k 回收�?
-echo "系统备份功能        k backup | k bf | k 备份"
-echo "ssh远程连接工具     k ssh | k 远程连接"
-echo "rsync远程同步工具   k rsync | k 远程同步"
-echo "硬盘管理工具        k disk | k 硬盘管理"
-echo "内网穿透（服务端）  k frps"
-echo "内网穿透（客户端）  k frpc"
-echo "软件启动            k start sshd | k 启动 sshd "
-echo "软件停止            k stop sshd | k 停止 sshd "
-echo "软件重启            k restart sshd | k 重启 sshd "
-echo "软件状态查�?       k status sshd | k 状�?sshd "
-echo "软件开机启�?       k enable docker | k autostart docke | k 开机启�?docker "
-echo "域名证书申请        k ssl"
-echo "域名证书到期查询    k ssl ps"
-echo "docker管理平面      k docker"
-echo "docker环境安装      k docker install |k docker 安装"
-echo "docker容器管理      k docker ps |k docker 容器"
-echo "docker镜像管理      k docker img |k docker 镜像"
-echo "LDNMP站点管理       k web"
-echo "LDNMP缓存清理       k web cache"
-echo "安装WordPress       k wp |k wordpress |k wp xxx.com"
-echo "安装反向代理        k fd |k rp |k 反代 |k fd xxx.com"
-echo "安装负载均衡        k loadbalance |k 负载均衡"
-echo "安装L4负载均衡      k stream |k L4负载均衡"
-echo "防火墙面�?         k fhq |k 防火�?
-echo "开放端�?           k dkdk 8080 |k 打开端口 8080"
-echo "关闭端口            k gbdk 7800 |k 关闭端口 7800"
-echo "放行IP              k fxip 127.0.0.0/8 |k 放行IP 127.0.0.0/8"
-echo "阻止IP              k zzip 177.5.25.36 |k 阻止IP 177.5.25.36"
-echo "命令收藏�?         k fav | k 命令收藏�?
-echo "应用市场管理        k app"
-echo "应用编号快捷管理    k app 26 | k app 1panel | k app npm"
-echo "fail2ban管理        k fail2ban | k f2b"
-echo "显示系统信息        k info"
-echo "ROOT密钥管理        k sshkey"
-echo "SSH公钥导入(URL)    k sshkey <url>"
-echo "SSH公钥导入(GitHub) k sshkey github <user> "
+echo "瑙嗛浠嬬粛: https://www.bilibili.com/video/BV1ib421E7it?t=0.1"
+echo "浠ヤ笅鏄痥鍛戒护鍙傝€冪敤渚嬶細"
+echo "鍚姩鑴氭湰            k"
+echo "瀹夎杞欢鍖?         k install nano wget | k add nano wget | k 瀹夎 nano wget"
+echo "鍗歌浇杞欢鍖?         k remove nano wget | k del nano wget | k uninstall nano wget | k 鍗歌浇 nano wget"
+echo "鏇存柊绯荤粺            k update | k 鏇存柊"
+echo "娓呯悊绯荤粺鍨冨溇        k clean | k 娓呯悊"
+echo "閲嶈绯荤粺闈㈡澘        k dd | k 閲嶈"
+echo "bbr3鎺у埗闈㈡澘        k bbr3 | k bbrv3"
+echo "鍐呮牳璋冧紭闈㈡澘        k nhyh | k 鍐呮牳浼樺寲"
+echo "璁剧疆铏氭嫙鍐呭瓨        k swap 2048"
+echo "璁剧疆铏氭嫙鏃跺尯        k time Asia/Shanghai | k 鏃跺尯 Asia/Shanghai"
+echo "绯荤粺鍥炴敹绔?         k trash | k hsz | k 鍥炴敹绔?
+echo "绯荤粺澶囦唤鍔熻兘        k backup | k bf | k 澶囦唤"
+echo "ssh杩滅▼杩炴帴宸ュ叿     k ssh | k 杩滅▼杩炴帴"
+echo "rsync杩滅▼鍚屾宸ュ叿   k rsync | k 杩滅▼鍚屾"
+echo "纭洏绠＄悊宸ュ叿        k disk | k 纭洏绠＄悊"
+echo "鍐呯綉绌块€忥紙鏈嶅姟绔級  k frps"
+echo "鍐呯綉绌块€忥紙瀹㈡埛绔級  k frpc"
+echo "杞欢鍚姩            k start sshd | k 鍚姩 sshd "
+echo "杞欢鍋滄            k stop sshd | k 鍋滄 sshd "
+echo "杞欢閲嶅惎            k restart sshd | k 閲嶅惎 sshd "
+echo "杞欢鐘舵€佹煡鐪?       k status sshd | k 鐘舵€?sshd "
+echo "杞欢寮€鏈哄惎鍔?       k enable docker | k autostart docke | k 寮€鏈哄惎鍔?docker "
+echo "鍩熷悕璇佷功鐢宠        k ssl"
+echo "鍩熷悕璇佷功鍒版湡鏌ヨ    k ssl ps"
+echo "docker绠＄悊骞抽潰      k docker"
+echo "docker鐜瀹夎      k docker install |k docker 瀹夎"
+echo "docker瀹瑰櫒绠＄悊      k docker ps |k docker 瀹瑰櫒"
+echo "docker闀滃儚绠＄悊      k docker img |k docker 闀滃儚"
+echo "LDNMP绔欑偣绠＄悊       k web"
+echo "LDNMP缂撳瓨娓呯悊       k web cache"
+echo "瀹夎WordPress       k wp |k wordpress |k wp xxx.com"
+echo "瀹夎鍙嶅悜浠ｇ悊        k fd |k rp |k 鍙嶄唬 |k fd xxx.com"
+echo "瀹夎璐熻浇鍧囪　        k loadbalance |k 璐熻浇鍧囪　"
+echo "瀹夎L4璐熻浇鍧囪　      k stream |k L4璐熻浇鍧囪　"
+echo "闃茬伀澧欓潰鏉?         k fhq |k 闃茬伀澧?
+echo "寮€鏀剧鍙?           k dkdk 8080 |k 鎵撳紑绔彛 8080"
+echo "鍏抽棴绔彛            k gbdk 7800 |k 鍏抽棴绔彛 7800"
+echo "鏀捐IP              k fxip 127.0.0.0/8 |k 鏀捐IP 127.0.0.0/8"
+echo "闃绘IP              k zzip 177.5.25.36 |k 闃绘IP 177.5.25.36"
+echo "鍛戒护鏀惰棌澶?         k fav | k 鍛戒护鏀惰棌澶?
+echo "搴旂敤甯傚満绠＄悊        k app"
+echo "搴旂敤缂栧彿蹇嵎绠＄悊    k app 26 | k app 1panel | k app npm"
+echo "fail2ban绠＄悊        k fail2ban | k f2b"
+echo "鏄剧ず绯荤粺淇℃伅        k info"
+echo "ROOT瀵嗛挜绠＄悊        k sshkey"
+echo "SSH鍏挜瀵煎叆(URL)    k sshkey <url>"
+echo "SSH鍏挜瀵煎叆(GitHub) k sshkey github <user> "
 
 }
 
 
 
 if [ "$#" -eq 0 ]; then
-	# 如果没有参数，运行交互式逻辑
+	# 濡傛灉娌℃湁鍙傛暟锛岃繍琛屼氦浜掑紡閫昏緫
 	kejilion_sh
 else
-	# 如果有参数，执行相应函数
+	# 濡傛灉鏈夊弬鏁帮紝鎵ц鐩稿簲鍑芥暟
 	case $1 in
-		install|add|安装)
+		install|add|瀹夎)
 			shift
-			send_stats "安装软件"
+			send_stats "瀹夎杞欢"
 			install "$@"
 			;;
-		remove|del|uninstall|卸载)
+		remove|del|uninstall|鍗歌浇)
 			shift
-			send_stats "卸载软件"
+			send_stats "鍗歌浇杞欢"
 			remove "$@"
 			;;
-		update|更新)
+		update|鏇存柊)
 			linux_update
 			;;
-		clean|清理)
+		clean|娓呯悊)
 			linux_clean
 			;;
-		dd|重装)
+		dd|閲嶈)
 			dd_xitong
 			;;
 		bbr3|bbrv3)
 			bbrv3
 			;;
-		nhyh|内核优化)
+		nhyh|鍐呮牳浼樺寲)
 			Kernel_optimize
 			;;
-		trash|hsz|回收�?
+		trash|hsz|鍥炴敹绔?
 			linux_trash
 			;;
-		backup|bf|备份)
+		backup|bf|澶囦唤)
 			linux_backup
 			;;
-		ssh|远程连接)
+		ssh|杩滅▼杩炴帴)
 			ssh_manager
 			;;
 
-		rsync|远程同步)
+		rsync|杩滅▼鍚屾)
 			rsync_manager
 			;;
 
 		rsync_run)
 			shift
-			send_stats "定时rsync同步"
+			send_stats "瀹氭椂rsync鍚屾"
 			run_task "$@"
 			;;
 
-		disk|硬盘管理)
+		disk|纭洏绠＄悊)
 			disk_manager
 			;;
 
@@ -16894,13 +16894,13 @@ else
 			ldnmp_wp "$@"
 
 			;;
-		fd|rp|反代)
+		fd|rp|鍙嶄唬)
 			shift
 			ldnmp_Proxy "$@"
 	  		find_container_by_host_port "$port"
 	  		if [ -z "$docker_name" ]; then
 	  		  close_port "$port"
-			  echo "已阻止IP+端口访问该服�?
+			  echo "宸查樆姝P+绔彛璁块棶璇ユ湇鍔?
 	  		else
 			  ip_address
 			  close_port "$port"
@@ -16908,24 +16908,24 @@ else
 	  		fi
 			;;
 
-		loadbalance|负载均衡)
+		loadbalance|璐熻浇鍧囪　)
 			ldnmp_Proxy_backend
 			;;
 
 
-		stream|L4负载均衡)
+		stream|L4璐熻浇鍧囪　)
 			ldnmp_Proxy_backend_stream
 			;;
 
 		swap)
 			shift
-			send_stats "快速设置虚拟内�?
+			send_stats "蹇€熻缃櫄鎷熷唴瀛?
 			add_swap "$@"
 			;;
 
-		time|时区)
+		time|鏃跺尯)
 			shift
-			send_stats "快速设置时�?
+			send_stats "蹇€熻缃椂鍖?
 			set_timedate "$@"
 			;;
 
@@ -16943,72 +16943,72 @@ else
 			;;
 
 
-		打开端口|dkdk)
+		鎵撳紑绔彛|dkdk)
 			shift
 			open_port "$@"
 			;;
 
-		关闭端口|gbdk)
+		鍏抽棴绔彛|gbdk)
 			shift
 			close_port "$@"
 			;;
 
-		放行IP|fxip)
+		鏀捐IP|fxip)
 			shift
 			allow_ip "$@"
 			;;
 
-		阻止IP|zzip)
+		闃绘IP|zzip)
 			shift
 			block_ip "$@"
 			;;
 
-		防火墙|fhq)
+		闃茬伀澧檤fhq)
 			iptables_panel
 			;;
 
-		命令收藏夹|fav)
+		鍛戒护鏀惰棌澶箌fav)
 			linux_fav
 			;;
 
-		status|状�?
+		status|鐘舵€?
 			shift
-			send_stats "软件状态查�?
+			send_stats "杞欢鐘舵€佹煡鐪?
 			status "$@"
 			;;
-		start|启动)
+		start|鍚姩)
 			shift
-			send_stats "软件启动"
+			send_stats "杞欢鍚姩"
 			start "$@"
 			;;
-		stop|停止)
+		stop|鍋滄)
 			shift
-			send_stats "软件暂停"
+			send_stats "杞欢鏆傚仠"
 			stop "$@"
 			;;
-		restart|重启)
+		restart|閲嶅惎)
 			shift
-			send_stats "软件重启"
+			send_stats "杞欢閲嶅惎"
 			restart "$@"
 			;;
 
-		enable|autostart|开机启�?
+		enable|autostart|寮€鏈哄惎鍔?
 			shift
-			send_stats "软件开机自�?
+			send_stats "杞欢寮€鏈鸿嚜鍚?
 			enable "$@"
 			;;
 
 		ssl)
 			shift
 			if [ "$1" = "ps" ]; then
-				send_stats "查看证书状�?
+				send_stats "鏌ョ湅璇佷功鐘舵€?
 				ssl_ps
 			elif [ -z "$1" ]; then
 				add_ssl
-				send_stats "快速申请证�?
+				send_stats "蹇€熺敵璇疯瘉涔?
 			elif [ -n "$1" ]; then
 				add_ssl "$1"
-				send_stats "快速申请证�?
+				send_stats "蹇€熺敵璇疯瘉涔?
 			else
 				k_info
 			fi
@@ -17017,16 +17017,16 @@ else
 		docker)
 			shift
 			case $1 in
-				install|安装)
-					send_stats "快捷安装docker"
+				install|瀹夎)
+					send_stats "蹇嵎瀹夎docker"
 					install_docker
 					;;
-				ps|容器)
-					send_stats "快捷容器管理"
+				ps|瀹瑰櫒)
+					send_stats "蹇嵎瀹瑰櫒绠＄悊"
 					docker_ps
 					;;
-				img|镜像)
-					send_stats "快捷镜像管理"
+				img|闀滃儚)
+					send_stats "蹇嵎闀滃儚绠＄悊"
 					docker_image
 					;;
 				*)
@@ -17053,7 +17053,7 @@ else
 
 		app)
 			shift
-			send_stats "应用$@"
+			send_stats "搴旂敤$@"
 			linux_panel "$@"
 			;;
 
@@ -17072,30 +17072,30 @@ else
 			shift
 			case "$1" in
 				"" )
-					# sshkey �?交互菜单
-					send_stats "SSHKey 交互菜单"
+					# sshkey 鈫?浜や簰鑿滃崟
+					send_stats "SSHKey 浜や簰鑿滃崟"
 					sshkey_panel
 					;;
 				github )
 					shift
-					send_stats "�?GitHub 导入 SSH 公钥"
+					send_stats "浠?GitHub 瀵煎叆 SSH 鍏挜"
 					fetch_github_ssh_keys "$1"
 					;;
 				http://*|https://* )
-					send_stats "�?URL 导入 SSH 公钥"
+					send_stats "浠?URL 瀵煎叆 SSH 鍏挜"
 					fetch_remote_ssh_keys "$1"
 					;;
 				ssh-rsa*|ssh-ed25519*|ssh-ecdsa* )
-					send_stats "公钥直接导入"
+					send_stats "鍏挜鐩存帴瀵煎叆"
 					import_sshkey "$1"
 					;;
 				* )
-					echo "错误：未知参�?'$1'"
-					echo "用法�?
-					echo "  k sshkey                  进入交互菜单"
-					echo "  k sshkey \"<pubkey>\"     直接导入 SSH 公钥"
-					echo "  k sshkey <url>            �?URL 导入 SSH 公钥"
-					echo "  k sshkey github <user>    �?GitHub 导入 SSH 公钥"
+					echo "閿欒锛氭湭鐭ュ弬鏁?'$1'"
+					echo "鐢ㄦ硶锛?
+					echo "  k sshkey                  杩涘叆浜や簰鑿滃崟"
+					echo "  k sshkey \"<pubkey>\"     鐩存帴瀵煎叆 SSH 鍏挜"
+					echo "  k sshkey <url>            浠?URL 瀵煎叆 SSH 鍏挜"
+					echo "  k sshkey github <user>    浠?GitHub 瀵煎叆 SSH 鍏挜"
 					;;
 			esac
 

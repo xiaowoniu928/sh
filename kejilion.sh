@@ -9730,7 +9730,7 @@ moltbot_menu() {
 		if [[ "$country" == "CN" || "$country" == "HK" ]]; then
 			npm config set registry https://registry.npmmirror.com
 		fi
-		npm install -g openclaw@latest
+		npm install -g openclaw@2026.2.21-2
 		openclaw onboard --install-daemon
 		start_gateway
 		add_app_id
